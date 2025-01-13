@@ -1,4 +1,4 @@
-import React from 'react';
+// src/components/layout/MobileDrawer.tsx
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -12,11 +12,14 @@ import {
 } from "@/components/ui/drawer";
 import { MenuIcon } from "lucide-react";
 import { SettingsPanel } from '../settings/SettingsPanel';
-import type { Setting } from '@/types/settings';
+import type { ModelSettings } from '@/types/settings';
 
 interface MobileDrawerProps {
-  settings: Setting[];
-  onSettingChange: (id: string, value: number) => void;
+  settings: ModelSettings;
+  onSettingChange: <K extends keyof ModelSettings>(
+    key: K,
+    value: ModelSettings[K]
+  ) => void;
 }
 
 export const MobileDrawer = ({ settings, onSettingChange }: MobileDrawerProps) => {
@@ -31,9 +34,9 @@ export const MobileDrawer = ({ settings, onSettingChange }: MobileDrawerProps) =
       <DrawerContent>
         <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
-            <DrawerTitle>Settings</DrawerTitle>
+            <DrawerTitle>Model Instellingen</DrawerTitle>
             <DrawerDescription>
-              Adjust visualization parameters
+              Pas de model parameters aan
             </DrawerDescription>
           </DrawerHeader>
           <div className="p-4 pb-0">
@@ -44,7 +47,7 @@ export const MobileDrawer = ({ settings, onSettingChange }: MobileDrawerProps) =
           </div>
           <DrawerFooter>
             <DrawerClose asChild>
-              <Button variant="outline">Close</Button>
+              <Button variant="outline">Sluiten</Button>
             </DrawerClose>
           </DrawerFooter>
         </div>

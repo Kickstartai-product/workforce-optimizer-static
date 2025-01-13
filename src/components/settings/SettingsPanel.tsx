@@ -1,24 +1,26 @@
-import React from 'react';
 import { SettingControl } from './SettingControl';
-import type { Setting } from '@/types/settings';
+import type { ModelSettings } from '@/types/settings';
+import {SETTING_OPTIONS} from '@/types/settings';
 
 interface SettingsPanelProps {
-  settings: Setting[];
-  onSettingChange: (id: string, value: number) => void;
+  settings: ModelSettings;
+  onSettingChange: <K extends keyof ModelSettings>(
+    key: K,
+    value: ModelSettings[K]
+  ) => void;
 }
 
 export const SettingsPanel = ({ settings, onSettingChange }: SettingsPanelProps) => {
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        {settings.map((setting) => (
-          <SettingControl
-            key={setting.id}
-            setting={setting}
-            onChange={(value) => onSettingChange(setting.id, value)}
-          />
-        ))}
-      </div>
+      {(Object.keys(SETTING_OPTIONS) as Array<keyof typeof SETTING_OPTIONS>).map((key) => (
+        <SettingControl
+          key={key}
+          settingKey={key}
+          value={settings[key]}
+          onChange={(value) => onSettingChange(key, value)}
+        />
+      ))}
     </div>
   );
 };
