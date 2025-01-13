@@ -19,16 +19,17 @@ export class DataLoader {
     if (this.initialized) return;
 
     try {
+      const basePath = import.meta.env.BASE_URL;
       // Try gzipped files first
       try {
         const [resultsResponse, lookupResponse] = await Promise.all([
-          fetch('/data/model-results.json.gz', {
+          fetch(`${basePath}data/model-results.json.gz`, {
             headers: {
               'Accept-Encoding': 'gzip',
               'Content-Type': 'application/json'
             }
           }),
-          fetch('/data/job-names.json.gz', {
+          fetch(`${basePath}data/job-names.json.gz`, {
             headers: {
               'Accept-Encoding': 'gzip',
               'Content-Type': 'application/json'
@@ -49,8 +50,8 @@ export class DataLoader {
 
       // Fallback to uncompressed files
       const [resultsResponse, lookupResponse] = await Promise.all([
-        fetch('/data/model-results.json'),
-        fetch('/data/job-names.json')
+        fetch(`${basePath}data/model-results.json`),
+        fetch(`${basePath}data/job-names.json`)
       ]);
 
       this.results = await resultsResponse.json();
