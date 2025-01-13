@@ -1,4 +1,4 @@
-// src/components/visualization/ShortageBarChart.tsx
+// ShortageBarChart.tsx
 import {
   BarChart,
   Bar,
@@ -22,7 +22,6 @@ export const ShortageBarChart = ({ data }: ShortageBarChartProps) => {
     .sort((a, b) => b.shortage - a.shortage)
     .slice(0, 10);
 
-  // Mobile: horizontal layout with hidden labels
   if (isMobile) {
     return (
       <ResponsiveContainer width="100%" height="100%">
@@ -32,20 +31,17 @@ export const ShortageBarChart = ({ data }: ShortageBarChartProps) => {
           margin={{
             top: 20,
             right: 30,
-            left: 20,  // Reduced since we're not showing labels
+            left: 20,
             bottom: 20
           }}
         >
           <CartesianGrid strokeDasharray="3 3" horizontal={false} />
-          <XAxis
-            type="number"
-            tick={{ fontSize: 11 }}
-          />
+          <XAxis type="number" tick={{ fontSize: 11 }} />
           <YAxis
             dataKey="jobName"
             type="category"
-            tick={false}  // Hide labels
-            width={1}     // Minimum width since we're not showing labels
+            tick={false}
+            width={1}
           />
           <Tooltip
             contentStyle={{ fontSize: 12 }}
@@ -62,7 +58,6 @@ export const ShortageBarChart = ({ data }: ShortageBarChartProps) => {
     );
   }
 
-  // Desktop: vertical layout with rotated labels
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
@@ -82,22 +77,17 @@ export const ShortageBarChart = ({ data }: ShortageBarChartProps) => {
           textAnchor="end"
           height={80}
           dy={8}
-          tick={{ 
-            fontSize: 11,
-            fill: '#666'
-          }}
+          tick={{ fontSize: 11, fill: '#666' }}
         />
         <YAxis
-          label={{ 
-            value: 'Shortage', 
-            angle: -90, 
+          label={{
+            value: 'Shortage',
+            angle: -90,
             position: 'insideLeft',
             dy: 50,
             fontSize: 12
           }}
-          tick={{
-            fontSize: 11
-          }}
+          tick={{ fontSize: 11 }}
         />
         <Tooltip
           contentStyle={{ fontSize: 12 }}
