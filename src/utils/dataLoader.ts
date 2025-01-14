@@ -1,4 +1,5 @@
-import type { ModelResults, JobNameLookup, ModelResult } from '../types/results';
+import type { ModelResults, JobNameLookup, ModelResult, TransformedResult } from '../types/results';
+import { inflate } from 'pako';
 
 export class DataLoader {
   private static instance: DataLoader;
@@ -15,47 +16,56 @@ export class DataLoader {
     return DataLoader.instance;
   }
 
+  private async fetchAndDecompress(url: string): Promise<any> {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const arrayBuffer = await response.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+    
+    try {
+      // Attempt to decompress as gzip
+      const decompressed = inflate(uint8Array, { to: 'string' });
+      return JSON.parse(decompressed);
+    } catch (error) {
+      // If decompression fails, assume it's not compressed
+      const decoder = new TextDecoder('utf-8');
+      const text = decoder.decode(uint8Array);
+      return JSON.parse(text);
+    }
+  }
+
   async initialize() {
     if (this.initialized) return;
 
     try {
       const basePath = import.meta.env.BASE_URL;
+      
       // Try gzipped files first
       try {
-        const [resultsResponse, lookupResponse] = await Promise.all([
-          fetch(`${basePath}data/model-results.json.gz`, {
-            headers: {
-              'Accept-Encoding': 'gzip',
-              'Content-Type': 'application/json'
-            }
-          }),
-          fetch(`${basePath}data/job-names.json.gz`, {
-            headers: {
-              'Accept-Encoding': 'gzip',
-              'Content-Type': 'application/json'
-            }
-          })
+        const [results, lookup] = await Promise.all([
+          this.fetchAndDecompress(`${basePath}data/model-results.json.gz`),
+          this.fetchAndDecompress(`${basePath}data/job-names.json.gz`)
         ]);
 
-        // If both gzipped files are found, use them
-        if (resultsResponse.ok && lookupResponse.ok) {
-          this.results = await resultsResponse.json();
-          this.jobNameLookup = await lookupResponse.json();
-          this.initialized = true;
-          return;
-        }
+        this.results = results;
+        this.jobNameLookup = lookup;
+        this.initialized = true;
+        return;
       } catch (error) {
-        console.warn('Gzipped files not available, falling back to uncompressed');
+        console.warn('Gzipped files not available or failed to decompress, falling back to uncompressed', error);
       }
 
       // Fallback to uncompressed files
-      const [resultsResponse, lookupResponse] = await Promise.all([
-        fetch(`${basePath}data/model-results.json`),
-        fetch(`${basePath}data/job-names.json`)
+      const [results, lookup] = await Promise.all([
+        this.fetchAndDecompress(`${basePath}data/model-results.json`),
+        this.fetchAndDecompress(`${basePath}data/job-names.json`)
       ]);
 
-      this.results = await resultsResponse.json();
-      this.jobNameLookup = await lookupResponse.json();
+      this.results = results;
+      this.jobNameLookup = lookup;
       this.initialized = true;
     } catch (error) {
       console.error('Failed to load data:', error);
@@ -70,11 +80,7 @@ export class DataLoader {
     return this.results[settingsKey] || null;
   }
 
-  // Helper method to convert IDs to names in the results
-  transformResult(result: ModelResult): {
-    remainingShortages: Array<{ jobName: string; shortage: number }>;
-    topTransitions: Array<{ sourceJob: string; targetJob: string; amount: number }>;
-  } {
+  transformResult(result: ModelResult): TransformedResult {
     return {
       remainingShortages: result.remainingShortages.map(shortage => ({
         jobName: this.jobNameLookup[shortage.jobId],
@@ -84,7 +90,14 @@ export class DataLoader {
         sourceJob: this.jobNameLookup[transition.sourceJobId],
         targetJob: this.jobNameLookup[transition.targetJobId],
         amount: transition.amount
-      }))
+      })),
+      workforceChanges: Object.entries(result.workforceChanges).reduce(
+        (acc, [jobId, metrics]) => ({
+          ...acc,
+          [this.jobNameLookup[Number(jobId)]]: metrics
+        }),
+        {}
+      )
     };
   }
 }

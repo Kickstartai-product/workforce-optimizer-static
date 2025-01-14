@@ -2,6 +2,18 @@ import json
 import random
 from itertools import product
 
+def generate_workforce_metrics():
+    return {
+        "labor_supply": random.randint(1000, 10000),
+        "net_labor_change": random.randint(-1000, 1000),
+        "total_transitions": random.randint(100, 2000),
+        "superfluous_workers": random.randint(0, 500),
+        "total_shortage": random.randint(0, 1000),
+        "productivity": random.randint(80, 120),
+        "expansion_demand": random.randint(-200, 500),
+        "vacancies": random.randint(0, 800)
+    }
+
 def generate_test_data(job_names):
     # Assign IDs to job names
     job_lookup = {i: name for i, name in enumerate(job_names)}
@@ -47,10 +59,16 @@ def generate_test_data(job_names):
                 "amount": amount
             })
         
+        # Generate workforce changes for each job
+        workforce_changes = {}
+        for job_id in range(len(job_names)):
+            workforce_changes[str(job_id)] = generate_workforce_metrics()
+        
         # Store results
         results[key] = {
             "remainingShortages": shortages,
-            "topTransitions": transitions
+            "topTransitions": transitions,
+            "workforceChanges": workforce_changes
         }
     
     return job_lookup, results
