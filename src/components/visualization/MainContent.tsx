@@ -13,27 +13,40 @@ interface MainContentProps {
 
 export const MainContent = ({ settings }: MainContentProps) => {
   const [resultData, setResultData] = useState<TransformedResult | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
+  // One-time initialization
   useEffect(() => {
-    const loadData = async () => {
+    console.log('yeaah')
+    const initializeLoader = async () => {
       const loader = DataLoader.getInstance();
       await loader.initialize();
-
-      const settingsKey = generateSettingsKey(settings);
-      const result = loader.getResultForSettings(settingsKey);
-      if (result) {
-        const transformedResult = loader.transformResult(result);
-        setResultData(transformedResult);
-      }
+      setIsInitialized(true);
     };
 
-    loadData();
-  }, [settings]);
+    initializeLoader();
+  }, []); // Empty dependency array ensures this runs only once
+
+  // Update results when settings change or after initialization
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const loader = DataLoader.getInstance();
+    const settingsKey = generateSettingsKey(settings);
+    const result = loader.getResultForSettings(settingsKey);
+    
+    if (result) {
+      const transformedResult = loader.transformResult(result);
+      setResultData(transformedResult);
+    } else {
+      setResultData(null);
+    }
+  }, [settings, isInitialized]);
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Results</h2>
-      <div className="space-y-8"> {/* Consistent spacing between cards */}
+      <div className="space-y-8">
         {/* Shortages Card */}
         <Card>
           <CardHeader>
@@ -43,12 +56,16 @@ export const MainContent = ({ settings }: MainContentProps) => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-[400px]"> {/* Fixed height container */}
-              {resultData ? (
+            <div className="h-[400px]">
+              {!isInitialized ? (
+                <div className="flex items-center justify-center h-full">
+                  Initializing...
+                </div>
+              ) : resultData ? (
                 <ShortageBarChart data={resultData} />
               ) : (
                 <div className="flex items-center justify-center h-full">
-                  Loading...
+                  No data available for these settings
                 </div>
               )}
             </div>
@@ -65,7 +82,7 @@ export const MainContent = ({ settings }: MainContentProps) => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[400px]"> {/* Fixed height container */}
+              <div className="h-[400px]">
                 <TransitionsChart data={resultData} />
               </div>
             </CardContent>
