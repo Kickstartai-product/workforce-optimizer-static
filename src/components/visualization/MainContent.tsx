@@ -17,18 +17,18 @@ interface ChartCardProps {
   description: string;
   isInitialized: boolean;
   resultData: TransformedResult | null;
+  isWaterfall?: boolean;
   children: (data: TransformedResult) => React.ReactNode;
-  height?: number;
 }
 
-const ChartCard = ({ title, description, isInitialized, resultData, children, height = 400 }: ChartCardProps) => (
+const ChartCard = ({ title, description, isInitialized, resultData, isWaterfall = false, children }: ChartCardProps) => (
   <Card>
     <CardHeader>
       <CardTitle>{title}</CardTitle>
       <CardDescription>{description}</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className={`h-[${height}px]`}>
+      <div className={isWaterfall ? "h-144" : "h-96"}>
         {!isInitialized ? (
           <div className="flex items-center justify-center h-full">
             Initializing...
@@ -80,23 +80,25 @@ export const MainContent = ({ settings }: MainContentProps) => {
     {
       title: "Top 10 Job Shortages",
       description: "Showing the largest remaining shortages across all jobs",
-      component: (data: TransformedResult) => <ShortageBarChart data={data} />
+      component: (data: TransformedResult) => <ShortageBarChart data={data} />,
+      isWaterfall: false
     },
     {
       title: "Top 10 Workforce Transitions",
       description: "Showing the largest transitions between jobs",
-      component: (data: TransformedResult) => <TransitionsChart data={data} />
+      component: (data: TransformedResult) => <TransitionsChart data={data} />,
+      isWaterfall: false
     },
     {
       title: "Waterfall Chart of Numbers",
       description: "Showing the largest transitions between jobs",
-      height: 600,
       component: (data: TransformedResult) => (
         <DualWaterfall 
           data={data.workforceChanges}
           className="mt-8"
         />
-      )
+      ),
+      isWaterfall: true
     }
   ];
 
@@ -111,7 +113,7 @@ export const MainContent = ({ settings }: MainContentProps) => {
             description={chart.description}
             isInitialized={isInitialized}
             resultData={resultData}
-            height={chart.height}
+            isWaterfall={chart.isWaterfall}
           >
             {chart.component}
           </ChartCard>
