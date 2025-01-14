@@ -18,16 +18,17 @@ interface ChartCardProps {
   isInitialized: boolean;
   resultData: TransformedResult | null;
   children: (data: TransformedResult) => React.ReactNode;
+  height?: number;
 }
 
-const ChartCard = ({ title, description, isInitialized, resultData, children }: ChartCardProps) => (
+const ChartCard = ({ title, description, isInitialized, resultData, children, height = 400 }: ChartCardProps) => (
   <Card>
     <CardHeader>
       <CardTitle>{title}</CardTitle>
       <CardDescription>{description}</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="h-[400px]">
+      <div className={`h-[${height}px]`}>
         {!isInitialized ? (
           <div className="flex items-center justify-center h-full">
             Initializing...
@@ -89,9 +90,10 @@ export const MainContent = ({ settings }: MainContentProps) => {
     {
       title: "Waterfall Chart of Numbers",
       description: "Showing the largest transitions between jobs",
+      height: 600,
       component: (data: TransformedResult) => (
         <DualWaterfall 
-          data={data.workforceChanges.Accountants}
+          data={data.workforceChanges}
           className="mt-8"
         />
       )
@@ -109,6 +111,7 @@ export const MainContent = ({ settings }: MainContentProps) => {
             description={chart.description}
             isInitialized={isInitialized}
             resultData={resultData}
+            height={chart.height}
           >
             {chart.component}
           </ChartCard>

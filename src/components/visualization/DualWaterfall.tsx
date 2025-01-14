@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   BarChart,
   Bar,
@@ -10,18 +11,27 @@ import {
   LabelList,
 } from 'recharts';
 import { useScreenSize } from '@/hooks/useScreenSize';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+type WorkforceMetrics = {
+  labor_supply: number;
+  net_labor_change: number;
+  total_transitions: number;
+  superfluous_workers: number;
+  total_shortage: number;
+  productivity: number;
+  expansion_demand: number;
+  vacancies: number;
+}
 
 interface DualWaterfallProps {
-  data: {
-    labor_supply: number;
-    net_labor_change: number;
-    total_transitions: number;
-    superfluous_workers: number;
-    total_shortage: number;
-    productivity: number;
-    expansion_demand: number;
-    vacancies: number;
-  };
+  data: { [key: string]: WorkforceMetrics };
   className?: string;
 }
 
@@ -36,6 +46,18 @@ interface ChartComponentProps {
 
 export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
   const { isMobile } = useScreenSize();
+  
+  // Get sorted jobs, with "Total" first if it exists
+  const jobs = Object.keys(data).sort((a, b) => {
+    if (a === "Total") return -1;
+    if (b === "Total") return 1;
+    return a.localeCompare(b);
+  });
+  
+  // Set default job to "Total" if it exists, otherwise first job alphabetically
+  const [selectedJob, setSelectedJob] = useState<string>(jobs[0]);
+  
+  const selectedData = data[selectedJob];
 
   const formatNumber = (value: number): string => {
     if (value === 0) return "±0";
@@ -51,70 +73,68 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
   };
 
   const getSupplyData = () => {
-
     return [
       {
         name: "Arbeidsaanbod (2024)",
-        value: Math.round(data.labor_supply),
-        displayValue: Math.round(data.labor_supply)
+        value: Math.round(selectedData.labor_supply),
+        displayValue: Math.round(selectedData.labor_supply)
       },
       {
         name: "Instroom minus uitstroom (tot 2035)",
-        value: Math.round(data.net_labor_change),
-        displayValue: Math.round(data.net_labor_change)
+        value: Math.round(selectedData.net_labor_change),
+        displayValue: Math.round(selectedData.net_labor_change)
       },
       {
         name: "Transitie naar baan toe (tot 2035)",
-        value: Math.round(data.total_transitions),
-        displayValue: Math.round(data.total_transitions)
+        value: Math.round(selectedData.total_transitions),
+        displayValue: Math.round(selectedData.total_transitions)
       },
       {
         name: "Transitie uit baan (tot 2035)",
-        value: Math.round(data.total_transitions * -1),
-        displayValue: Math.round(data.total_transitions * -1)
+        value: Math.round(selectedData.total_transitions * -1),
+        displayValue: Math.round(selectedData.total_transitions * -1)
       }
     ];
   };
 
   const getDemandData = () => {
-
     return [
       {
         name: "Ingevulde arbeidsvraag (2024)",
-        value: Math.round(data.labor_supply),
-        displayValue: Math.round(data.labor_supply)
+        value: Math.round(selectedData.labor_supply),
+        displayValue: Math.round(selectedData.labor_supply)
       },
       {
         name: "Vacatures boven 2% frictie",
-        value: Math.round(data.vacancies),
-        displayValue: Math.round(data.vacancies)
+        value: Math.round(selectedData.vacancies),
+        displayValue: Math.round(selectedData.vacancies)
       },
       {
         name: "Uitbreidsvraag",
-        value: Math.round(data.expansion_demand),
-        displayValue: Math.round(data.expansion_demand)
+        value: Math.round(selectedData.expansion_demand),
+        displayValue: Math.round(selectedData.expansion_demand)
       },
       {
         name: "Afname groei door productiviteit",
-        value: Math.round(data.productivity),
-        displayValue: Math.round(data.productivity)
+        value: Math.round(selectedData.productivity),
+        displayValue: Math.round(selectedData.productivity)
       }
     ].reverse();
   };
 
   const getGapData = () => {
-    const total_supply = data.labor_supply + 
-                        data.net_labor_change + 
-                        data.total_transitions + 
-                        (data.total_transitions * -1);
+    const total_supply = selectedData.labor_supply + 
+                        selectedData.net_labor_change + 
+                        selectedData.total_transitions + 
+                        (selectedData.total_transitions * -1);
 
-    const total_demand = data.labor_supply +
-                        data.vacancies +
-                        data.expansion_demand +
-                        data.productivity;
+    const total_demand = selectedData.labor_supply +
+                        selectedData.vacancies +
+                        selectedData.expansion_demand +
+                        selectedData.productivity;
 
     const shortageBase = Math.min(
-      total_supply - data.superfluous_workers, 
+      total_supply - selectedData.superfluous_workers, 
       total_demand
     );
 
@@ -128,15 +148,15 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       },
       {
         name: "Overtollig (2035)",
-        value: Math.round(data.superfluous_workers) * -1,
-        displayValue: Math.round(data.superfluous_workers) * -1,
+        value: Math.round(selectedData.superfluous_workers) * -1,
+        displayValue: Math.round(selectedData.superfluous_workers) * -1,
         isExcessWorkers: true,
         base: Math.round(total_supply)
       },
       {
         name: "Tekort (2035)",
-        value: Math.round(data.total_shortage),
-        displayValue: Math.round(data.total_shortage),
+        value: Math.round(selectedData.total_shortage),
+        displayValue: Math.round(selectedData.total_shortage),
         isShortage: true,
         base: shortageBase
       },
@@ -252,7 +272,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                 position="top"
                 formatter={formatNumber}
                 fill={((props: any) => props.value >= 0 ? "#10b981" : "#ef4444") as unknown as string}
-                />
+              />
               {data.map((entry, index) => {
                 if (entry.isFinalProjection) {
                   return <Cell key={index} fill="#9333ea" opacity={0.7} />;
@@ -275,27 +295,41 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     </div>
   );
 
-  const supplyData = processLeftData(getSupplyData());
-  const gapData = getGapData();
-  const demandData = processRightData(getDemandData());
+  const JobSelector = () => (
+    <div className="w-full max-w-xs mb-4">
+      <Select value={selectedJob} onValueChange={setSelectedJob}>
+        <SelectTrigger>
+          <SelectValue placeholder="Select a job" />
+        </SelectTrigger>
+        <SelectContent>
+          {jobs.map((job) => (
+            <SelectItem key={job} value={job}>
+              {job}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
+  );
 
   if (isMobile) {
     return (
       <div className={className}>
+        <JobSelector />
         <ChartComponent 
-          data={supplyData} 
+          data={processLeftData(getSupplyData())} 
           title="Supply Side" 
           subtitle="Workforce changes and adjustments"
         />
         <ChartComponent 
-          data={gapData} 
+          data={getGapData()} 
           title="Gap" 
           subtitle="Supply-Demand Imbalance"
           showAxis={false}
           isGapChart={true}
         />
         <ChartComponent 
-          data={demandData} 
+          data={processRightData(getDemandData())} 
           title="Demand Side" 
           subtitle="Demand components and changes"
           orientation="right"
@@ -306,17 +340,18 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
 
   return (
     <div className={className}>
+      <JobSelector />
       <div className="flex divide-x divide-gray-200">
         <div className="flex-1 pr-2">
           <ChartComponent 
-            data={supplyData} 
+            data={processLeftData(getSupplyData())} 
             title="Supply Side" 
             subtitle="Workforce changes and adjustments"
           />
         </div>
         <div className="flex-1 px-2">
           <ChartComponent 
-            data={gapData} 
+            data={getGapData()} 
             title="Gap" 
             subtitle="Supply-Demand Imbalance"
             showAxis={false}
@@ -325,7 +360,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
         </div>
         <div className="flex-1 pl-2">
           <ChartComponent 
-            data={demandData} 
+            data={processRightData(getDemandData())} 
             title="Demand Side" 
             subtitle="Demand components and changes"
             orientation="right"
