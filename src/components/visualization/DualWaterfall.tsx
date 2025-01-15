@@ -18,17 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-type WorkforceMetrics = {
-  labor_supply: number;
-  net_labor_change: number;
-  total_transitions: number;
-  superfluous_workers: number;
-  total_shortage: number;
-  productivity: number;
-  expansion_demand: number;
-  vacancies: number;
-}
+import { WorkforceMetrics } from '@/types/results';
 
 interface DualWaterfallProps {
   data: { [key: string]: WorkforceMetrics };
@@ -49,8 +39,8 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
   
   // Get sorted jobs, with "Total" first if it exists
   const jobs = Object.keys(data).sort((a, b) => {
-    if (a === "Total") return -1;
-    if (b === "Total") return 1;
+    if (a === "Totaal") return -1;
+    if (b === "Totaal") return 1;
     return a.localeCompare(b);
   });
   
@@ -86,13 +76,13 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       },
       {
         name: "Transitie naar baan toe (tot 2035)",
-        value: Math.round(selectedData.total_transitions),
-        displayValue: Math.round(selectedData.total_transitions)
+        value: Math.round(selectedData.transitions_in),
+        displayValue: Math.round(selectedData.transitions_in)
       },
       {
         name: "Transitie uit baan (tot 2035)",
-        value: Math.round(selectedData.total_transitions * -1),
-        displayValue: Math.round(selectedData.total_transitions * -1)
+        value: Math.round(selectedData.transitions_out),
+        displayValue: Math.round(selectedData.transitions_out)
       }
     ];
   };
@@ -125,19 +115,17 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
   const getGapData = () => {
     const total_supply = selectedData.labor_supply + 
                         selectedData.net_labor_change + 
-                        selectedData.total_transitions + 
-                        (selectedData.total_transitions * -1);
-
+                        selectedData.transitions_in + 
+                        selectedData.transitions_out;
+  
     const total_demand = selectedData.labor_supply +
                         selectedData.vacancies +
                         selectedData.expansion_demand +
                         selectedData.productivity;
-
-    const shortageBase = Math.min(
-      total_supply - selectedData.superfluous_workers, 
-      total_demand
-    );
-
+  
+    // Start with the lower of supply or demand to ensure proper alignment
+    const baseValue = Math.min(total_supply, total_demand);
+    
     return [
       {
         name: "Arbeidsaanbod (2035)",
@@ -155,10 +143,10 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       },
       {
         name: "Tekort (2035)",
-        value: Math.round(selectedData.total_shortage),
-        displayValue: Math.round(selectedData.total_shortage),
+        value: Math.round(selectedData.shortage),
+        displayValue: Math.round(selectedData.shortage),
         isShortage: true,
-        base: shortageBase
+        base: baseValue // Use the minimum as the base for shortage
       },
       {
         name: "Arbeidsvraag (2035)",

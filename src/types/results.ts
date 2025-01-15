@@ -21,9 +21,10 @@ export interface JobTransition {
 export interface WorkforceMetrics {
   labor_supply: number;
   net_labor_change: number;
-  total_transitions: number;
+  transitions_in: number;
+  transitions_out: number;
   superfluous_workers: number;
-  total_shortage: number;
+  shortage: number;
   productivity: number;
   expansion_demand: number;
   vacancies: number;
