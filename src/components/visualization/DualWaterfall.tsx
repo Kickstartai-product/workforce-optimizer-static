@@ -96,25 +96,25 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
         name: "Ingevulde arbeidsvraag (2024)",
         value: Math.round(selectedData.labor_supply),
         displayValue: Math.round(selectedData.labor_supply),
-        xValue: 1
+        xValue: 4
       },
       {
         name: "Vacatures boven 2% frictie",
         value: Math.round(selectedData.vacancies),
         displayValue: Math.round(selectedData.vacancies),
-        xValue: 2
+        xValue: 3
       },
       {
         name: "Uitbreidsvraag",
         value: Math.round(selectedData.expansion_demand),
         displayValue: Math.round(selectedData.expansion_demand),
-        xValue: 3
+        xValue: 2
       },
       {
         name: "Afname groei door productiviteit",
         value: Math.round(selectedData.productivity),
         displayValue: Math.round(selectedData.productivity),
-        xValue: 4
+        xValue: 1
       }
     ].reverse();
   };
