@@ -7,10 +7,48 @@ import type { TransformedResult } from '@/types/results';
 import { ShortageBarChart } from './ShortageBarChart';
 import { TransitionsChart } from "./TransitionsChart";
 import { DualWaterfall } from './DualWaterfall';
+import { useScreenSize } from '@/hooks/useScreenSize';
+import { RotateCcw } from 'lucide-react';
 
-interface MainContentProps {
-  settings: ModelSettings;
-}
+
+
+// Rotation prompt component
+const RotationPrompt = () => (
+  <div className="fixed inset-0 bg-background/95 backdrop-blur-sm flex items-center justify-center z-50">
+    <div className="text-center p-8">
+      <RotateCcw className="w-16 h-16 mx-auto mb-4 text-primary animate-spin-slow" />
+      <h2 className="text-xl font-semibold mb-2">Please Rotate Your Device</h2>
+      <p className="text-muted-foreground">
+        For the best viewing experience, please rotate your device to landscape mode
+      </p>
+    </div>
+  </div>
+);
+
+// Hook to detect screen orientation
+const useScreenOrientation = () => {
+  const [isLandscape, setIsLandscape] = useState(
+    typeof window !== 'undefined' 
+      ? window.innerWidth > window.innerHeight 
+      : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLandscape(window.innerWidth > window.innerHeight);
+    };
+
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
+    };
+  }, []);
+
+  return isLandscape;
+};
 
 interface ChartCardProps {
   title: string;
@@ -45,9 +83,15 @@ const ChartCard = ({ title, description, isInitialized, resultData, isWaterfall 
   </Card>
 );
 
+interface MainContentProps {
+  settings: ModelSettings;
+}
+
 export const MainContent = ({ settings }: MainContentProps) => {
   const [resultData, setResultData] = useState<TransformedResult | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+  const { isMobile } = useScreenSize();
+  const isLandscape = useScreenOrientation();
 
   // One-time initialization
   useEffect(() => {
@@ -58,7 +102,7 @@ export const MainContent = ({ settings }: MainContentProps) => {
     };
 
     initializeLoader();
-  }, []); // Empty dependency array ensures this runs only once
+  }, []);
 
   // Update results when settings change or after initialization
   useEffect(() => {
@@ -104,21 +148,26 @@ export const MainContent = ({ settings }: MainContentProps) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Results</h2>
-      <div className="space-y-8">
-        {charts.map((chart, index) => (
-          <ChartCard
-            key={index}
-            title={chart.title}
-            description={chart.description}
-            isInitialized={isInitialized}
-            resultData={resultData}
-            isWaterfall={chart.isWaterfall}
-          >
-            {chart.component}
-          </ChartCard>
-        ))}
+      {isMobile && !isLandscape && <RotationPrompt />}
+      <div className={isMobile && !isLandscape ? "invisible" : ""}>
+        <h2 className="text-2xl font-bold mb-4">Results</h2>
+        <div className="space-y-8">
+          {charts.map((chart, index) => (
+            <ChartCard
+              key={index}
+              title={chart.title}
+              description={chart.description}
+              isInitialized={isInitialized}
+              resultData={resultData}
+              isWaterfall={chart.isWaterfall}
+            >
+              {chart.component}
+            </ChartCard>
+          ))}
+        </div>
       </div>
     </div>
   );
 };
+
+export default MainContent;

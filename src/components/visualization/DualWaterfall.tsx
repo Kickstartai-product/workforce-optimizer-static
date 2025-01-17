@@ -37,16 +37,13 @@ interface ChartComponentProps {
 export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
   const { isMobile } = useScreenSize();
   
-  // Get sorted jobs, with "Total" first if it exists
   const jobs = Object.keys(data).sort((a, b) => {
     if (a === "Totaal") return -1;
     if (b === "Totaal") return 1;
     return a.localeCompare(b);
   });
   
-  // Set default job to "Total" if it exists, otherwise first job alphabetically
   const [selectedJob, setSelectedJob] = useState<string>(jobs[0]);
-  
   const selectedData = data[selectedJob];
 
   const formatNumber = (value: number): string => {
@@ -62,6 +59,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     return `${value < 0 ? '' : '+'}${value.toLocaleString()}`;
   };
 
+  // Data generation functions remain the same
   const getSupplyData = () => {
     return [
       {
@@ -123,7 +121,6 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                         selectedData.expansion_demand +
                         selectedData.productivity;
   
-    // Start with the lower of supply or demand to ensure proper alignment
     const baseValue = Math.min(total_supply, total_demand);
     
     return [
@@ -146,7 +143,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
         value: Math.round(selectedData.shortage),
         displayValue: Math.round(selectedData.shortage),
         isShortage: true,
-        base: baseValue // Use the minimum as the base for shortage
+        base: baseValue
       },
       {
         name: "Arbeidsvraag (2035)",
@@ -186,9 +183,9 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       const value = payload[0].payload.displayValue;
       const isZero = value === 0 || Math.abs(value) === 0;
       return (
-        <div className="bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+        <div className="bg-white p-2 rounded-lg shadow-lg border border-gray-200 text-xs">
           <p className="font-medium text-gray-900">{label}</p>
-          <p className="text-sm">
+          <p>
             <span className={
               isZero ? "text-gray-500" : 
               value > 0 ? "text-emerald-600" : "text-red-600"
@@ -209,79 +206,90 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     showAxis = true, 
     orientation = "left",
     isGapChart = false 
-  }: ChartComponentProps) => (
-    <div className="w-full h-full flex flex-col">
-      <div className="text-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-        <p className="text-sm text-gray-600">{subtitle}</p>
-      </div>
-      <div className="flex-grow">
-        <ResponsiveContainer width="100%" height={500}>
-          <BarChart
-            data={data}
-            margin={{
-              top: 40,
-              right: showAxis ? 30 : isGapChart ? 60 : 30,
-              left: showAxis ? 60 : isGapChart ? 60 : 30,
-              bottom: 60
-            }}
-            barSize={40}
-          >
-            <CartesianGrid strokeDasharray="3 3" vertical={false} />
-            <XAxis
-              dataKey="name"
-              axisLine={false}
-              tickLine={false}
-              dy={8}
-              angle={-45}
-              textAnchor="end"
-              height={80}
-              tick={{ fill: '#6b7280', fontSize: 12 }}
-              interval={0}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              dx={-8}
-              tick={{ fill: '#6b7280', fontSize: 12 }}
-              tickFormatter={formatNumber}
-              orientation={orientation}
-              hide={isGapChart}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="base" stackId="a" fill="transparent" />
-            <Bar 
-              dataKey="value" 
-              stackId="a"
-              radius={[4, 4, 0, 0]}
+  }: ChartComponentProps) => {
+    const chartHeight = isMobile ? 200 : 500;
+    const fontSize = isMobile ? 6 : 12;
+    const barSize = isMobile ? 10 : 40;
+    const marginTop = isMobile ? 10 : 40;
+    const marginBottom = isMobile ? 30 : 60;
+    const marginSide = isMobile ? 5 : 30;
+    const axisMargin = isMobile ? 20 : 60;
+    
+    return (
+      <div className="w-full h-full flex flex-col">
+        <div className="text-center mb-1">
+          <h3 className={`font-semibold text-gray-800 ${isMobile ? 'text-xs' : 'text-lg'}`}>{title}</h3>
+          <p className={`text-gray-600 ${isMobile ? 'text-xs' : 'text-sm'}`}>{subtitle}</p>
+        </div>
+        <div className="flex-grow">
+          <ResponsiveContainer width="100%" height={chartHeight}>
+            <BarChart
+              data={data}
+              margin={{
+                top: marginTop,
+                right: showAxis ? marginSide : isGapChart ? axisMargin : marginSide,
+                left: showAxis ? axisMargin : isGapChart ? axisMargin : marginSide,
+                bottom: marginBottom
+              }}
+              barSize={barSize}
             >
-              <LabelList
-                dataKey="displayValue"
-                position="top"
-                formatter={formatNumber}
-                fill={((props: any) => props.value >= 0 ? "#10b981" : "#ef4444") as unknown as string}
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                dy={2}
+                angle={-45}
+                textAnchor="end"
+                height={marginBottom}
+                tick={{ fill: '#6b7280', fontSize }}
+                interval={0}
               />
-              {data.map((entry, index) => {
-                if (entry.isFinalProjection) {
-                  return <Cell key={index} fill="#9333ea" opacity={0.7} />;
-                }
-                if (entry.isExcessWorkers) {
-                  return <Cell key={index} fill="#7c3aed" opacity={0.5} />;
-                }
-                if (entry.isShortage) {
-                  return <Cell key={index} fill="#7c3aed" />;
-                }
-                return <Cell 
-                  key={index} 
-                  fill={entry.value >= 0 ? "#10b981" : "#ef4444"} 
-                />;
-              })}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                dx={-2}
+                tick={{ fill: '#6b7280', fontSize }}
+                tickFormatter={formatNumber}
+                orientation={orientation}
+                hide={isGapChart}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="base" stackId="a" fill="transparent" />
+              <Bar 
+                dataKey="value" 
+                stackId="a"
+                radius={[2, 2, 0, 0]}
+              >
+                <LabelList
+                  dataKey="displayValue"
+                  position="top"
+                  formatter={formatNumber}
+                  fill={((props: any) => props.value >= 0 ? "#10b981" : "#ef4444") as unknown as string}
+                  style={{ fontSize }}
+                />
+                {data.map((entry, index) => {
+                  if (entry.isFinalProjection) {
+                    return <Cell key={index} fill="#9333ea" opacity={0.7} />;
+                  }
+                  if (entry.isExcessWorkers) {
+                    return <Cell key={index} fill="#7c3aed" opacity={0.5} />;
+                  }
+                  if (entry.isShortage) {
+                    return <Cell key={index} fill="#7c3aed" />;
+                  }
+                  return <Cell 
+                    key={index} 
+                    fill={entry.value >= 0 ? "#10b981" : "#ef4444"} 
+                  />;
+                })}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const JobSelector = () => (
     <div className="w-full max-w-xs mb-4">
@@ -300,44 +308,18 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     </div>
   );
 
-  if (isMobile) {
-    return (
-      <div className={className}>
-        <JobSelector />
-        <ChartComponent 
-          data={processLeftData(getSupplyData())} 
-          title="Supply Side" 
-          subtitle="Workforce changes and adjustments"
-        />
-        <ChartComponent 
-          data={getGapData()} 
-          title="Gap" 
-          subtitle="Supply-Demand Imbalance"
-          showAxis={false}
-          isGapChart={true}
-        />
-        <ChartComponent 
-          data={processRightData(getDemandData())} 
-          title="Demand Side" 
-          subtitle="Demand components and changes"
-          orientation="right"
-        />
-      </div>
-    );
-  }
-
   return (
     <div className={className}>
       <JobSelector />
       <div className="flex divide-x divide-gray-200">
-        <div className="flex-1 pr-2">
+        <div className="flex-1 pr-1">
           <ChartComponent 
             data={processLeftData(getSupplyData())} 
             title="Supply Side" 
             subtitle="Workforce changes and adjustments"
           />
         </div>
-        <div className="flex-1 px-2">
+        <div className="flex-1 px-1">
           <ChartComponent 
             data={getGapData()} 
             title="Gap" 
@@ -346,7 +328,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
             isGapChart={true}
           />
         </div>
-        <div className="flex-1 pl-2">
+        <div className="flex-1 pl-1">
           <ChartComponent 
             data={processRightData(getDemandData())} 
             title="Demand Side" 
