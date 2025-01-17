@@ -337,13 +337,15 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
               {data.map((entry, index) => {
                 if (index < data.length - 1) {
                   const currentTotal = entry.base + entry.value;
-                  const nextX = data[index + 1].xValue;
+                  const barHalfWidth = 0.4; // Half the width of a bar
+                  const startX = entry.xValue + barHalfWidth; // End of current bar
+                  const endX = data[index + 1].xValue - barHalfWidth; // Start of next bar
                   return (
                     <ReferenceLine
                       key={`connector-${entry.uniqueId}`}
                       segment={[
-                        { x: entry.xValue, y: currentTotal },
-                        { x: nextX, y: currentTotal }
+                        { x: startX, y: currentTotal },
+                        { x: endX, y: currentTotal }
                       ]}
                       stroke="#000000"
                       strokeDasharray="3 3"
