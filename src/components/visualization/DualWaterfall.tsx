@@ -66,22 +66,26 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       {
         name: "Arbeidsaanbod (2024)",
         value: Math.round(selectedData.labor_supply),
-        displayValue: Math.round(selectedData.labor_supply)
+        displayValue: Math.round(selectedData.labor_supply),
+        xValue: 1
       },
       {
         name: "Instroom minus uitstroom (tot 2035)",
         value: Math.round(selectedData.net_labor_change),
-        displayValue: Math.round(selectedData.net_labor_change)
+        displayValue: Math.round(selectedData.net_labor_change),
+        xValue: 2
       },
       {
         name: "Transitie naar baan toe (tot 2035)",
         value: Math.round(selectedData.transitions_in),
-        displayValue: Math.round(selectedData.transitions_in)
+        displayValue: Math.round(selectedData.transitions_in),
+        xValue: 3
       },
       {
         name: "Transitie uit baan (tot 2035)",
         value: Math.round(selectedData.transitions_out),
-        displayValue: Math.round(selectedData.transitions_out)
+        displayValue: Math.round(selectedData.transitions_out),
+        xValue: 4
       }
     ];
   };
@@ -91,22 +95,26 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       {
         name: "Ingevulde arbeidsvraag (2024)",
         value: Math.round(selectedData.labor_supply),
-        displayValue: Math.round(selectedData.labor_supply)
+        displayValue: Math.round(selectedData.labor_supply),
+        xValue: 1
       },
       {
         name: "Vacatures boven 2% frictie",
         value: Math.round(selectedData.vacancies),
-        displayValue: Math.round(selectedData.vacancies)
+        displayValue: Math.round(selectedData.vacancies),
+        xValue: 2
       },
       {
         name: "Uitbreidsvraag",
         value: Math.round(selectedData.expansion_demand),
-        displayValue: Math.round(selectedData.expansion_demand)
+        displayValue: Math.round(selectedData.expansion_demand),
+        xValue: 3
       },
       {
         name: "Afname groei door productiviteit",
         value: Math.round(selectedData.productivity),
-        displayValue: Math.round(selectedData.productivity)
+        displayValue: Math.round(selectedData.productivity),
+        xValue: 4
       }
     ].reverse();
   };
@@ -130,28 +138,32 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
         value: Math.round(total_supply),
         displayValue: Math.round(total_supply),
         isFinalProjection: true,
-        base: 0
+        base: 0,
+        xValue: 1
       },
       {
         name: "Overtollig (2035)",
         value: Math.round(selectedData.superfluous_workers) * -1,
         displayValue: Math.round(selectedData.superfluous_workers) * -1,
         isExcessWorkers: true,
-        base: Math.round(total_supply)
+        base: Math.round(total_supply),
+        xValue: 2
       },
       {
         name: "Tekort (2035)",
         value: Math.round(selectedData.shortage),
         displayValue: Math.round(selectedData.shortage),
         isShortage: true,
-        base: baseValue
+        base: baseValue,
+        xValue: 3
       },
       {
         name: "Arbeidsvraag (2035)",
         value: Math.round(total_demand),
         displayValue: Math.round(total_demand),
         isFinalProjection: true,
-        base: 0
+        base: 0,
+        xValue: 4
       }
     ];
   };
@@ -285,6 +297,14 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis
+                dataKey="xValue"
+                type="number"
+                domain={[0.5, 4.5]}
+                hide
+                axisLine={false}
+                tickLine={false}
+              />
+              <XAxis
                 dataKey="name"
                 axisLine={false}
                 tickLine={false}
@@ -294,6 +314,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                 height={marginBottom}
                 tick={{ fill: '#6b7280', fontSize }}
                 interval={0}
+                xAxisId="category"
               />
               <YAxis
                 axisLine={false}
@@ -316,21 +337,16 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
               {data.map((entry, index) => {
                 if (index < data.length - 1) {
                   const currentTotal = entry.base + entry.value;
+                  const nextX = data[index + 1].xValue;
                   return (
                     <ReferenceLine
                       key={`connector-${entry.uniqueId}`}
-                      // x1={0}  // Center of current bar
-                      // x2={0}  // Center of next bar
-                      y={currentTotal}
-                      // x={0}
-                      x1={0}
-                      x2={0}
+                      segment={[
+                        { x: entry.xValue, y: currentTotal },
+                        { x: nextX, y: currentTotal }
+                      ]}
                       stroke="#000000"
                       strokeDasharray="3 3"
-                      // segment={[
-                      //   { x: index + 0.5, y: currentTotal },
-                      //   { x: index + 1.5, y: currentTotal }
-                      // ]}
                     />
                   );
                 }
