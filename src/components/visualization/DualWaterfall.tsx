@@ -154,7 +154,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
         value: Math.round(selectedData.shortage),
         displayValue: Math.round(selectedData.shortage),
         isShortage: true,
-        base: baseValue - selectedData.shortage,
+        base: baseValue - selectedData.superfluous_workers,
         xValue: 3
       },
       {
