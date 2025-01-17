@@ -1,11 +1,11 @@
 "use client"
 
 import './App.css'
-import { ResponsiveLayout } from '@/components/layout/ResponsiveLayout';
+import { NarrativeLayout } from '@/components/layout/NarrativeLayout';
 
 function App() {
   return (
-    <ResponsiveLayout />
+    <NarrativeLayout />
   )
 }
 
