@@ -38,13 +38,13 @@ interface ChartComponentProps {
 
 export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
   const { isMobile } = useScreenSize();
-  
+
   const jobs = Object.keys(data).sort((a, b) => {
     if (a === "Totaal") return -1;
     if (b === "Totaal") return 1;
     return a.localeCompare(b);
   });
-  
+
   const [selectedJob, setSelectedJob] = useState<string>(jobs[0]);
   const selectedData = data[selectedJob];
 
@@ -120,18 +120,18 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
   };
 
   const getGapData = () => {
-    const total_supply = selectedData.labor_supply + 
-                        selectedData.net_labor_change + 
-                        selectedData.transitions_in + 
-                        selectedData.transitions_out;
-  
+    const total_supply = selectedData.labor_supply +
+      selectedData.net_labor_change +
+      selectedData.transitions_in +
+      selectedData.transitions_out;
+
     const total_demand = selectedData.labor_supply +
-                        selectedData.vacancies +
-                        selectedData.expansion_demand +
-                        selectedData.productivity;
-  
+      selectedData.vacancies +
+      selectedData.expansion_demand +
+      selectedData.productivity;
+
     const baseValue = Math.min(total_supply, total_demand);
-    
+
     return [
       {
         name: "Arbeidsaanbod (2035)",
@@ -154,7 +154,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
         value: Math.round(selectedData.shortage),
         displayValue: Math.round(selectedData.shortage),
         isShortage: true,
-        base: baseValue,
+        base: baseValue - selectedData.shortage,
         xValue: 3
       },
       {
@@ -197,11 +197,11 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
 
   const determineIncrement = (maxValue: number): number => {
     const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)));
-    
+
     if (maxValue < 100) {
       return maxValue <= 50 ? 5 : 10;
     }
-    
+
     const possibleIncrements = [
       magnitude / 5,
       magnitude / 2,
@@ -209,7 +209,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       magnitude * 2,
       magnitude * 5
     ];
-    
+
     return possibleIncrements.find(inc => maxValue / inc <= 8) || magnitude;
   };
 
@@ -223,17 +223,17 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     const supplyData = processLeftData(getSupplyData());
     const demandData = processRightData(getDemandData());
     const gapData = getGapData();
-    
+
     const allValues = [
       ...supplyData,
       ...demandData,
       ...gapData
     ].map(item => (item.base || 0) + item.value);
-    
+
     const maxValue = Math.max(...allValues);
     const increment = determineIncrement(maxValue);
     const roundedMax = roundUpToNice(maxValue, increment);
-    
+
     return [0, roundedMax] as [number, number];
   };
 
@@ -248,8 +248,8 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
           <p className="font-medium text-gray-900">{label}</p>
           <p>
             <span className={
-              isZero ? "text-gray-500" : 
-              value > 0 ? "text-emerald-600" : "text-red-600"
+              isZero ? "text-gray-500" :
+                value > 0 ? "text-emerald-600" : "text-red-600"
             }>
               {formatNumber(value)}
             </span>
@@ -260,11 +260,11 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     return null;
   };
 
-  const ChartComponent = ({ 
-    data, 
-    title, 
-    subtitle, 
-    showAxis = true, 
+  const ChartComponent = ({
+    data,
+    title,
+    subtitle,
+    showAxis = true,
     orientation = "left",
     isGapChart = false,
     domain
@@ -276,7 +276,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     const marginBottom = isMobile ? 30 : 60;
     const marginSide = isMobile ? 5 : 30;
     const axisMargin = isMobile ? 20 : 60;
-    
+
     return (
       <div className="w-full h-full flex flex-col">
         <div className="text-center mb-1">
@@ -323,7 +323,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                 tick={{ fill: '#6b7280', fontSize }}
                 tickFormatter={formatNumber}
                 ticks={Array.from(
-                  { length: (domain[1] / determineIncrement(domain[1])) + 1 }, 
+                  { length: (domain[1] / determineIncrement(domain[1])) + 1 },
                   (_, i) => i * determineIncrement(domain[1])
                 )}
                 orientation={orientation}
@@ -336,35 +336,52 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
               {/* Connecting dashed lines */}
               {data.map((entry, index) => {
                 if (index < data.length - 1) {
-                  const currentTotal = entry.base + entry.value;
-                  const barHalfWidth = 0.4; // Half the width of a bar
-                  const startX = entry.xValue + barHalfWidth; // End of current bar
-                  const endX = data[index + 1].xValue - barHalfWidth; // Start of next bar
-                  return (
-                    <ReferenceLine
-                      key={`connector-${entry.uniqueId}`}
-                      segment={[
-                        { x: startX, y: currentTotal },
-                        { x: endX, y: currentTotal }
-                      ]}
-                      stroke="#000000"
-                      strokeDasharray="3 3"
-                    />
-                  );
+                  const barHalfWidth = 0.4;
+                  const isRightOriented = orientation === "right";
+
+                  if (isRightOriented) {
+                    const currentTotal = entry.base
+                    const nextEntry = data[index + 1]; // Back to looking forward
+                    return (
+                      <ReferenceLine
+                        key={`connector-${entry.uniqueId}`}
+                        segment={[
+                          { x: entry.xValue + barHalfWidth, y: currentTotal }, // Left edge of current (higher xValue)
+                          { x: nextEntry.xValue - barHalfWidth, y: currentTotal } // Right edge of next (lower xValue)
+                        ]}
+                        stroke="#000000"
+                        strokeDasharray="3 3"
+                      />
+                    );
+                  } else {
+                    const currentTotal = entry.base + entry.value;
+                    // Left side chart remains the same
+                    return (
+                      <ReferenceLine
+                        key={`connector-${entry.uniqueId}`}
+                        segment={[
+                          { x: entry.xValue + barHalfWidth, y: currentTotal },
+                          { x: data[index + 1].xValue - barHalfWidth, y: currentTotal }
+                        ]}
+                        stroke="#000000"
+                        strokeDasharray="3 3"
+                      />
+                    );
+                  }
                 }
                 return null;
               })}
 
-              <Bar 
-                dataKey="base" 
+              <Bar
+                dataKey="base"
                 stackId={`stack-${title}`}
                 fill="transparent"
                 key={`${title}-base`}
                 id={`${title}-base-bar`}
                 name={`${title}-base`}
               />
-              <Bar 
-                dataKey="value" 
+              <Bar
+                dataKey="value"
                 stackId={`stack-${title}`}
                 radius={[2, 2, 0, 0]}
                 key={`${title}-value`}
@@ -389,9 +406,9 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                   if (entry.isShortage) {
                     return <Cell key={`${entry.uniqueId}-shortage`} fill="#7c3aed" />;
                   }
-                  return <Cell 
-                    key={entry.uniqueId} 
-                    fill={entry.value >= 0 ? "#10b981" : "#ef4444"} 
+                  return <Cell
+                    key={entry.uniqueId}
+                    fill={entry.value >= 0 ? "#10b981" : "#ef4444"}
                   />;
                 })}
               </Bar>
@@ -424,17 +441,17 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       <JobSelector />
       <div className="flex divide-x divide-gray-200">
         <div className="flex-1 pr-1">
-          <ChartComponent 
-            data={processLeftData(getSupplyData())} 
-            title="Supply Side" 
+          <ChartComponent
+            data={processLeftData(getSupplyData())}
+            title="Supply Side"
             subtitle="Workforce changes and adjustments"
             domain={domain}
           />
         </div>
         <div className="flex-1 px-1">
-          <ChartComponent 
-            data={getGapData()} 
-            title="Gap" 
+          <ChartComponent
+            data={getGapData()}
+            title="Gap"
             subtitle="Supply-Demand Imbalance"
             showAxis={false}
             isGapChart={true}
@@ -442,9 +459,9 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
           />
         </div>
         <div className="flex-1 pl-1">
-          <ChartComponent 
-            data={processRightData(getDemandData())} 
-            title="Demand Side" 
+          <ChartComponent
+            data={processRightData(getDemandData())}
+            title="Demand Side"
             subtitle="Demand components and changes"
             orientation="right"
             domain={domain}
