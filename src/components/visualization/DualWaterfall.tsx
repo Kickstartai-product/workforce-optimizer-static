@@ -396,7 +396,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                   style={{ fontSize }}
                   key={`${title}-labels`}
                 />
-                {data.map((entry, index) => {
+                {data.map((entry, _) => {
                   if (entry.isFinalProjection) {
                     return <Cell key={`${entry.uniqueId}-final`} fill="#9333ea" opacity={0.7} />;
                   }
