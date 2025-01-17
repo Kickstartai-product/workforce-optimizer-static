@@ -9,6 +9,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   LabelList,
+  ReferenceLine,
 } from 'recharts';
 import { useScreenSize } from '@/hooks/useScreenSize';
 import {
@@ -18,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { WorkforceMetrics } from '@/types/results';
+import type { WorkforceMetrics } from '@/types/results';
 
 interface DualWaterfallProps {
   data: { [key: string]: WorkforceMetrics };
@@ -32,6 +33,7 @@ interface ChartComponentProps {
   showAxis?: boolean;
   orientation?: "left" | "right";
   isGapChart?: boolean;
+  domain: [number, number];
 }
 
 export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
@@ -47,19 +49,18 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
   const selectedData = data[selectedJob];
 
   const formatNumber = (value: number): string => {
-    if (value === 0) return "±0";
-    if (Math.abs(value) === 0) return value < 0 ? "-0" : "+0";
+    if (value === 0) return "0";
+    if (Math.abs(value) === 0) return value < 0 ? "-0" : "0";
 
     const absValue = Math.abs(value);
     if (absValue >= 1000000) {
-      return `${value < 0 ? '' : '+'}${(value / 1000000).toFixed(1)}M`;
+      return `${value < 0 ? '-' : ''}${(absValue / 1000000).toFixed(1)}M`;
     } else if (absValue >= 1000) {
-      return `${value < 0 ? '' : '+'}${(value / 1000).toFixed(0)}K`;
+      return `${value < 0 ? '-' : ''}${(absValue / 1000).toFixed(0)}K`;
     }
-    return `${value < 0 ? '' : '+'}${value.toLocaleString()}`;
+    return `${value < 0 ? '-' : ''}${absValue.toLocaleString()}`;
   };
 
-  // Data generation functions remain the same
   const getSupplyData = () => {
     return [
       {
@@ -157,26 +158,74 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
 
   const processLeftData = (data: any[]) => {
     let total = 0;
-    return data.map(item => {
+    return data.map((item, index) => {
       const base = total;
       total += item.value;
       return {
         ...item,
-        base
+        base,
+        total,
+        uniqueId: `left-${index}`
       };
     });
   };
 
   const processRightData = (data: any[]) => {
     let total = data.reduce((sum, item) => sum + item.value, 0);
-    return data.map(item => {
+    return data.map((item, index) => {
       total -= item.value;
       return {
         ...item,
-        base: total
+        base: total,
+        total: total + item.value,
+        uniqueId: `right-${index}`
       };
     });
   };
+
+  const determineIncrement = (maxValue: number): number => {
+    const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)));
+    
+    if (maxValue < 100) {
+      return maxValue <= 50 ? 5 : 10;
+    }
+    
+    const possibleIncrements = [
+      magnitude / 5,
+      magnitude / 2,
+      magnitude,
+      magnitude * 2,
+      magnitude * 5
+    ];
+    
+    return possibleIncrements.find(inc => maxValue / inc <= 8) || magnitude;
+  };
+
+  const roundUpToNice = (value: number, increment: number): number => {
+    const rawRounded = Math.ceil(value / increment) * increment;
+    const maxAllowed = value * 1.2;
+    return Math.min(rawRounded, maxAllowed);
+  };
+
+  const calculateDomain = () => {
+    const supplyData = processLeftData(getSupplyData());
+    const demandData = processRightData(getDemandData());
+    const gapData = getGapData();
+    
+    const allValues = [
+      ...supplyData,
+      ...demandData,
+      ...gapData
+    ].map(item => (item.base || 0) + item.value);
+    
+    const maxValue = Math.max(...allValues);
+    const increment = determineIncrement(maxValue);
+    const roundedMax = roundUpToNice(maxValue, increment);
+    
+    return [0, roundedMax] as [number, number];
+  };
+
+  const domain = calculateDomain();
 
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
@@ -205,7 +254,8 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     subtitle, 
     showAxis = true, 
     orientation = "left",
-    isGapChart = false 
+    isGapChart = false,
+    domain
   }: ChartComponentProps) => {
     const chartHeight = isMobile ? 200 : 500;
     const fontSize = isMobile ? 6 : 12;
@@ -251,15 +301,57 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                 dx={-2}
                 tick={{ fill: '#6b7280', fontSize }}
                 tickFormatter={formatNumber}
+                ticks={Array.from(
+                  { length: (domain[1] / determineIncrement(domain[1])) + 1 }, 
+                  (_, i) => i * determineIncrement(domain[1])
+                )}
                 orientation={orientation}
                 hide={isGapChart}
+                domain={domain}
+                interval={0}
               />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="base" stackId="a" fill="transparent" />
+
+              {/* Connecting dashed lines */}
+              {data.map((entry, index) => {
+                if (index < data.length - 1) {
+                  const currentTotal = entry.base + entry.value;
+                  return (
+                    <ReferenceLine
+                      key={`connector-${entry.uniqueId}`}
+                      // x1={0}  // Center of current bar
+                      // x2={0}  // Center of next bar
+                      y={currentTotal}
+                      // x={0}
+                      x1={0}
+                      x2={0}
+                      stroke="#000000"
+                      strokeDasharray="3 3"
+                      // segment={[
+                      //   { x: index + 0.5, y: currentTotal },
+                      //   { x: index + 1.5, y: currentTotal }
+                      // ]}
+                    />
+                  );
+                }
+                return null;
+              })}
+
+              <Bar 
+                dataKey="base" 
+                stackId={`stack-${title}`}
+                fill="transparent"
+                key={`${title}-base`}
+                id={`${title}-base-bar`}
+                name={`${title}-base`}
+              />
               <Bar 
                 dataKey="value" 
-                stackId="a"
+                stackId={`stack-${title}`}
                 radius={[2, 2, 0, 0]}
+                key={`${title}-value`}
+                id={`${title}-value-bar`}
+                name={`${title}-value`}
               >
                 <LabelList
                   dataKey="displayValue"
@@ -267,19 +359,20 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                   formatter={formatNumber}
                   fill={((props: any) => props.value >= 0 ? "#10b981" : "#ef4444") as unknown as string}
                   style={{ fontSize }}
+                  key={`${title}-labels`}
                 />
                 {data.map((entry, index) => {
                   if (entry.isFinalProjection) {
-                    return <Cell key={index} fill="#9333ea" opacity={0.7} />;
+                    return <Cell key={`${entry.uniqueId}-final`} fill="#9333ea" opacity={0.7} />;
                   }
                   if (entry.isExcessWorkers) {
-                    return <Cell key={index} fill="#7c3aed" opacity={0.5} />;
+                    return <Cell key={`${entry.uniqueId}-excess`} fill="#7c3aed" opacity={0.5} />;
                   }
                   if (entry.isShortage) {
-                    return <Cell key={index} fill="#7c3aed" />;
+                    return <Cell key={`${entry.uniqueId}-shortage`} fill="#7c3aed" />;
                   }
                   return <Cell 
-                    key={index} 
+                    key={entry.uniqueId} 
                     fill={entry.value >= 0 ? "#10b981" : "#ef4444"} 
                   />;
                 })}
@@ -317,6 +410,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
             data={processLeftData(getSupplyData())} 
             title="Supply Side" 
             subtitle="Workforce changes and adjustments"
+            domain={domain}
           />
         </div>
         <div className="flex-1 px-1">
@@ -326,6 +420,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
             subtitle="Supply-Demand Imbalance"
             showAxis={false}
             isGapChart={true}
+            domain={domain}
           />
         </div>
         <div className="flex-1 pl-1">
@@ -334,6 +429,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
             title="Demand Side" 
             subtitle="Demand components and changes"
             orientation="right"
+            domain={domain}
           />
         </div>
       </div>

@@ -19,13 +19,13 @@ const pulseAnimation = `
   }
 `;
 
-const InlineSelect = ({ 
-  value, 
-  options, 
+const InlineSelect = ({
+  value,
+  options,
   onChange,
   className = ''
-}: { 
-  value: string | number, 
+}: {
+  value: string | number,
   options: { value: string | number, label: string }[],
   onChange: (value: string | number) => void,
   className?: string
@@ -33,7 +33,7 @@ const InlineSelect = ({
   <span className="inline-block">
     <style>{pulseAnimation}</style>
     <Select value={String(value)} onValueChange={(v) => onChange(Number(v) || v)}>
-      <SelectTrigger 
+      <SelectTrigger
         className={`
           inline-flex w-auto min-w-0 h-6 px-1 py-0 
           text-base bg-transparent border-none rounded 
@@ -71,15 +71,20 @@ export const NarrativeLayout = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="mx-auto px-6 py-4">
+    <div className="bg-gray-50">
+      <div className="p-4">
         <div className="max-w-[90ch] mx-auto">
-          <h1 className="text-xl font-semibold mb-4">Arbeidsmarkt Transitiemodel 2035</h1>
-          
+          <h1 className="text-xl font-semibold mb-4">Arbeidsmarkt Transitiemodel</h1>
+
           <div className="space-y-4">
             <div>
               <p className="leading-relaxed">
-                In dit model van de Nederlandse arbeidsmarkt richting 2035 gaan we uit van een jaarlijkse 
+                Dit model laat zien hoe we de arbeidsmarkt het beste kunnen voorbereiden op toekomstige uitdagingen.
+                Door verschillende keuzes te maken kunnen we zien hoe de arbeidsmarkt zich ontwikkelt richting 2035.<br /><br />
+              </p>
+              <p className="leading-relaxed">
+
+                In dit model van de Nederlandse arbeidsmarkt richting 2035 gaan we uit van een jaarlijkse
                 productiviteitsgroei van{' '}
                 <InlineSelect
                   value={settings.productivity}
@@ -110,7 +115,7 @@ export const NarrativeLayout = () => {
                 />.
               </p>
               <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                Overheidssturing betekent gerichte interventies in de arbeidsmarkt via wet- en regelgeving, 
+                Overheidssturing betekent gerichte interventies in de arbeidsmarkt via wet- en regelgeving,
                 terwijl marktwerking uitgaat van natuurlijke aanpassingen door vraag en aanbod.
               </p>
             </div>
@@ -155,9 +160,23 @@ export const NarrativeLayout = () => {
             </div>
           </div>
         </div>
-
         <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-4">Visualisaties</h2>
           <MainContent settings={settings} />
+        </div>
+
+        <div className="max-w-[90ch] mx-auto mt-8 text-center">
+          <p className="text-gray-600">
+            Meer weten?{' '}
+            <a
+              href="https://google.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline"
+            >
+              Vind hier het volledige rapport
+            </a>
+          </p>
         </div>
       </div>
     </div>

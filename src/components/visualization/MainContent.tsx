@@ -109,7 +109,6 @@ export const MainContent = ({ settings }: MainContentProps) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Results</h2>
       <div className="space-y-8">
         {charts.map((chart, index) => (
           <ChartCard
