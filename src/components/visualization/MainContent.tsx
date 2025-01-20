@@ -83,20 +83,20 @@ export const MainContent = ({ settings }: MainContentProps) => {
 
   const charts = [
     {
-      title: "Top 10 Job Shortages",
-      description: "Showing the largest remaining shortages across all jobs",
+      title: "Top 10 Tekorten",
+      description: "Toont de grootste resterende tekorten nadat de optimale arbeidsmarkttransitie heeft plaatsgevonden",
       component: (data: TransformedResult) => <ShortageBarChart data={data} />,
       isWaterfall: false
     },
     {
-      title: "Top 10 Workforce Transitions",
-      description: "Showing the largest transitions between jobs",
+      title: "Top 10 Arbeidstransities",
+      description: "Toont de grootste verschuivingen tussen beroepen",
       component: (data: TransformedResult) => <TransitionsChart data={data} />,
       isWaterfall: false
     },
     {
-      title: "Waterfall Chart of Numbers",
-      description: "Showing the largest transitions between jobs",
+      title: "Uitkomsten van de arbeidsmarkttransitie",
+      description: "Toont hoe vraag en aanbod zich naar verwachting ontwikkelen en in welke mate deze op elkaar aansluiten",
       component: (data: TransformedResult) => (
         <DualWaterfall 
           data={data.workforceChanges}

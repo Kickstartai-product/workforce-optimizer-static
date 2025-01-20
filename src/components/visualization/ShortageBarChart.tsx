@@ -109,7 +109,7 @@ export const ShortageBarChart: React.FC<ShortageBarChartProps> = ({ data }) => {
           <Bar
             dataKey="shortage"
             fill="#3b82f6"
-            name="Shortage"
+            name="Tekort"
           />
         </BarChart>
       </ResponsiveContainer>
@@ -136,7 +136,7 @@ export const ShortageBarChart: React.FC<ShortageBarChartProps> = ({ data }) => {
         />
         <YAxis
           label={{
-            value: 'Shortage',
+            value: 'Tekort',
             angle: -90,
             position: 'insideLeft',
             dy: 50,

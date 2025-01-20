@@ -25,6 +25,7 @@ class NonSourceJobs(str, Enum):
 
 class HoursWorked(str, Enum):
     """Available hours worked categories."""
+    NOONE = "noone"
     EVERYONE = "everyone"
     PART_TIME = "part-time"
     HEALTHCARE = "healthcare"
@@ -65,9 +66,12 @@ class BackendRequest:
         """
         self.headers = self._get_headers()
         self.params = self._get_base_params(productivity_increase)
+        self.government_steering = government_steering
         self._load_scenario_data(government_steering)
         self._priority_override(job_priority)
         self._non_source_jobs_override(non_source_jobs)
+        self._set_additional_hours(hours_worked)
+
     
     def _get_headers(self) -> Dict[str, str]:
         """Return the HTTP request headers."""
@@ -289,6 +293,79 @@ class BackendRequest:
             )
         except Exception as e:
             raise ValueError(f"Error overriding non-source jobs: {str(e)}")
+        
+    def _get_all_jobs(self, file_path: str) -> List[str]:
+        """
+        Get a complete list of all jobs from the Excel file.
+        
+        Args:
+            file_path: Path to the scenario Excel file
+            
+        Returns:
+            List of all job names
+        """
+        try:
+            df = pd.read_excel(file_path, sheet_name="Labor Demand")
+            return df["Job"].dropna().unique().tolist()
+        except Exception as e:
+            raise ValueError(f"Error reading jobs from Excel file: {str(e)}")
+    
+    def _get_part_time_names(self) -> List[str]:
+        """
+        TODO: This method should return a list of job names that are considered part-time.
+        Currently returns an empty list as a placeholder.
+        
+        Returns:
+            List of job names for part-time workers
+        """
+        df = pd.read_excel("data/deeltijdfactor.xlsx")
+        df.columns = ['Job Name', 'Part Time Factor']
+        part_time_jobs = df[df['Part Time Factor'] < 0.801]['Job Name'].tolist()
+        return part_time_jobs
+    
+    def _get_healthcare_names(self) -> List[str]:
+        """
+        Returns list of healthcare job names that should receive additional hours.
+        
+        Returns:
+            List of healthcare job names
+        """
+        return [
+            'Verzorgenden en verleners van overige persoonlijke diensten',
+            'Sociaal werkers, groeps- en woonbegeleiders',
+            'Gespecialiseerd verpleegkundigen',
+            'Medisch vakspecialisten',
+            'Medisch praktijkassistenten',
+            'Fysiotherapeuten',
+            'Psychologen en sociologen',
+            'Verpleegkundigen (mbo)'
+        ]
+    
+    def _set_additional_hours(self, hours_worked: HoursWorked) -> None:
+        """
+        Set the additional hours worked parameter based on the selected category.
+        
+        Args:
+            hours_worked: Category of hours worked to apply
+        """
+        hours_dict = {}
+        extra_hours = 2/40  # 2 hours extra as a fraction of 40-hour work week
+        
+        if hours_worked == HoursWorked.NOONE:
+            hours_dict = {}
+        elif hours_worked == HoursWorked.EVERYONE:
+            # Get all jobs from the scenario file
+            file_path = self._get_scenario_file(self.government_steering)
+            all_jobs = self._get_all_jobs(file_path)
+            hours_dict = {job: extra_hours for job in all_jobs}
+        elif hours_worked == HoursWorked.HEALTHCARE:
+            healthcare_jobs = self._get_healthcare_names()
+            hours_dict = {job: extra_hours for job in healthcare_jobs}
+        elif hours_worked == HoursWorked.PART_TIME:
+            part_time_jobs = self._get_part_time_names()
+            hours_dict = {job: extra_hours for job in part_time_jobs}
+        
+        self.params["additional_hours_worked"] = json.dumps(hours_dict)
     
     def make_request(self) -> Dict:
         """

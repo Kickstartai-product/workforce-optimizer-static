@@ -6,7 +6,7 @@ import type { ModelSettings } from '@/types/settings';
 const initialSettings: ModelSettings = {
   productivity: 1.0,
   steering: 'with',
-  workHours: 'everyone',
+  workHours: 'noone',
   jobPriority: 'standard',
   nonSourceJobs: 'standard'
 };
@@ -98,7 +98,7 @@ export const NarrativeLayout = () => {
               </p>
               <p className="text-sm text-gray-500 mt-1 ml-6 italic">
                 Een hogere productiviteitsgroei betekent dat dezelfde economische output met minder arbeid kan worden bereikt,
-                wat de arbeidsmarkt ontlast maar ook minder werkgelegenheid creëert.
+                wat de arbeidsmarkt ontlast. We hanteren als uitgangspunt dat 20% van de productiviteitswinst wordt vertaald naar een afbouw van activiteiten.
               </p>
             </div>
 
@@ -126,6 +126,7 @@ export const NarrativeLayout = () => {
                 <InlineSelect
                   value={settings.workHours}
                   options={[
+                    { value: 'noone', label: 'niemand' },
                     { value: 'everyone', label: 'alle werknemers' },
                     { value: 'part-time', label: 'deeltijdwerkers' },
                     { value: 'healthcare', label: 'zorgmedewerkers' }
@@ -134,8 +135,7 @@ export const NarrativeLayout = () => {
                 />.
               </p>
               <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                De keuze voor een specifieke doelgroep bepaalt de impact en haalbaarheid van arbeidsduurveranderingen,
-                waarbij verschillende groepen verschillende uitdagingen en kansen bieden.
+              De arbeidsmarkt wordt deels ontlast wanneer de werkweek in specifieke sectoren met twee uur wordt verlengd.
               </p>
             </div>
 

@@ -2,7 +2,7 @@ export type ProductivityRate = 0.5 | 1.0 | 1.5;
 
 export type GovernmentSteering = 'with' | 'without';
 
-export type WorkHoursTarget = 'everyone' | 'part-time' | 'healthcare';
+export type WorkHoursTarget = 'noone' | 'everyone' | 'part-time' | 'healthcare';
 
 export type JobPriority = 'standard' | 'defense' | 'healthcare' | 'infrastructure';
 
@@ -28,6 +28,7 @@ export const SETTING_OPTIONS = {
     { value: 'without', label: "Zonder overheidssturing" }
   ],
   workHours: [
+    {value: 'noone', label: "Niemand"},
     { value: 'everyone', label: "Iedereen" },
     { value: 'part-time', label: "Deeltijdwerkers (≤ 0.8 deeltijdfactor)" },
     { value: 'healthcare', label: "Zorg" }
