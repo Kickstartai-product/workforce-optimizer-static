@@ -78,6 +78,9 @@ export const NarrativeLayout = () => {
     }));
   };
 
+  const basePath = import.meta.env.BASE_URL;
+
+
   return (
     <div className="flex flex-col w-full min-h-screen bg-gray-50">
       {/* Floating Circles with Dialogs */}
@@ -86,7 +89,7 @@ export const NarrativeLayout = () => {
           <DialogTrigger asChild>
             <div className="relative w-16 h-16 rounded-full bg-[rgb(0,153,168)] flex items-center justify-center shadow-lg hover:scale-105 transition-transform cursor-pointer">
               <img 
-                src="/denkwerk_logo.svg" 
+                src={`${basePath}denkwerk_logo.svg`}
                 alt="Denkwerk Logo" 
                 className="h-8 w-auto"
                 style={{ filter: 'brightness(0) invert(1)' }}
@@ -123,7 +126,7 @@ export const NarrativeLayout = () => {
         {/* Hero Banner */}
         <div className="relative w-full h-[300px]">
           <img 
-            src="/nl_from_above.jpg"
+            src={`${basePath}nl_from_above.jpg`}
             alt="Netherlands by night"
             className="w-full h-full object-cover"
           />
