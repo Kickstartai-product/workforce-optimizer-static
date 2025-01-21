@@ -84,8 +84,7 @@ export const NarrativeLayout = () => {
               </p>
               <p className="leading-relaxed">
 
-                In dit model van de Nederlandse arbeidsmarkt richting 2035 gaan we uit van een jaarlijkse
-                productiviteitsgroei van{' '}
+                We uit van een jaarlijkse productiviteitsgroei van{' '}
                 <InlineSelect
                   value={settings.productivity}
                   options={[
@@ -104,7 +103,7 @@ export const NarrativeLayout = () => {
 
             <div>
               <p className="leading-relaxed">
-                Deze transitie wordt{' '}
+                De Arbeidsmarkt­transities worden{' '}
                 <InlineSelect
                   value={settings.steering}
                   options={[
@@ -147,7 +146,6 @@ export const NarrativeLayout = () => {
                   options={[
                     { value: 'standard', label: 'een gebalanceerde mix van sectoren' },
                     { value: 'defense', label: 'defensie' },
-                    { value: 'healthcare', label: 'de zorgsector' },
                     { value: 'infrastructure', label: 'infrastructuur en klimaat' }
                   ]}
                   onChange={(value) => handleSettingChange('jobPriority', value as ModelSettings['jobPriority'])}
@@ -161,7 +159,7 @@ export const NarrativeLayout = () => {
           </div>
         </div>
         <div className="mt-6">
-        <h2 className="text-xl font-semibold mb-4">Visualisaties</h2>
+        <h2 className="text-xl font-semibold mb-4">Resultaten</h2>
           <MainContent settings={settings} />
         </div>
 

@@ -17,13 +17,43 @@ interface ChartCardProps {
   children: (data: TransformedResult) => React.ReactNode;
 }
 
-const ChartCard = ({ 
+const MetricCard = ({ 
   title, 
   description, 
-  isInitialized, 
-  resultData, 
+  value, 
+  isPercentage = false 
+}: { 
+  title: string;
+  description: string;
+  value: number | null;
+  isPercentage?: boolean;
+}) => (
+  <Card>
+    <CardHeader>
+      <CardTitle className="text-xl">{title}</CardTitle>
+      <CardDescription className="text-sm text-gray-500">{description}</CardDescription>
+    </CardHeader>
+    <CardContent>
+      <p className="text-3xl font-bold">
+        {value === null ? (
+          "..."
+        ) : isPercentage ? (
+          `${value.toFixed(2)}%`
+        ) : (
+          value.toLocaleString()
+        )}
+      </p>
+    </CardContent>
+  </Card>
+);
+
+const ChartCard = ({
+  title,
+  description,
+  isInitialized,
+  resultData,
   isWaterfall = false,
-  children 
+  children
 }: ChartCardProps) => (
   <Card>
     <CardHeader>
@@ -109,6 +139,24 @@ export const MainContent = ({ settings }: MainContentProps) => {
 
   return (
     <div className="p-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <MetricCard
+          title="Overgebleven tekort"
+          description="Het aantal vacatures dat niet vervuld kan worden na optimale arbeidsmarkttransities"
+          value={resultData?.workforceChanges['Totaal'].shortage ?? null}
+        />
+        <MetricCard
+          title="Toename toegevoegde waarde"
+          description="De procentuele stijging in toegevoegde waarde per jaar wanneer de tekorten zijn opgelost"
+          value={0.14}
+          isPercentage
+        />
+        <MetricCard
+          title="Totaal aantal transities"
+          description="Het totale aantal werknemers dat van beroep wisselt"
+          value={resultData?.workforceChanges['Totaal'].transitions_in ?? null}
+        />
+      </div>
       <div className="space-y-8">
         {charts.map((chart, index) => (
           <ChartCard
