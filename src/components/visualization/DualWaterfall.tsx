@@ -130,8 +130,6 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
       selectedData.expansion_demand +
       selectedData.productivity;
 
-    const baseValue = Math.min(total_supply, total_demand);
-
     return [
       {
         name: "Arbeidsaanbod (2035)",
