@@ -84,7 +84,7 @@ export const NarrativeLayout = () => {
               </p>
               <p className="leading-relaxed">
 
-                We uit van een jaarlijkse productiviteitsgroei van{' '}
+                We gaan uit van een jaarlijkse productiviteitsgroei van{' '}
                 <InlineSelect
                   value={settings.productivity}
                   options={[
