@@ -271,8 +271,8 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     const fontSize = isMobile ? 6 : 12;
     const barSize = isMobile ? 10 : 40;
     const marginTop = isMobile ? 10 : 40;
-    const marginBottom = isMobile ? 30 : 60;
-    const marginSide = isMobile ? 5 : 30;
+    const marginBottom = isMobile ? 30 : 67;
+    const marginSide = isMobile ? 5 : 60;
     const axisMargin = isMobile ? 20 : 60;
 
     return (
@@ -310,7 +310,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                 angle={-45}
                 textAnchor="end"
                 height={marginBottom}
-                tick={{ fill: '#6b7280', fontSize }}
+                tick={{ fill: '#6b7280', fontSize: isMobile ? 6 : 10 }}
                 interval={0}
                 xAxisId="category"
               />

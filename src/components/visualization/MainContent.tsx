@@ -7,6 +7,7 @@ import type { TransformedResult } from '@/types/results';
 import { ShortageBarChart } from './ShortageBarChart';
 import { TransitionsChart } from "./TransitionsChart";
 import { DualWaterfall } from './DualWaterfall';
+import { MetricCard } from './MetricCard';
 
 interface ChartCardProps {
   title: string;
@@ -16,36 +17,6 @@ interface ChartCardProps {
   isWaterfall?: boolean;
   children: (data: TransformedResult) => React.ReactNode;
 }
-
-const MetricCard = ({ 
-  title, 
-  description, 
-  value, 
-  isPercentage = false 
-}: { 
-  title: string;
-  description: string;
-  value: number | null;
-  isPercentage?: boolean;
-}) => (
-  <Card>
-    <CardHeader>
-      <CardTitle className="text-xl">{title}</CardTitle>
-      <CardDescription className="text-sm text-gray-500">{description}</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <p className="text-3xl font-bold">
-        {value === null ? (
-          "..."
-        ) : isPercentage ? (
-          `${value.toFixed(2)}%`
-        ) : (
-          value.toLocaleString()
-        )}
-      </p>
-    </CardContent>
-  </Card>
-);
 
 const ChartCard = ({
   title,
@@ -113,20 +84,8 @@ export const MainContent = ({ settings }: MainContentProps) => {
 
   const charts = [
     {
-      title: "Top 10 Tekorten",
-      description: "Toont de grootste resterende tekorten nadat de optimale arbeidsmarkttransitie heeft plaatsgevonden",
-      component: (data: TransformedResult) => <ShortageBarChart data={data} />,
-      isWaterfall: false
-    },
-    {
-      title: "Top 10 Arbeidstransities",
-      description: "Toont de grootste verschuivingen tussen beroepen",
-      component: (data: TransformedResult) => <TransitionsChart data={data} />,
-      isWaterfall: false
-    },
-    {
-      title: "Uitkomsten van de arbeidsmarkttransitie",
-      description: "Toont hoe vraag en aanbod zich naar verwachting ontwikkelen en in welke mate deze op elkaar aansluiten",
+      title: "Projectie van de arbeidsmarkt",
+      description: "Ontwikkeling van de arbeidsvraag en het arbeidsaanbod tussen Q1 2024 en Q1 2035 en de mate waarin dit op elkaar aansluit als gevolg van de baanwisselingen",
       component: (data: TransformedResult) => (
         <DualWaterfall 
           data={data.workforceChanges}
@@ -134,12 +93,29 @@ export const MainContent = ({ settings }: MainContentProps) => {
         />
       ),
       isWaterfall: true
+    },
+    {
+      title: "Top 10 baanwisselingen",
+      description: "Toont de grootste verschuivingen tussen beroepen",
+      component: (data: TransformedResult) => <TransitionsChart data={data} />,
+      isWaterfall: false
+    },
+    {
+      title: "Top 10 beroepen met niet ingevulde vacatures in 2035",
+      description: "Toont de beroepen met het grootste aantal openstaande vacatures in Q1 2035 ondanks de baanwisselingen",
+      component: (data: TransformedResult) => <ShortageBarChart data={data} />,
+      isWaterfall: false
     }
   ];
 
   return (
     <div className="p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <MetricCard
+          title="Totaal aantal transities"
+          description="Het totale aantal werknemers dat van beroep wisselt"
+          value={resultData?.workforceChanges['Totaal'].transitions_in ?? null}
+        />
         <MetricCard
           title="Overgebleven tekort"
           description="Het aantal vacatures dat niet vervuld kan worden na optimale arbeidsmarkttransities"
@@ -150,11 +126,6 @@ export const MainContent = ({ settings }: MainContentProps) => {
           description="De procentuele stijging in toegevoegde waarde per jaar wanneer de tekorten zijn opgelost"
           value={0.14}
           isPercentage
-        />
-        <MetricCard
-          title="Totaal aantal transities"
-          description="Het totale aantal werknemers dat van beroep wisselt"
-          value={resultData?.workforceChanges['Totaal'].transitions_in ?? null}
         />
       </div>
       <div className="space-y-8">

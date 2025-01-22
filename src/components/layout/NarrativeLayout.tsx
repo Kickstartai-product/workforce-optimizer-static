@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MainContent } from '../visualization/MainContent';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Info } from 'lucide-react';
@@ -10,6 +10,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import type { ModelSettings } from '@/types/settings';
+
+// Animation timing configuration
+const ANIMATION_DURATION = 1000; // 1 second in milliseconds - you can adjust this
 
 const initialSettings: ModelSettings = {
   productivity: 1.0,
@@ -25,20 +28,27 @@ const pulseAnimation = `
     50% { box-shadow: 0 0 0 2px rgba(0,153,168, 0.2); }
     100% { box-shadow: 0 0 0 1px rgba(0,153,168, 0.2); }
   }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 `;
 
 const InlineSelect = ({
   value,
   options,
   onChange,
-  className = ''
+  className = '',
+  style = {}
 }: {
   value: string | number,
   options: { value: string | number, label: string }[],
   onChange: (value: string | number) => void,
-  className?: string
+  className?: string,
+  style?: React.CSSProperties
 }) => (
-  <span className="inline-block">
+  <span className="inline-block" style={style}>
     <style>{pulseAnimation}</style>
     <Select value={String(value)} onValueChange={(v) => onChange(Number(v) || v)}>
       <SelectTrigger
@@ -67,6 +77,11 @@ const InlineSelect = ({
 
 export const NarrativeLayout = () => {
   const [settings, setSettings] = useState<ModelSettings>(initialSettings);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSettingChange = <K extends keyof ModelSettings>(
     key: K,
@@ -80,6 +95,10 @@ export const NarrativeLayout = () => {
 
   const basePath = import.meta.env.BASE_URL;
 
+  const getAnimationStyle = (delay: number) => ({
+    opacity: 0,
+    animation: mounted ? `fadeIn ${ANIMATION_DURATION}ms ease-out forwards ${delay}ms` : 'none'
+  });
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-gray-50">
@@ -100,7 +119,6 @@ export const NarrativeLayout = () => {
             <DialogHeader>
               <DialogTitle>Over Denkwerk</DialogTitle>
             </DialogHeader>
-            {/* Content will be populated by you */}
           </DialogContent>
         </Dialog>
       </div>
@@ -116,12 +134,10 @@ export const NarrativeLayout = () => {
             <DialogHeader>
               <DialogTitle>Informatie</DialogTitle>
             </DialogHeader>
-            {/* Content will be populated by you */}
           </DialogContent>
         </Dialog>
       </div>
 
-      {/* Rest of the component remains the same */}
       <div className="w-full">
         {/* Hero Banner */}
         <div className="relative w-full h-[300px]">
@@ -131,12 +147,11 @@ export const NarrativeLayout = () => {
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-white text-center px-4">
-            <h1 className="text-5xl font-bold mb-8">
-              Arbeidsmarkt Transitiemodel
+            <h1 className="text-5xl font-bold mb-8" style={getAnimationStyle(0)}>
+            Arbeidsmarkt-transitiemodel
             </h1>
-            <p className="text-xl max-w-3xl">
-              Dit model laat zien hoe we de arbeidsmarkt het beste kunnen voorbereiden op toekomstige uitdagingen. 
-              Door verschillende keuzes te maken kunnen we zien hoe de arbeidsmarkt zich ontwikkelt richting 2035.
+            <p className="text-xl max-w-3xl" style={getAnimationStyle(200)}>
+Dit model geeft inzicht in welke mate voorzien kan worden in de toekomstige vraag naar arbeid als gevolg van baanwisselingen. Met behulp van een aantal parameters die kunnen worden aangepast wordt de ontwikkeling van vraag en aanbod op de arbeidsmarkt getoond tussen Q1 2024 en Q1 2035.
             </p>
           </div>
         </div>
@@ -144,93 +159,98 @@ export const NarrativeLayout = () => {
         {/* Main Content with partial grey background */}
         <div className="w-full">
           <div className="max-w-[2400px] mx-auto px-8 relative">
-            {/* Grey background element */}
             <div className="absolute left-8 right-8 top-0 bottom-0 bg-white shadow-lg" />
             
-            {/* Content */}
-            <div className="relative max-w-7xl mx-auto space-y-8 pt-8 pb-12">
-              {/* Rest of the content remains exactly the same */}
-              <div>
-                <p className="leading-relaxed">
-                  We gaan uit van een jaarlijkse productiviteitsgroei van{' '}
-                  <InlineSelect
-                    value={settings.productivity}
-                    options={[
-                      { value: 0.5, label: '0,5%' },
-                      { value: 1.0, label: '1,0%' },
-                      { value: 1.5, label: '1,5%' }
-                    ]}
-                    onChange={(value) => handleSettingChange('productivity', value as ModelSettings['productivity'])}
-                  />.
-                </p>
-                <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                  Een hogere productiviteitsgroei betekent dat dezelfde economische output met minder arbeid kan worden bereikt,
-                  wat de arbeidsmarkt ontlast. We hanteren als uitgangspunt dat 20% van de productiviteitswinst wordt vertaald naar een afbouw van activiteiten.
-                </p>
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
+              {/* Settings Section */}
+              <div className="space-y-8 mb-16">
+                <div style={getAnimationStyle(400)}>
+                  <p className="leading-relaxed">
+                  De jaarlijkse groei van de arbeidsproductiviteit tussen 2024 en 2035 is{' '}
+                    <InlineSelect
+                      value={settings.productivity}
+                      options={[
+                        { value: 0.5, label: '0,5%' },
+                        { value: 1.0, label: '1,0%' },
+                        { value: 1.5, label: '1,5%' }
+                      ]}
+                      onChange={(value) => handleSettingChange('productivity', value as ModelSettings['productivity'])}
+                    />.
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                  Dit betreft autonome groei, dus de groei van de arbeidsproductiviteit binnen bedrijfstakken. De mate van groei van de arbeidsproductiviteit beïnvloedt de toekomstige arbeidsvraag. Het uitgangspunt wordt gehanteerd dat 20% van de jaarlijkse groei resulteert in een verlaging van de arbeidsvraag en de overige 80% leidt tot een hogere output of hoger dienstverleningsniveau.
+                  </p>
+                </div>
+
+                <div style={getAnimationStyle(500)}>
+                  <p className="leading-relaxed">
+                  De richting van de baanwisselingen wordt{' '}
+                    <InlineSelect
+                      value={settings.steering}
+                      options={[
+                        { value: 'with', label: 'actief gestuurd door de overheid' },
+                        { value: 'without', label: 'voornamelijk bepaald door de markt' }
+                      ]}
+                      onChange={(value) => handleSettingChange('steering', value as ModelSettings['steering'])}
+                    />.
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                  Actieve sturing betekent dat de overheid d de arbeidsvraag voor bepaalde beroepen gericht vermindert. Wanneer dit niet het geval is, wordt het overgelaten aan de marktkrachten.
+                  </p>
+                </div>
+
+                <div style={getAnimationStyle(600)}>
+                  <p className="leading-relaxed">
+                  De gemiddelde duur van de werkweek wordt met 2 uur verlengd bij{' '}
+                    <InlineSelect
+                      value={settings.workHours}
+                      options={[
+                        { value: 'noone', label: 'niemand' },
+                        { value: 'everyone', label: 'alle werknemers' },
+                        { value: 'part-time', label: 'deeltijdwerkers' },
+                        { value: 'healthcare', label: 'zorgmedewerkers' }
+                      ]}
+                      onChange={(value) => handleSettingChange('workHours', value as ModelSettings['workHours'])}
+                    />.
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                  De arbeidsvraag kan gedeeltelijk worden verminderd wanneer de werkweek van specifieke medewerkers met twee uur wordt verlengd.
+                  </p>
+                </div>
+
+                <div style={getAnimationStyle(700)}>
+                  <p className="leading-relaxed">
+                  Er wordt prioriteit gegeven aan het invullen van de vacatures voor{' '}
+                    <InlineSelect
+                      value={settings.jobPriority}
+                      options={[
+                        { value: 'standard', label: 'een gebalanceerde mix van sectoren' },
+                        { value: 'defense', label: 'defensie' },
+                        { value: 'infrastructure', label: 'infrastructuur en klimaat' }
+                      ]}
+                      onChange={(value) => handleSettingChange('jobPriority', value as ModelSettings['jobPriority'])}
+                    />.
+                  </p>
+                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                    De prioritering van sectoren beïnvloedt werknemers die vrijkomen op de arbeidsmarkt naartoe worden gestimuleerd
+                  </p>
+                </div>
               </div>
 
-              <div>
-                <p className="leading-relaxed">
-                  De Arbeidsmarkt­transities worden{' '}
-                  <InlineSelect
-                    value={settings.steering}
-                    options={[
-                      { value: 'with', label: 'actief gestuurd door de overheid' },
-                      { value: 'without', label: 'voornamelijk bepaald door de markt' }
-                    ]}
-                    onChange={(value) => handleSettingChange('steering', value as ModelSettings['steering'])}
-                  />.
-                </p>
-                <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                  Overheidssturing betekent gerichte interventies in de arbeidsmarkt via wet- en regelgeving,
-                  terwijl marktwerking uitgaat van natuurlijke aanpassingen door vraag en aanbod.
-                </p>
-              </div>
+              {/* Results Section with visual separator */}
+              <div 
+                className="relative pt-16 mt-16 border-t border-gray-200"
+                style={getAnimationStyle(800)}
+              >
+                {/* Section Label */}
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white px-4">
+                  <h2 className="text-2xl font-semibold text-[rgb(0,153,168)]">Resultaten</h2>
+                </div>
 
-              <div>
-                <p className="leading-relaxed">
-                  We richten ons op arbeidsduurverandering bij{' '}
-                  <InlineSelect
-                    value={settings.workHours}
-                    options={[
-                      { value: 'noone', label: 'niemand' },
-                      { value: 'everyone', label: 'alle werknemers' },
-                      { value: 'part-time', label: 'deeltijdwerkers' },
-                      { value: 'healthcare', label: 'zorgmedewerkers' }
-                    ]}
-                    onChange={(value) => handleSettingChange('workHours', value as ModelSettings['workHours'])}
-                  />.
-                </p>
-                <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                  De arbeidsmarkt wordt deels ontlast wanneer de werkweek in specifieke sectoren met twee uur wordt verlengd.
-                </p>
-              </div>
-
-              <div>
-                <p className="leading-relaxed">
-                  De beschikbare arbeidscapaciteit wordt met prioriteit ingezet voor{' '}
-                  <InlineSelect
-                    value={settings.jobPriority}
-                    options={[
-                      { value: 'standard', label: 'een gebalanceerde mix van sectoren' },
-                      { value: 'defense', label: 'defensie' },
-                      { value: 'infrastructure', label: 'infrastructuur en klimaat' }
-                    ]}
-                    onChange={(value) => handleSettingChange('jobPriority', value as ModelSettings['jobPriority'])}
-                  />.
-                </p>
-                <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                  De prioritering van sectoren beïnvloedt waar arbeidscapaciteit het eerst wordt ingezet,
-                  wat gevolgen heeft voor de ontwikkeling van andere sectoren.
-                </p>
-              </div>
-
-              <div className="mt-12">
-                <h2 className="text-2xl font-semibold mb-6">Resultaten</h2>
                 <MainContent settings={settings} />
               </div>
 
-              <div className="text-center mt-12">
+              <div className="text-center mt-12" style={getAnimationStyle(900)}>
                 <p className="text-gray-600">
                   Meer weten?{' '}
                   <a

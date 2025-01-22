@@ -151,8 +151,8 @@ export const ShortageBarChart: React.FC<ShortageBarChartProps> = ({ data }) => {
         />
         <Bar
           dataKey="shortage"
-          fill="#3b82f6"
-          name="Shortage"
+          fill="rgb(0,153,168)"
+          name="Openstaande vacatures (Q1 2035)"
         />
       </BarChart>
     </ResponsiveContainer>
