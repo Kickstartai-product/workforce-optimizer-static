@@ -237,13 +237,25 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
 
   const domain = calculateDomain();
 
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      const value = payload[0].payload.displayValue;
-      const isZero = value === 0 || Math.abs(value) === 0;
+  const CustomTooltip = ({ active, payload }: any) => {
+    // Early return if no valid payload data
+    if (!active || !payload?.length || !Array.isArray(payload)) {
+      return null;
+    }
+  
+    try {
+      const firstPayload = payload[0]?.payload;
+      if (!firstPayload?.displayValue || !firstPayload?.name) {
+        return null;
+      }
+  
+      const value = firstPayload.displayValue;
+      const name = firstPayload.name;
+      const isZero = value === 0 || Math.abs(value) < Number.EPSILON;
+  
       return (
         <div className="bg-white p-2 rounded-lg shadow-lg border border-gray-200 text-xs">
-          <p className="font-medium text-gray-900">{label}</p>
+          <p className="font-medium text-gray-900">{name}</p>
           <p>
             <span className={
               isZero ? "text-gray-500" :
@@ -254,10 +266,12 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
           </p>
         </div>
       );
+    } catch (error) {
+      console.error('Error in tooltip:', error);
+      return null;
     }
-    return null;
   };
-
+  
   const ChartComponent = ({
     data,
     title,
@@ -268,8 +282,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     domain
   }: ChartComponentProps) => {
     const chartHeight = isMobile ? 200 : 500;
-    const fontSize = isMobile ? 6 : 12;
-    const barSize = isMobile ? 10 : 40;
+    const fontSize = isMobile ? 6 : 12;    const barSize = isMobile ? 10 : 40;
     const marginTop = isMobile ? 10 : 40;
     const marginBottom = isMobile ? 30 : 67;
     const marginSide = isMobile ? 5 : 60;
@@ -310,7 +323,7 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
                 angle={-45}
                 textAnchor="end"
                 height={marginBottom}
-                tick={{ fill: '#6b7280', fontSize: isMobile ? 6 : 10 }}
+                tick={{ fill: '#6b7280', fontSize: 10 }}
                 interval={0}
                 xAxisId="category"
               />
