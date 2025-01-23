@@ -97,10 +97,16 @@ export const getDemandData = (selectedData: WorkforceMetrics): ChartData[] => {
       xValue: 2
     },
     {
+      name: "inkrimpingsvraag",
+      value: Math.round(selectedData.reduction_demand),
+      displayValue: Math.round(selectedData.reduction_demand),
+      xValue: 3
+    },
+    {
       name: "Vacatures boven 2% frictie",
       value: Math.round(selectedData.vacancies),
       displayValue: Math.round(selectedData.vacancies),
-      xValue: 3,
+      xValue: 4,
       footnote: "We gaan ervanuit dat er altijd 2% frictiewerkloosheid zal zijn. We rekenen daarom alleen vacatures boven de 2% mee.",
       footnoteNumber: 2
     },
@@ -108,7 +114,7 @@ export const getDemandData = (selectedData: WorkforceMetrics): ChartData[] => {
       name: "Ingevulde arbeidsvraag (2024)",
       value: Math.round(selectedData.labor_supply),
       displayValue: Math.round(selectedData.labor_supply),
-      xValue: 4
+      xValue: 5
     }
   ];
 };
@@ -120,6 +126,7 @@ export const getGapData = (selectedData: WorkforceMetrics): ChartData[] => {
   const total_demand = selectedData.labor_supply +
     selectedData.vacancies +
     selectedData.expansion_demand +
+    selectedData.reduction_demand +
     selectedData.productivity;
 
   const superfluous_with_transitions = selectedData.superfluous_workers - 

@@ -97,7 +97,8 @@ export class DataLoader {
           [this.jobNameLookup[Number(jobId)]]: metrics
         }),
         {}
-      )
+      ),
+      addedValueChangePercent: result.addedValueChangePercent
     };
   }
 }

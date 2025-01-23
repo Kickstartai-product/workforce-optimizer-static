@@ -27,6 +27,7 @@ export interface WorkforceMetrics {
   shortage: number;
   productivity: number;
   expansion_demand: number;
+  reduction_demand: number;
   vacancies: number;
 }
 
@@ -34,6 +35,7 @@ export interface ModelResult {
   remainingShortages: JobShortage[];
   topTransitions: JobTransition[];
   workforceChanges: { [jobId: number]: WorkforceMetrics };
+  addedValueChangePercent: number;
 }
 
 export interface TransformedWorkforceChanges {
@@ -44,6 +46,7 @@ export interface TransformedResult {
   remainingShortages: Array<{ jobName: string; shortage: number }>;
   topTransitions: Array<{ sourceJob: string; targetJob: string; amount: number }>;
   workforceChanges: TransformedWorkforceChanges;
+  addedValueChangePercent: number;
 }
 
 // Create a type for our settings key

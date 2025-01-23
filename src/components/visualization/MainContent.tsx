@@ -124,7 +124,7 @@ export const MainContent = ({ settings }: MainContentProps) => {
         <MetricCard
           title="Toename toegevoegde waarde"
           description="De procentuele stijging in toegevoegde waarde per jaar wanneer de tekorten zijn opgelost"
-          value={0.14}
+          value={resultData?.addedValueChangePercent ?? null}
           isPercentage
         />
       </div>

@@ -21,6 +21,7 @@ logger = logging.getLogger(__name__)
 
 def convert_shortage_components_to_workforce_metrics(components: Dict[str, Any]) -> Dict[str, Any]:
     """Convert shortage components data to workforce metrics format."""
+    expansion_demand = components["demand_change_2035"]
     return {
         "labor_supply": int(round(components["workforce_2024"])),
         "net_labor_change": int(round(components["net_change_2035"])),
@@ -29,9 +30,11 @@ def convert_shortage_components_to_workforce_metrics(components: Dict[str, Any])
         "superfluous_workers": int(round(components["excess_workers"])),
         "shortage": int(round(components["shortage"])),
         "productivity": int(round(components["productivity"])),
-        "expansion_demand": int(round(components["demand_change_2035"])),
+        "expansion_demand": int(round(max(0, expansion_demand))),  # Positive part
+        "reduction_demand": int(round(min(0, expansion_demand))),  # Negative part
         "vacancies": int(round(components["vacancies_labour_friction"]))
     }
+
 
 
 def calculate_total_workforce_metrics(workforce_changes: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
@@ -45,6 +48,7 @@ def calculate_total_workforce_metrics(workforce_changes: Dict[str, Dict[str, Any
         "shortage": 0,
         "productivity": 0,
         "expansion_demand": 0,
+        "reduction_demand": 0,
         "vacancies": 0
     }
     
