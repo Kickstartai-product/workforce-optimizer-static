@@ -52,16 +52,17 @@ const CustomizedAxisTick: React.FC<CustomizedAxisTickProps> = ({ x, y, payload, 
   }
 
   return (
-    <g transform={`translate(${x},${y})`}>
+    <g transform={`translate(${x},${y}) rotate(-45)`}>
       {lines.map((line, index) => (
         <text
           key={index}
           x={0}
-          y={index * 12}
-          dy={16}
-          textAnchor="middle"
+          y={10}  // Changed from index * 12
+          dy={index * 12}  // Move the line spacing to dy instead
+          textAnchor="end"  // Changed from "middle" to "end"
           fill="#666"
-          fontSize={11}        >
+          fontSize={11}
+        >
           {line}
         </text>
       ))}
