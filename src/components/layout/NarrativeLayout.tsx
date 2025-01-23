@@ -51,22 +51,22 @@ const InlineSelect = ({
   <span className="inline-block" style={style}>
     <style>{pulseAnimation}</style>
     <Select value={String(value)} onValueChange={(v) => onChange(Number(v) || v)}>
-      <SelectTrigger
-        className={`
-          inline-flex w-auto min-w-0 h-6 px-1 py-0 
-          text-base bg-transparent border-none rounded 
-          whitespace-nowrap cursor-pointer
-          relative
-          animate-[subtle-pulse_3s_ease-in-out_infinite]
-          hover:bg-blue-50
-          ${className}
-        `}
-      >
+    <SelectTrigger
+  className={`
+    inline-flex w-auto min-w-0 h-6 px-1 py-0 
+    text-base bg-transparent border-none rounded 
+    whitespace-nowrap cursor-pointer font-medium
+    relative
+    animate-[subtle-pulse_3s_ease-in-out_infinite]
+    hover:bg-blue-50
+    ${className}
+  `}
+>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (
-          <SelectItem key={option.value} value={String(option.value)}>
+          <SelectItem key={option.value} value={String(option.value)} className="font-medium">
             {option.label}
           </SelectItem>
         ))}
@@ -127,7 +127,7 @@ export const NarrativeLayout = () => {
                 Om dat te bereiken doet DenkWerk haar eigen onderzoek, gebruikmakend van een breed netwerk van experts. Hiermee willen we vraagstukken grondig onderzoeken, structuur brengen en inspiratie aandragen voor acties of verder onderzoek.
               </p>
               <p className="text-gray-700 leading-relaxed mt-4">
-                Om bij te dragen aan het maatschappelijk debat en verandering in gang te zetten, streven we ernaar de resultaten van ons werk in het publieke domein te delen. Dit geldt ook voor het gemaakte arbeidsmarkt-transitiemodel. Dit model is gemaakt met behulp van een samenwerking van DenkWerk en <a href="https://www.kickstart.ai/" target="_blank" rel="noopener noreferrer" className="text-[rgb(0,153,168)] hover:underline">Kickstart AI</a>.
+                Om bij te dragen aan het maatschappelijk debat en verandering in gang te zetten, streven we ernaar de resultaten van ons werk in het publieke domein te delen. Dit geldt ook voor het gemaakte arbeidsmarkt-transitiemodel. Dit model is gemaakt met behulp tussen een samenwerking van DenkWerk en <a href="https://www.kickstart.ai/" target="_blank" rel="noopener noreferrer" className="text-[rgb(0,153,168)] hover:underline">Kickstart AI</a>.
               </p>
             </div>
           </DialogContent>
@@ -147,13 +147,13 @@ export const NarrativeLayout = () => {
     </DialogHeader>
     <div className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
       <p className="text-gray-700 leading-relaxed">
-        Om te analyseren of de dynamiek op de arbeidsmarkt zo groot gemaakt kan worden dat in de behoefte van de nieuwe economische structuren kan worden voorzien hebben wij een uniek en gedetailleerd arbeidsmarkt-transitiemodel gebouwd.
+        Om te analyseren of de dynamiek op de arbeidsmarkt zo groot gemaakt kan worden dat in de behoefte van de nieuwe economische structuren kan worden voorzien hebben wij een arbeidsmarkt-transitiemodel gebouwd.
       </p>
 
       <div>
         <h3 className="font-semibold text-lg mb-2">Het model werkt als volgt:</h3>
         <p className="text-gray-700 leading-relaxed">
-          Een belangrijke parameter van het model is de ontwikkeling van de arbeidsproductiviteit (% per jaar), Deze parameter betreft de autonome arbeidsproductiviteitsgroei van sectoren en bepaalt in welke mate bestaande activiteiten met minder werknemers verricht kunnen worden. De werknemers die dan vrijkomen kunnen een wisseling maken naar een andere baan. Het model hanteert het uitgangspunt dat 20% van de jaarlijkse groei van de arbeidsproductiviteit resulteert in een vermindering van de arbeidsvraag, de overige 80% van de jaarlijkse groei vertaalt zich in een hogere output of hoger dienstverleningsniveau.
+          Een belangrijke parameter van het model is de ontwikkeling van de arbeidsproductiviteit (% per jaar). Deze parameter betreft de autonome arbeidsproductiviteitsgroei van sectoren en bepaalt in welke mate bestaande activiteiten met minder werknemers verricht kunnen worden. De werknemers die dan vrijkomen kunnen een wisseling maken naar een andere baan. Het model hanteert het uitgangspunt dat 20% van de jaarlijkse groei van de arbeidsproductiviteit resulteert in een vermindering van de arbeidsvraag, de overige 80% van de jaarlijkse groei vertaalt zich in een hogere output of hoger dienstverleningsniveau.
         </p>
         <p className="text-gray-700 leading-relaxed mt-2">
           Het model zoekt voor de werknemers die beschikbaar zijn voor een baanwisseling naar de optimale uitkomst gegeven drie condities:
@@ -187,7 +187,7 @@ export const NarrativeLayout = () => {
         <h3 className="font-semibold text-lg mb-2">Het model heeft naast de parameter arbeidsproductiviteit ook andere parameters:</h3>
         <ul className="list-disc pl-6 space-y-2 text-gray-700">
           <li>
-            <strong>Wel of geen overheidssturing op het gewenste portfolio van economische activiteiten.</strong>
+            Wel of geen overheidssturing op het gewenste portfolio van economische activiteiten.
             <ul className="list-disc pl-6 mt-2">
               <li>Wel overheidssturing betekent dat op basis van de methodiek gepresenteerd in Figuur 20 van de DenkWerk-rapportage 'KIEZEN én DELEN' (Hoofdstuk 6) een inschatting is gemaakt per type beroep of deze niet-locatiegebonden is en een lage toegevoegde waarde heeft. Indien dit het geval is, is een percentage daarvan (over het algemeen &lt;25%) beschikbaar gesteld voor een baanwisseling.</li>
               <li>Geen overheidssturing betekent dat het wordt overgelaten aan de marktkrachten en enkel de uitbreidingsvraag voor onze grootste ambities (gebaseerd op Figuur 11 in Hoofdstuk 3 van de DenkWerk-rapportage 'KIEZEN én DELEN') is ingevoerd in het model.</li>
@@ -195,6 +195,7 @@ export const NarrativeLayout = () => {
           </li>
           <li>De mogelijkheid om de wekelijkse gemiddelde arbeidsduur met 2 uur te verlegen van niemand, alle werknemers, de deeltijdwerkers of de zorgmedewerkers.</li>
           <li>De mogelijkheid om beroepsgroepen prioriteit te geven (het model probeert de vacatures voor deze beroepsgroepen als eerste in te vullen).</li>
+          <li>De mogelijkheid om beroepsgroepen aan te geven waarvan de medewerkers niet beschikbaar zijn voor een baanwisseling (hier hebben we bijvoorbeeld juist mensen nodig)</li>
         </ul>
       </div>
 
@@ -228,12 +229,20 @@ export const NarrativeLayout = () => {
         <div className="w-full">
           <div className="max-w-[2400px] mx-auto px-8 relative">
             <div className="absolute left-8 right-8 top-0 bottom-0 bg-white shadow-lg" />
-
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
-              {/* Settings Section */}
-              <div className="space-y-8 mb-16">
+              {/* Settings Section with border and label */}
+              <div 
+                className="relative pt-8 border-t border-gray-200"
+                style={getAnimationStyle(300)}
+              >
+                {/* Section Label */}
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white px-4">
+                  <h2 className="text-2xl font-semibold text-[rgb(0,153,168)]">Kies hier uw situatie om te toetsen</h2>
+                </div>
+
+                <div className="space-y-8 mb-16">
                 <div style={getAnimationStyle(400)}>
-                  <p className="leading-relaxed">
+                  <p className="leading-relaxed font-medium">
                     De jaarlijkse groei van de arbeidsproductiviteit tussen 2024 en 2035 is{' '}
                     <InlineSelect
                       value={settings.productivity}
@@ -251,7 +260,7 @@ export const NarrativeLayout = () => {
                 </div>
 
                 <div style={getAnimationStyle(500)}>
-                  <p className="leading-relaxed">
+                  <p className="leading-relaxed font-medium">
                     De richting van de baanwisselingen wordt{' '}
                     <InlineSelect
                       value={settings.steering}
@@ -268,7 +277,7 @@ export const NarrativeLayout = () => {
                 </div>
 
                 <div style={getAnimationStyle(600)}>
-                  <p className="leading-relaxed">
+                  <p className="leading-relaxed font-medium">
                     De gemiddelde duur van de werkweek wordt met 2 uur verlengd bij{' '}
                     <InlineSelect
                       value={settings.workHours}
@@ -287,7 +296,7 @@ export const NarrativeLayout = () => {
                 </div>
 
                 <div style={getAnimationStyle(700)}>
-                  <p className="leading-relaxed">
+                  <p className="leading-relaxed font-medium">
                     Er wordt prioriteit gegeven aan het invullen van de vacatures voor{' '}
                     <InlineSelect
                       value={settings.jobPriority}
@@ -305,7 +314,7 @@ export const NarrativeLayout = () => {
                 </div>
 
                 <div style={getAnimationStyle(750)}>
-                  <p className="leading-relaxed">
+                  <p className="leading-relaxed font-medium">
                   Er wordt in ieder geval niet van baan gewisseld door werknemers die werken in{' '}
                     <InlineSelect
                       value={settings.nonSourceJobs}
@@ -326,10 +335,9 @@ export const NarrativeLayout = () => {
 
               {/* Results Section with visual separator */}
               <div
-                className="relative pt-16 mt-16 border-t border-gray-200"
+                className="relative pt-8 mt-8 border-t border-gray-200"
                 style={getAnimationStyle(800)}
               >
-                {/* Section Label */}
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white px-4">
                   <h2 className="text-2xl font-semibold text-[rgb(0,153,168)]">Resultaten</h2>
                 </div>
@@ -354,6 +362,7 @@ export const NarrativeLayout = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

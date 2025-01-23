@@ -69,7 +69,7 @@ export const MetricCard = ({
       <CardDescription className="text-sm text-gray-500">{description}</CardDescription>
     </CardHeader>
     <CardContent>
-      <p className="text-3xl font-bold">
+      <p className="text-3xl font-bold" style={{ color: 'rgb(0,153,168)' }}>
         <AnimatedNumber value={value} isPercentage={isPercentage} />
       </p>
     </CardContent>
