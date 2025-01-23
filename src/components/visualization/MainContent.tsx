@@ -6,7 +6,7 @@ import { generateSettingsKey } from '@/types/results';
 import type { TransformedResult } from '@/types/results';
 import { ShortageBarChart } from './ShortageBarChart';
 import { TransitionsChart } from "./TransitionsChart";
-import { DualWaterfall } from './DualWaterfall';
+import { DualWaterfall } from './Waterfall/DualWaterfall';
 import { MetricCard } from './MetricCard';
 
 interface ChartCardProps {

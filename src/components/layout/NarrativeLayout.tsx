@@ -306,7 +306,7 @@ export const NarrativeLayout = () => {
 
                 <div style={getAnimationStyle(750)}>
                   <p className="leading-relaxed">
-                  Het model zal geen werknemers verplaatsen vanuit banen in {' '}
+                  Er wordt in ieder geval niet van baan gewisseld door werknemers die werken in{' '}
                     <InlineSelect
                       value={settings.nonSourceJobs}
                       options={[
@@ -318,7 +318,7 @@ export const NarrativeLayout = () => {
                     />.
                   </p>
                   <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                  Deze instelling bepaalt uit welke banen het model geen medewerkers zal halen voor andere sectoren.
+                  Ambitiesectoren: beroepen gerelateerd aan de zes grote ambities beschreven in de DenkWerk-rapportage (onder andere in de bouw- en infrasector, defensie en de zorg); Onderwijs: alle beroepen die gerelateerd zijn aan onderwijs (zoals docenten en onderwijsassistenten); Mix van verschillende sectoren betreft een selectie van beroepen in onder andere de bouw- en infrasector, defensie, zorg, het onderwijs en veiligheid (politie, brandweer, ed.))
                   </p>
                 </div>
 
