@@ -7,7 +7,7 @@ import compression from 'vite-plugin-compression';
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/workforce-optimizer-static/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/' : '/',
   plugins: [react(),     
   compression({
     algorithm: 'gzip',  // or 'brotliCompress', 'deflate', etc.
