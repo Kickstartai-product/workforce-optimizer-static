@@ -110,16 +110,18 @@ import {
               ((startEntry.base ?? 0) + startEntry.value);
   
             if (startEntry.value !== 0 || endEntry.value !== 0) {
+              const uniqueKey = `connector-${title}-${startEntry.uniqueId}-${endEntry.uniqueId}-${i}-${startY}`;
+              
               lines.push(
                 <ReferenceLine
-                  key={`connector-${title}-${startEntry.uniqueId}-${endEntry.uniqueId}`}
+                  key={uniqueKey}
                   segment={[
                     { x: startEntry.xValue + barHalfWidth, y: startY },
                     { x: endEntry.xValue - barHalfWidth, y: startY }
                   ]}
                   stroke="#000000"
                   strokeDasharray="3 3"
-                  strokeWidth={0.5} // Thinner lines for mobile
+                  strokeWidth={0.5}
                   className="line-transition"
                 />
               );
@@ -133,7 +135,9 @@ import {
       return lines;
     };
   
-    const linesKey = `lines-${title}-${data.map(d => d.value).join('-')}`;
+    // Generate a more unique key for the lines container
+    const linesKey = `lines-${title}-${orientation}-${data.map(d => `${d.uniqueId}-${d.value}`).join('-')}`;
+  
 
     const calculateTicks = (domain: [number, number]) => {
       const [min, max] = domain;

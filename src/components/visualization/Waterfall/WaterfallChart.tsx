@@ -89,60 +89,62 @@ export const ChartComponent = ({
     name: item.footnote ? `${item.name}|||${item.footnoteNumber || 'X'}` : item.name
   }));
 
-  // Generate connecting lines
-  const generateConnectingLines = () => {
-    const lines: JSX.Element[] = [];
-    const barHalfWidth = 0.3;
-    const isRightOriented = orientation === "right";
+// Generate connecting lines
+const generateConnectingLines = () => {
+  const lines: JSX.Element[] = [];
+  const barHalfWidth = 0.3;
+  const isRightOriented = orientation === "right";
 
-    let lastNonZeroIndex = -1;
+  let lastNonZeroIndex = -1;
 
-    // First, find the initial non-zero value
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].value !== 0) {
-        lastNonZeroIndex = i;
-        break;
-      }
+  // First, find the initial non-zero value
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].value !== 0) {
+      lastNonZeroIndex = i;
+      break;
     }
+  }
 
-    // Then iterate through the rest of the array
-    if (lastNonZeroIndex !== -1) {
-      for (let i = lastNonZeroIndex + 1; i < data.length; i++) {
-        if (data[i].value !== 0 || i === data.length - 1) {
-          const startEntry = data[lastNonZeroIndex];
-          const endEntry = data[i];
+  // Then iterate through the rest of the array
+  if (lastNonZeroIndex !== -1) {
+    for (let i = lastNonZeroIndex + 1; i < data.length; i++) {
+      if (data[i].value !== 0 || i === data.length - 1) {
+        const startEntry = data[lastNonZeroIndex];
+        const endEntry = data[i];
 
-          const startY = isRightOriented ? 
-            (startEntry.base ?? 0) : 
-            ((startEntry.base ?? 0) + startEntry.value);
+        const startY = isRightOriented ? 
+          (startEntry.base ?? 0) : 
+          ((startEntry.base ?? 0) + startEntry.value);
 
-          // Only draw line if there's a valid connection
-          if (startEntry.value !== 0 || endEntry.value !== 0) {
-            lines.push(
-              <ReferenceLine
-                key={`connector-${title}-${startEntry.uniqueId}-${endEntry.uniqueId}`}
-                segment={[
-                  { x: startEntry.xValue + barHalfWidth, y: startY },
-                  { x: endEntry.xValue - barHalfWidth, y: startY }
-                ]}
-                stroke="#000000"
-                strokeDasharray="3 3"
-                strokeWidth={1}
-                className="line-transition"
-              />
-            );
-          }
-
-          lastNonZeroIndex = i;
+        // Only draw line if there's a valid connection
+        if (startEntry.value !== 0 || endEntry.value !== 0) {
+          const uniqueKey = `connector-${title}-${startEntry.uniqueId}-${endEntry.uniqueId}-${i}-${startY}`;
+          
+          lines.push(
+            <ReferenceLine
+              key={uniqueKey}
+              segment={[
+                { x: startEntry.xValue + barHalfWidth, y: startY },
+                { x: endEntry.xValue - barHalfWidth, y: startY }
+              ]}
+              stroke="#000000"
+              strokeDasharray="3 3"
+              strokeWidth={1}
+              className="line-transition"
+            />
+          );
         }
+
+        lastNonZeroIndex = i;
       }
     }
+  }
 
-    return lines;
-  };
+  return lines;
+};
 
-  // Create a unique key for the lines container
-  const linesKey = `lines-${title}-${data.map(d => d.value).join('-')}`;
+// Create a unique key for the lines container with more unique identifiers
+const linesKey = `lines-${title}-${orientation}-${data.map(d => `${d.uniqueId}-${d.value}`).join('-')}`;
 
   const calculateTicks = (domain: [number, number]) => {
     const [min, max] = domain;
