@@ -23,17 +23,26 @@ const formatJobName = (job: string) => {
 
 export const MobileTransitionsChart = ({ data }: TransitionsChartProps) => {
   const getSankeyData = (topN = 10) => {
-    const transitions = data.topTransitions.map(t => ({
-      source: formatJobName(t.sourceJob),
-      // Format and then shorten job titles over 20 characters for mobile
-      target: (() => {
-        const formattedJob = formatJobName(t.targetJob);
-        return formattedJob.length > 20 
-          ? formattedJob.substring(0, 20) + "..." + " "
-          : formattedJob + " ";
-      })(),
-      value: t.amount
-    }));
+    // Create nodes and links with ID-safe transformations
+    const nodes: Array<{ id: string, name?: string }> = [];
+    const links: Array<{ source: string, target: string, value: number }> = [];
+
+    // Process top transitions with mobile-friendly formatting
+    const transitions = data.topTransitions.map(t => {
+      const sourceJob = formatJobName(t.sourceJob);
+      const targetJob = formatJobName(t.targetJob);
+      
+      // Shorten job titles over 20 characters for mobile
+      const formattedTargetJob = targetJob.length > 20 
+        ? targetJob.substring(0, 20) + "..." + " "
+        : targetJob + " ";
+
+      return {
+        source: sourceJob,
+        target: formattedTargetJob,
+        value: t.amount
+      };
+    });
 
     if (!transitions.length) {
       return { nodes: [{ id: "No Transitions" }], links: [] };
@@ -43,15 +52,35 @@ export const MobileTransitionsChart = ({ data }: TransitionsChartProps) => {
       .sort((a, b) => b.value - a.value)
       .slice(0, topN);
 
-    const uniqueJobs = new Set([
-      ...topTransitions.map(t => t.source),
-      ...topTransitions.map(t => t.target)
-    ]);
-
-    return {
-      nodes: Array.from(uniqueJobs).map(id => ({ id })),
-      links: topTransitions
+    // Function to add a node and ensure unique IDs
+    const addNode = (name: string) => {
+      // Create an ID-safe version by replacing spaces with hyphens
+      const id = name.replace(/ /g, "-");
+      
+      // Only add if node doesn't exist
+      if (!nodes.some(node => node.id === id)) {
+        nodes.push({ 
+          id, 
+          name  // Preserve original name for display
+        });
+      }
+      return id;
     };
+
+    // Process links
+    topTransitions.forEach(transition => {
+      const sourceId = addNode(transition.source);
+      const targetId = addNode(transition.target);
+
+      // Add link
+      links.push({
+        source: sourceId,
+        target: targetId,
+        value: transition.value
+      });
+    });
+
+    return { nodes, links };
   };
 
   return (
@@ -75,6 +104,7 @@ export const MobileTransitionsChart = ({ data }: TransitionsChartProps) => {
           labelPosition="inside"
           labelOrientation="horizontal"
           labelPadding={6}
+          label={node => node.name || node.id}
           labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
           linkTooltip={CustomTooltip}
           theme={{

@@ -23,6 +23,11 @@ const formatJobName = (job: string) => {
 
 export const TransitionsChart = ({ data }: TransitionsChartProps) => {
   const getSankeyData = (topN = 10) => {
+    // Create nodes and links with ID-safe transformations
+    const nodes: Array<{ id: string, name?: string }> = [];
+    const links: Array<{ source: string, target: string, value: number }> = [];
+
+    // Process top transitions
     const transitions = data.topTransitions.map(t => ({
       source: formatJobName(t.sourceJob),
       target: formatJobName(t.targetJob) + " ", // Keep the space at the end of target
@@ -37,15 +42,35 @@ export const TransitionsChart = ({ data }: TransitionsChartProps) => {
       .sort((a, b) => b.value - a.value)
       .slice(0, topN);
 
-    const uniqueJobs = new Set([
-      ...topTransitions.map(t => t.source),
-      ...topTransitions.map(t => t.target)
-    ]);
-
-    return {
-      nodes: Array.from(uniqueJobs).map(id => ({ id })),
-      links: topTransitions
+    // Function to add a node and ensure unique IDs
+    const addNode = (name: string) => {
+      // Create an ID-safe version by replacing spaces with hyphens
+      const id = name.replace(/ /g, "-");
+      
+      // Only add if node doesn't exist
+      if (!nodes.some(node => node.id === id)) {
+        nodes.push({ 
+          id, 
+          name  // Preserve original name for display
+        });
+      }
+      return id;
     };
+
+    // Process links
+    topTransitions.forEach(transition => {
+      const sourceId = addNode(transition.source);
+      const targetId = addNode(transition.target);
+
+      // Add link
+      links.push({
+        source: sourceId,
+        target: targetId,
+        value: transition.value
+      });
+    });
+
+    return { nodes, links };
   };
 
   return (
@@ -69,6 +94,7 @@ export const TransitionsChart = ({ data }: TransitionsChartProps) => {
           labelPosition="outside"
           labelOrientation="horizontal"
           labelPadding={12}
+          label={node => node.name || node.id}
           labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
           linkTooltip={CustomTooltip}
         />
