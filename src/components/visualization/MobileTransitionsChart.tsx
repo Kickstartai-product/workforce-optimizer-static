@@ -91,7 +91,31 @@ export const MobileTransitionsChart = ({ data }: TransitionsChartProps) => {
           margin={{ top: 20, right: 0, bottom: 20, left: 0 }}
           align="center"
           layout="horizontal"
-          colors={{ scheme: 'category10' }}
+        //   colors={[
+        //     'rgb(0,141,171)', 
+        //     'rgb(145,171,0)', 
+        //     'rgb(96,134,33)', 
+        //     'rgb(152,168,10)', 
+        //     'rgb(0,165,186)', 
+        //     'rgb(110,158,20)', 
+        //     'rgb(2,156,178)', 
+        //     'rgb(88,142,42)', 
+        //     'rgb(0,146,157)', 
+        //     'rgb(0,151,171)'
+        //   ]}
+        colors={[
+            'rgb(71,159,220)',   // More vibrant blue
+            'rgb(214,139,103)',  // Brighter terracotta
+            'rgb(133,164,114)',  // More vivid sage green
+            'rgb(192,118,162)',  // More pronounced mauve
+            'rgb(98,142,162)',   // More saturated blue-gray
+            'rgb(167,143,107)',  // Warmer bronze
+            'rgb(124,151,137)',  // Slightly brighter slate green
+            'rgb(178,126,139)',  // More lively dusty rose
+            'rgb(104,130,150)',  // Slightly more saturated steel blue
+            'rgb(142,137,109)'   // More defined olive khaki
+          ]}
+        //   colors={['#111111', '#222222']}
           nodeOpacity={0.9}
           nodeThickness={15}
           nodeInnerPadding={2}
@@ -105,7 +129,7 @@ export const MobileTransitionsChart = ({ data }: TransitionsChartProps) => {
           labelOrientation="horizontal"
           labelPadding={6}
           label={node => node.name || node.id}
-          labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
+          labelTextColor={{ from: 'color', modifiers: [['darker', 3]] }}
           linkTooltip={CustomTooltip}
           theme={{
             labels: {
