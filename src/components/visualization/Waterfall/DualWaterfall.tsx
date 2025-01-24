@@ -96,16 +96,16 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
           <div style={{ width: supplyWidth }} className="pr-2">
             <ChartComponent
               data={processLeftData(getSupplyData(selectedData))}
-              title="Aanbodkant"
-              subtitle="Geprojecteerde arbeidsaanbod"
+              title="Arbeidsaanbod"
+              subtitle="Ontwikkeling tussen Q1 2024 en Q1 2035"
               domain={domain}
             />
           </div>
           <div style={{ width: gapWidth }} className="px-2">
             <ChartComponent
               data={getGapData(selectedData)}
-              title="Verschil"
-              subtitle="Het onstaande verschil tussen vraag en aanbod"
+              title="Match tussen arbeidsvraag en -aanbod"
+              subtitle="Uitkomst Q1 2035"
               showAxis={false}
               isGapChart={true}
               domain={domain}
@@ -114,8 +114,8 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
           <div style={{ width: demandWidth }} className="pl-2">
             <ChartComponent
               data={processRightData(getDemandData(selectedData))}
-              title="Vraagkant"
-              subtitle="Geprojecteerde arbeidsvraag"
+              title="Arbeidsvraag"
+              subtitle="Ontwikkeling tussen Q1 2024 en Q1 2035"
               orientation="right"
               domain={domain}
             />

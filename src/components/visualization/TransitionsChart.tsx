@@ -9,7 +9,7 @@ interface TransitionsChartProps {
 const CustomTooltip = ({ link }: { link: any }) => (
   <div className="bg-white border border-gray-200 rounded p-2 shadow-lg">
     <span className="text-m font-medium text-gray-900">
-      <strong>{link.value}</strong> transities
+      <strong>{link.value}</strong> baanwisselingen
     </span>
   </div>
 );
@@ -91,7 +91,7 @@ export const TransitionsChart = ({ data }: TransitionsChartProps) => {
             'rgb(124,151,137)',  // Slightly brighter slate green
             'rgb(178,126,139)',  // More lively dusty rose
             'rgb(104,130,150)',  // Slightly more saturated steel blue
-            'rgb(142,137,109)'   // More defined olive khaki
+            'rgb(142,137,109)'   //  More defined olive khaki
           ]}
           nodeOpacity={0.9}
           nodeThickness={20}

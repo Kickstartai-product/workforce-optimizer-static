@@ -150,24 +150,24 @@ export const MainContent = ({ settings }: MainContentProps) => {
   <div className="flex"> {/* Change to flex container */}
     <MetricCard
       className="flex-1" // Add this prop to MetricCard
-      title="Totaal aantal transities"
-      description="Het totale aantal werknemers dat van beroep wisselt"
+      title="Het totaal aantal baanwisselingen tot Q1 2035"
+      description="Het totaal aantal werknemers dat wisselt van baan A naar baan B"
       value={resultData?.workforceChanges['Totaal'].transitions_in ?? null}
     />
   </div>
   <div className="flex">
     <MetricCard
       className="flex-1"
-      title="Overgebleven tekort"
-      description="Het aantal vacatures dat niet vervuld kan worden na optimale arbeidsmarkttransities"
+      title="Niet ingevulde arbeidsvraag in Q1 2035"
+      description="Het aantal vacatures wat nog openstaat na de baanwisselingen"
       value={resultData?.workforceChanges['Totaal'].shortage ?? null}
     />
   </div>
   <div className="flex">
     <MetricCard
       className="flex-1"
-      title="Toename toegevoegde waarde"
-      description="De procentuele stijging in toegevoegde waarde per jaar wanneer de tekorten zijn opgelost"
+      title="Mate waarin de arbeidsproductiviteit is veranderd in 2035 door verschuiving van arbeid tussen bedrijfstakken."
+      description="De procentuele verandering van de arbeidsproductiviteit als gevolg van de baanwisselingen (structuurverandering)"
       value={resultData?.addedValueChangePercent ?? null}
       isPercentage
     />

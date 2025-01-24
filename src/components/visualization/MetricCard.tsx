@@ -67,7 +67,7 @@ export const MetricCard = ({
 }) => (
   <Card className={`flex flex-col ${className}`}> {/* Add flex-col and pass through className */}
     <CardHeader className="flex-grow">
-      <CardTitle className="text-xl">{title}</CardTitle>
+      <CardTitle className="text-l">{title}</CardTitle>
       <CardDescription className="text-sm text-gray-500">{description}</CardDescription>
     </CardHeader>
     <CardContent className="flex-shrink-0">

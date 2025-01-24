@@ -72,10 +72,10 @@ export const ChartComponent = ({
   data,
   title,
   subtitle,
-  showAxis = true,
   orientation = "left",
+  showAxis = true,
   isGapChart = false,
-  domain
+  domain,
 }: ChartComponentProps) => {
   // Calculate the domain based on number of bars
   const barCount = data.length;
@@ -181,7 +181,7 @@ export const ChartComponent = ({
         `}
       </style>
       <div className="text-center mb-1">
-        <h3 className="font-semibold text-gray-800 text-lg">{title}</h3>
+        <h3 className="font-semibold text-gray-800 text-s">{title}</h3>
         <p className="text-gray-600 text-sm">{subtitle}</p>
       </div>
       <div className="flex-grow">

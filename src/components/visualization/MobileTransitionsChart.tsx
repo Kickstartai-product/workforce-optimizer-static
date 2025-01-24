@@ -9,7 +9,7 @@ interface TransitionsChartProps {
 const CustomTooltip = ({ link }: { link: any }) => (
   <div className="bg-white border border-gray-200 rounded p-2 shadow-lg">
     <span className="text-sm font-medium text-gray-900">
-      <strong>{link.value}</strong> transities
+      <strong>{link.value}</strong> baanwisselingen
     </span>
   </div>
 );

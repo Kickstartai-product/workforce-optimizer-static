@@ -78,8 +78,8 @@ export const MobileDualWaterfall = ({ data, className = "" }: DualWaterfallProps
         <div className="bg-white rounded-lg shadow-sm">
           <MobileChartComponent
             data={processLeftData(getSupplyData(selectedData))}
-            title="Aanbodkant"
-            subtitle="Geprojecteerde arbeidsaanbod"
+              title="Arbeidsaanbod"
+              subtitle="Ontwikkeling tussen Q1 2024 en Q1 2035"
             domain={domain}
           />
         </div>
@@ -88,8 +88,8 @@ export const MobileDualWaterfall = ({ data, className = "" }: DualWaterfallProps
         <div className="bg-white rounded-lg shadow-sm">
           <MobileChartComponent
             data={getGapData(selectedData)}
-            title="Verschil"
-            subtitle="Het onstaande verschil tussen vraag en aanbod"
+              title="Match tussen arbeidsvraag en -aanbod"
+              subtitle="Uitkomst Q1 2035"
             isGapChart={false} // Changed to false since charts are now independent
             domain={domain}
           />
@@ -99,8 +99,8 @@ export const MobileDualWaterfall = ({ data, className = "" }: DualWaterfallProps
         <div className="bg-white rounded-lg shadow-sm">
           <MobileChartComponent
             data={processRightData(getDemandData(selectedData))}
-            title="Vraagkant"
-            subtitle="Geprojecteerde arbeidsvraag"
+              title="Arbeidsvraag"
+              subtitle="Ontwikkeling tussen Q1 2024 en Q1 2035"
             orientation="right"
             domain={domain}
           />
