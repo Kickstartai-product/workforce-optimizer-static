@@ -110,18 +110,16 @@ import {
               ((startEntry.base ?? 0) + startEntry.value);
   
             if (startEntry.value !== 0 || endEntry.value !== 0) {
-              const uniqueKey = `connector-${title}-${startEntry.uniqueId}-${endEntry.uniqueId}-${i}-${startY}`;
-              
               lines.push(
                 <ReferenceLine
-                  key={uniqueKey}
+                  key={`connector-${title}-${startEntry.uniqueId}-${endEntry.uniqueId}`}
                   segment={[
                     { x: startEntry.xValue + barHalfWidth, y: startY },
                     { x: endEntry.xValue - barHalfWidth, y: startY }
                   ]}
                   stroke="#000000"
                   strokeDasharray="3 3"
-                  strokeWidth={0.5}
+                  strokeWidth={0.5} // Thinner lines for mobile
                   className="line-transition"
                 />
               );
@@ -135,9 +133,7 @@ import {
       return lines;
     };
   
-    // Generate a more unique key for the lines container
-    const linesKey = `lines-${title}-${orientation}-${data.map(d => `${d.uniqueId}-${d.value}`).join('-')}`;
-  
+    const linesKey = `lines-${title}-${data.map(d => d.value).join('-')}`;
 
     const calculateTicks = (domain: [number, number]) => {
       const [min, max] = domain;
@@ -219,7 +215,7 @@ import {
               tick={{ fill: '#6b7280', fontSize: 12 }}
               tickFormatter={formatNumber}
               ticks={yAxisTicks}
-              orientation={orientation}
+              orientation={'left'}
               hide={isGapChart}
               domain={domain}
               interval={0}
