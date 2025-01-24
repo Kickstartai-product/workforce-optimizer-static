@@ -1,21 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Monitor } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { useWindowSize, MOBILE_BREAKPOINT } from '@/hooks/useWindowSize';
 
 const ScreenAlert = () => {
-  const [showAlert, setShowAlert] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
+  const [shouldRender, setShouldRender] = useState(true);
   const windowWidth = useWindowSize();
 
+  useEffect(() => {
+    // Start fade out after 3 seconds
+    const fadeTimeout = setTimeout(() => {
+      setIsVisible(false);
+    }, 3000);
+
+    // Remove from DOM after animation completes
+    const removeTimeout = setTimeout(() => {
+      setShouldRender(false);
+    }, 3700); // 3000ms delay + 700ms animation
+
+    return () => {
+      clearTimeout(fadeTimeout);
+      clearTimeout(removeTimeout);
+    };
+  }, []);
+
   // Don't render anything during SSR or on desktop
-  if (!windowWidth || windowWidth >= MOBILE_BREAKPOINT) return null;
-  if (!showAlert) return null;
+  if (!windowWidth || windowWidth >= MOBILE_BREAKPOINT || !shouldRender) return null;
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-[9999] p-2">
       <Alert 
-        className="mx-auto max-w-lg bg-white/95 backdrop-blur-sm border-cyan-600 animate-in fade-in slide-in-from-bottom duration-700 p-3"
-        onClick={() => setShowAlert(false)}
+        className={`
+          mx-auto max-w-lg bg-white/95 backdrop-blur-sm border-cyan-600 p-3
+          ${isVisible ? 'animate-in fade-in slide-in-from-bottom' : 'animate-out fade-out slide-out-to-bottom'}
+          duration-700
+        `}
+        onClick={() => setIsVisible(false)}
       >
         <div className="flex gap-2 items-start">
           <Monitor className="h-4 w-4 text-cyan-600 mt-0.5 flex-shrink-0" />
@@ -24,7 +45,7 @@ const ScreenAlert = () => {
               Schermgrootte melding
             </AlertTitle>
             <AlertDescription className="text-xs text-gray-600">
-            Deze website komt het beste tot zijn recht op een groter scherm (tablet, laptop of desktop).
+              Deze website komt het beste tot zijn recht op een groter scherm (laptop, tablet of desktop).
             </AlertDescription>
           </div>
         </div>
