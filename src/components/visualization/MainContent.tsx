@@ -146,24 +146,33 @@ export const MainContent = ({ settings }: MainContentProps) => {
 
   return (
     <div className="p-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-      <MetricCard
-          title="Totaal aantal transities"
-          description="Het totale aantal werknemers dat van beroep wisselt"
-          value={resultData?.workforceChanges['Totaal'].transitions_in ?? null}
-        />
-        <MetricCard
-          title="Overgebleven tekort"
-          description="Het aantal vacatures dat niet vervuld kan worden na optimale arbeidsmarkttransities"
-          value={resultData?.workforceChanges['Totaal'].shortage ?? null}
-        />
-        <MetricCard
-          title="Toename toegevoegde waarde"
-          description="De procentuele stijging in toegevoegde waarde per jaar wanneer de tekorten zijn opgelost"
-          value={resultData?.addedValueChangePercent ?? null}
-          isPercentage
-        />
-      </div>
+<div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <div className="flex"> {/* Change to flex container */}
+    <MetricCard
+      className="flex-1" // Add this prop to MetricCard
+      title="Totaal aantal transities"
+      description="Het totale aantal werknemers dat van beroep wisselt"
+      value={resultData?.workforceChanges['Totaal'].transitions_in ?? null}
+    />
+  </div>
+  <div className="flex">
+    <MetricCard
+      className="flex-1"
+      title="Overgebleven tekort"
+      description="Het aantal vacatures dat niet vervuld kan worden na optimale arbeidsmarkttransities"
+      value={resultData?.workforceChanges['Totaal'].shortage ?? null}
+    />
+  </div>
+  <div className="flex">
+    <MetricCard
+      className="flex-1"
+      title="Toename toegevoegde waarde"
+      description="De procentuele stijging in toegevoegde waarde per jaar wanneer de tekorten zijn opgelost"
+      value={resultData?.addedValueChangePercent ?? null}
+      isPercentage
+    />
+  </div>
+</div>
       <div className="space-y-8">
         {charts.map((chart, index) => (
           <ChartCard

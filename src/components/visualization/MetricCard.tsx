@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const AnimatedNumber = ({ 
-  value, 
-  isPercentage = false 
-}: { 
+const AnimatedNumber = ({
+  value,
+  isPercentage = false
+}: {
   value: number | null;
   isPercentage?: boolean;
 }) => {
@@ -42,33 +42,35 @@ const AnimatedNumber = ({
 
   return (
     <span className="transition-all duration-75">
-      {isPercentage 
-        ? `${displayValue.toFixed(2)}%`
-        : displayValue.toLocaleString(undefined, { 
+      {isPercentage
+        ? `${displayValue.toFixed(2).replace('.', ',')}%`
+        : displayValue.toLocaleString('nl-NL', {
             maximumFractionDigits: 0,
-            minimumFractionDigits: 0 
+            minimumFractionDigits: 0
           })}
     </span>
   );
 };
 
-export const MetricCard = ({ 
-  title, 
-  description, 
-  value, 
-  isPercentage = false 
-}: { 
+export const MetricCard = ({
+  title,
+  description,
+  value,
+  isPercentage = false,
+  className = '' // Add className prop
+}: {
   title: string;
   description: string;
   value: number | null;
   isPercentage?: boolean;
+  className?: string;
 }) => (
-  <Card>
-    <CardHeader>
+  <Card className={`flex flex-col ${className}`}> {/* Add flex-col and pass through className */}
+    <CardHeader className="flex-grow">
       <CardTitle className="text-xl">{title}</CardTitle>
       <CardDescription className="text-sm text-gray-500">{description}</CardDescription>
     </CardHeader>
-    <CardContent>
+    <CardContent className="flex-shrink-0">
       <p className="text-3xl font-bold" style={{ color: 'rgb(0,153,168)' }}>
         <AnimatedNumber value={value} isPercentage={isPercentage} />
       </p>

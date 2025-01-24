@@ -134,6 +134,29 @@ import {
     };
   
     const linesKey = `lines-${title}-${data.map(d => d.value).join('-')}`;
+
+    const calculateTicks = (domain: [number, number]) => {
+      const [min, max] = domain;
+      const increment = determineIncrement(max - min);
+      const ticks: number[] = [];
+      
+      // Start from the domain minimum, rounded down to nearest increment
+      let currentTick = Math.floor(min / increment) * increment;
+      
+      while (currentTick <= max) {
+        ticks.push(currentTick);
+        currentTick += increment;
+      }
+      
+      // Add the final tick if it's not already included
+      if (currentTick - increment < max) {
+        ticks.push(currentTick);
+      }
+      
+      return ticks;
+    };
+  
+    const yAxisTicks = calculateTicks(domain);
   
     return (
       <div className="w-full h-full flex flex-col">
@@ -185,21 +208,20 @@ import {
                 interval={0}
                 xAxisId="category"
               />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                dx={-2}
-                tick={{ fill: '#6b7280', fontSize: 10 }} // Smaller font
-                tickFormatter={formatNumber}
-                ticks={Array.from(
-                  { length: (domain[1] / determineIncrement(domain[1])) + 1 },
-                  (_, i) => i * determineIncrement(domain[1])
-                )}
-                orientation={'left'}
-                hide={isGapChart}
-                domain={domain}
-                interval={0}
-              />
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              dx={-2}
+              tick={{ fill: '#6b7280', fontSize: 12 }}
+              tickFormatter={formatNumber}
+              ticks={yAxisTicks}
+              orientation={orientation}
+              hide={isGapChart}
+              domain={domain}
+              interval={0}
+              type="number"
+              allowDataOverflow={true}
+            />
               <Tooltip content={<CustomTooltip />} />
   
               <g key={linesKey} className="line-container-mounted">

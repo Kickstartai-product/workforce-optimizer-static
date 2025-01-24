@@ -47,18 +47,23 @@ export const DualWaterfall = ({ data, className = "" }: DualWaterfallProps) => {
     const supplyData = processLeftData(getSupplyData(selectedData));
     const demandData = processRightData(getDemandData(selectedData));
     const gapData = getGapData(selectedData);
-
+  
     const allValues = [
       ...supplyData,
       ...demandData,
       ...gapData
     ].map(item => (item.base || 0) + item.value);
-
+  
     const maxValue = Math.max(...allValues);
     const increment = determineIncrement(maxValue);
     const roundedMax = roundUpToNice(maxValue, increment);
+  
+    // Set minimum based on job type
+    const domainMin = selectedJob === "Totaal" ? 6000000 : 0;
+    const domainMax = selectedJob === "Totaal" ? 11000000 : roundedMax;
 
-    return [0, roundedMax] as [number, number];
+  
+    return [domainMin, domainMax] as [number, number];
   };
 
   const domain = calculateDomain();

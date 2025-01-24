@@ -191,3 +191,31 @@ export const getGapData = (selectedData: WorkforceMetrics): ChartData[] => {
     }
   ];
 };
+
+export const calculateWaterfallMinimum = (selectedData: WorkforceMetrics): number => {
+  // Get all three datasets
+  const supplyData = processLeftData(getSupplyData(selectedData));
+  const demandData = processRightData(getDemandData(selectedData));
+  const gapData = getGapData(selectedData);
+
+  const findMinPoint = (data: ChartData[]): number => {
+    return Math.min(
+      ...data.map(item => {
+        const base = item.base || 0;
+        const value = item.value || 0;
+        
+        // For positive values, we only need to check the base
+        // For negative values, we need to check base + value
+        return value >= 0 ? base : base + value;
+      })
+    );
+  };
+
+  // Calculate minimum point for each chart
+  const supplyMin = findMinPoint(supplyData);
+  const demandMin = findMinPoint(demandData);
+  const gapMin = findMinPoint(gapData);
+
+  // Return the lowest value among all three charts
+  return Math.min(supplyMin, demandMin, gapMin);
+};
