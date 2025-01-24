@@ -215,6 +215,10 @@ export const NarrativeLayout = () => {
             alt="Netherlands by night"
             className="w-full h-full object-cover"
           />
+            {/* Photo credit */}
+          <div className="absolute bottom-2 left-2 text-white text-xs bg-black/50 px-2 py-1 rounded">
+            Foto: ©ESA/NASA - André Kuipers
+          </div>
           <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-white text-center px-4">
             <h1 className="text-5xl font-bold mb-8" style={getAnimationStyle(0)}>
               Arbeidsmarkt-transitiemodel
