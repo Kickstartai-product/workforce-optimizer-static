@@ -10,6 +10,7 @@ import { DualWaterfall } from './Waterfall/DualWaterfall';
 import { MetricCard } from './MetricCard';
 import { useWindowSize, MOBILE_BREAKPOINT } from '@/hooks/useWindowSize'
 import { MobileDualWaterfall } from './Waterfall/MobileWaterfallChart';
+import { MobileTransitionsChart } from './MobileTransitionsChart';
 
 interface ChartCardProps {
   title: string;
@@ -111,7 +112,17 @@ export const MainContent = ({ settings }: MainContentProps) => {
     {
       title: "Top 10 baanwisselingen",
       description: "Toont de grootste verschuivingen tussen beroepen",
-      component: (data: TransformedResult) => <TransitionsChart data={data} />,
+      component: (data: TransformedResult) => {
+        const windowWidth = useWindowSize()
+        
+        if (windowWidth === null) return null;
+        
+        return windowWidth < MOBILE_BREAKPOINT ? (
+          <MobileTransitionsChart data={data} />
+        ) : (
+          <TransitionsChart data={data} />
+        );
+      },
       isWaterfall: false
     },
     {
