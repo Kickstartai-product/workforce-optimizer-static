@@ -8,6 +8,8 @@ import { ShortageBarChart } from './ShortageBarChart';
 import { TransitionsChart } from "./TransitionsChart";
 import { DualWaterfall } from './Waterfall/DualWaterfall';
 import { MetricCard } from './MetricCard';
+import { useWindowSize, MOBILE_BREAKPOINT } from '@/hooks/useWindowSize'
+import { MobileDualWaterfall } from './Waterfall/MobileWaterfallChart';
 
 interface ChartCardProps {
   title: string;
@@ -86,12 +88,24 @@ export const MainContent = ({ settings }: MainContentProps) => {
     {
       title: "Projectie van de arbeidsmarkt",
       description: "Ontwikkeling van de arbeidsvraag en het arbeidsaanbod tussen Q1 2024 en Q1 2035 en de mate waarin dit op elkaar aansluit als gevolg van de baanwisselingen",
-      component: (data: TransformedResult) => (
-        <DualWaterfall 
-          data={data.workforceChanges}
-          className="mt-8"
-        />
-      ),
+      component: (data: TransformedResult) => {
+        const windowWidth = useWindowSize()
+        
+        // Handle SSR case
+        if (windowWidth === null) return null;
+        
+        return windowWidth < MOBILE_BREAKPOINT ? (
+          <MobileDualWaterfall 
+            data={data.workforceChanges}
+            className="mt-8"
+          />
+        ) : (
+          <DualWaterfall 
+            data={data.workforceChanges}
+            className="mt-8"
+          />
+        );
+      },
       isWaterfall: true
     },
     {
