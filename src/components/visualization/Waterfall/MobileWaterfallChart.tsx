@@ -101,7 +101,6 @@ export const MobileDualWaterfall = ({ data, className = "" }: DualWaterfallProps
             data={processRightData(getDemandData(selectedData))}
               title="Arbeidsvraag"
               subtitle="Ontwikkeling tussen Q1 2024 en Q1 2035"
-            orientation="right"
             domain={domain}
           />
         </div>
