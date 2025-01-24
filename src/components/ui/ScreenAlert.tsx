@@ -12,12 +12,12 @@ const ScreenAlert = () => {
     // Start fade out after 3 seconds
     const fadeTimeout = setTimeout(() => {
       setIsVisible(false);
-    }, 3000);
+    }, 6000);
 
     // Remove from DOM after animation completes
     const removeTimeout = setTimeout(() => {
       setShouldRender(false);
-    }, 3700); // 3000ms delay + 700ms animation
+    }, 6700); // 6s delay + 700ms animation
 
     return () => {
       clearTimeout(fadeTimeout);
