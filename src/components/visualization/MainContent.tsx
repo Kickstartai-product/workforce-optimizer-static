@@ -11,6 +11,7 @@ import { MetricCard } from './MetricCard';
 import { useWindowSize, MOBILE_BREAKPOINT } from '@/hooks/useWindowSize'
 import { MobileDualWaterfall } from './Waterfall/MobileWaterfallChart';
 import { MobileTransitionsChart } from './MobileTransitionsChart';
+import { MobileShortageBarChart } from './MobileShortageBarChart';
 
 interface ChartCardProps {
   title: string;
@@ -128,7 +129,17 @@ export const MainContent = ({ settings }: MainContentProps) => {
     {
       title: "Top 10 beroepen met niet ingevulde vacatures in 2035",
       description: "Toont de beroepen met het grootste aantal openstaande vacatures in Q1 2035 ondanks de baanwisselingen",
-      component: (data: TransformedResult) => <ShortageBarChart data={data} />,
+      component: (data: TransformedResult) => {
+        const windowWidth = useWindowSize()
+        
+        if (windowWidth === null) return null;
+        
+        return windowWidth < MOBILE_BREAKPOINT ? (
+          <MobileShortageBarChart data={data} />
+        ) : (
+          <ShortageBarChart data={data} />
+        );
+      },
       isWaterfall: false
     }
   ];
