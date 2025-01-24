@@ -127,7 +127,7 @@ export const NarrativeLayout = () => {
                 Om dat te bereiken doet DenkWerk haar eigen onderzoek, gebruikmakend van een breed netwerk van experts. Hiermee willen we vraagstukken grondig onderzoeken, structuur brengen en inspiratie aandragen voor acties of verder onderzoek.
               </p>
               <p className="text-gray-700 leading-relaxed mt-4">
-                Om bij te dragen aan het maatschappelijk debat en verandering in gang te zetten, streven we ernaar de resultaten van ons werk in het publieke domein te delen. Dit geldt ook voor het gemaakte arbeidsmarkt-transitiemodel. Dit model is gemaakt met behulp tussen een samenwerking van DenkWerk en <a href="https://www.kickstart.ai/" target="_blank" rel="noopener noreferrer" className="text-[rgb(0,153,168)] hover:underline">Kickstart AI</a>.
+                Om bij te dragen aan het maatschappelijk debat en verandering in gang te zetten, streven we ernaar de resultaten van ons werk in het publieke domein te delen. Dit geldt ook voor het gemaakte arbeidsmarkt-transitiemodel. Dit model is gemaakt met behulp van een samenwerking tussen DenkWerk en <a href="https://www.kickstart.ai/" target="_blank" rel="noopener noreferrer" className="text-[rgb(0,153,168)] hover:underline">Kickstart AI</a>.
               </p>
             </div>
           </DialogContent>

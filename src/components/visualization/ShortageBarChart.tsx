@@ -26,8 +26,17 @@ interface CustomizedAxisTickProps {
   };
 }
 
+const formatJobName = (job: string) => {
+  return job.replace(/\\\-/g, "-"); // Only remove backslash from escaped hyphens
+};
+
+// Function to format numbers with dots for thousands (Dutch format)
+const formatNumber = (value: number) => {
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
 const CustomizedAxisTick: React.FC<CustomizedAxisTickProps> = ({ x, y, payload }) => {
-  const lines = payload.value.split('\n');
+  const lines = formatJobName(payload.value).split('\n');
 
   return (
     <g transform={`translate(${x},${y}) rotate(-45)`}>
@@ -35,9 +44,9 @@ const CustomizedAxisTick: React.FC<CustomizedAxisTickProps> = ({ x, y, payload }
         <text
           key={index}
           x={0}
-          y={10}  // Changed from index * 12
-          dy={index * 12}  // Move the line spacing to dy instead
-          textAnchor="end"  // Changed from "middle" to "end"
+          y={10}
+          dy={index * 12}
+          textAnchor="end"
           fill="#666"
           fontSize={11}
         >
@@ -48,11 +57,28 @@ const CustomizedAxisTick: React.FC<CustomizedAxisTickProps> = ({ x, y, payload }
   );
 };
 
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-2 border border-gray-200 shadow-lg rounded">
+        <p className="text-sm">{formatJobName(label)}</p>
+        <p className="text-sm font-semibold">
+          Tekort: {formatNumber(payload[0].value)}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 export const ShortageBarChart: React.FC<ShortageBarChartProps> = ({ data }) => {
-  
   const sortedShortages: ShortageData[] = [...data.remainingShortages]
     .sort((a, b) => b.shortage - a.shortage)
-    .slice(0, 10);
+    .slice(0, 10)
+    .map(item => ({
+      ...item,
+      jobName: formatJobName(item.jobName)
+    }));
 
   return (
     <ResponsiveContainer width="100%" height={500}>
@@ -81,10 +107,10 @@ export const ShortageBarChart: React.FC<ShortageBarChartProps> = ({ data }) => {
             fontSize: 12
           }}
           tick={{ fontSize: 11 }}
+          tickFormatter={formatNumber}
         />
         <Tooltip
-          contentStyle={{ fontSize: 12 }}
-          labelStyle={{ fontSize: 12 }}
+          content={<CustomTooltip />}
           cursor={{ fill: 'transparent' }}
         />
         <Bar

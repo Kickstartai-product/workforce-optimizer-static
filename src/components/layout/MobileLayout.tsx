@@ -126,9 +126,8 @@ export const MobileLayout = () => {
                 Om dat te bereiken doet DenkWerk haar eigen onderzoek, gebruikmakend van een breed netwerk van experts. Hiermee willen we vraagstukken grondig onderzoeken, structuur brengen en inspiratie aandragen voor acties of verder onderzoek.
               </p>
               <p className="text-gray-700 text-sm leading-relaxed mt-4">
-                Om bij te dragen aan het maatschappelijk debat en verandering in gang te zetten, streven we ernaar de resultaten van ons werk in het publieke domein te delen. Dit geldt ook voor het gemaakte arbeidsmarkt-transitiemodel. Dit model is gemaakt met behulp tussen een samenwerking van DenkWerk en <a href="https://www.kickstart.ai/" target="_blank" rel="noopener noreferrer" className="text-[rgb(0,153,168)] hover:underline">Kickstart AI</a>.
+                Om bij te dragen aan het maatschappelijk debat en verandering in gang te zetten, streven we ernaar de resultaten van ons werk in het publieke domein te delen. Dit geldt ook voor het gemaakte arbeidsmarkt-transitiemodel. Dit model is gemaakt met behulp van een samenwerking tussen DenkWerk en <a href="https://www.kickstart.ai/" target="_blank" rel="noopener noreferrer" className="text-[rgb(0,153,168)] hover:underline">Kickstart AI</a>.
               </p>
-              {/* ... rest of the dialog content with text-sm class ... */}
             </div>
           </DialogContent>
         </Dialog>
@@ -146,7 +145,62 @@ export const MobileLayout = () => {
               <DialogTitle className="text-lg">Toelichting model</DialogTitle>
             </DialogHeader>
             <div className="p-4 space-y-4">
-              {/* ... dialog content with text-sm class ... */}
+            <p className="text-gray-700 text-sm leading-relaxed">
+        Om te analyseren of de dynamiek op de arbeidsmarkt zo groot gemaakt kan worden dat in de behoefte van de nieuwe economische structuren kan worden voorzien hebben wij een arbeidsmarkt-transitiemodel gebouwd.
+      </p>
+
+      <div>
+        <h3 className="font-semibold text-l mb-2">Het model werkt als volgt:</h3>
+        <p className="text-gray-700 text-sm leading-relaxed">
+          Een belangrijke parameter van het model is de ontwikkeling van de arbeidsproductiviteit (% per jaar). Deze parameter betreft de autonome arbeidsproductiviteitsgroei van sectoren en bepaalt in welke mate bestaande activiteiten met minder werknemers verricht kunnen worden. De werknemers die dan vrijkomen kunnen een wisseling maken naar een andere baan. Het model hanteert het uitgangspunt dat 20% van de jaarlijkse groei van de arbeidsproductiviteit resulteert in een vermindering van de arbeidsvraag, de overige 80% van de jaarlijkse groei vertaalt zich in een hogere output of hoger dienstverleningsniveau.
+        </p>
+        <p className="text-gray-700 leading-relaxed mt-2">
+          Het model zoekt voor de werknemers die beschikbaar zijn voor een baanwisseling naar de optimale uitkomst gegeven drie condities:
+        </p>
+        <ul className="list-disc pl-6 mt-2 space-y-1 text-gray-700 text-sm">
+          <li>De arbeidsvraag voor onze maatschappelijke ambities moet zo veel als mogelijk worden ingevuld;</li>
+          <li>Het aantal baanwisselingen moet tot het minimum worden beperkt;</li>
+          <li>De baanwisselingen moet leiden tot een zo positief mogelijk effect op de arbeidsproductiviteit (structuureffecten).</li>
+        </ul>
+      </div>
+
+      <div>
+        <p className="text-gray-700 leading-relaxed text-sm">
+          De O*Net 29.1 Database geeft aan de hand van een score op een 1-tot-5 puntsschaal informatie over de vaardigheden (bijvoorbeeld 'leesvaardigheid' en 'schrijfvaardigheid') en kenmerken (bijvoorbeeld 'kracht' en 'leeftijd') van een beroep in de Verenigde Staten. Met behulp van deze dataset is een koppeling gemaakt met de Nederlandse beroepsgroepen zoals gehanteerd door het CBS en ROA.
+        </p>
+        <p className="text-gray-700 leading-relaxed mt-4 text-sm">
+          Voor alle indicatoren die we gebruiken om de vaardigheden en kenmerken te meten is een matrix opgesteld waarin de beroepsgroepen met elkaar worden vergeleken. Alleen wanneer de 'target group' (naar dit beroep gaat de werknemer toe) een hogere score heeft op een indicator dan de 'source group' (van dit beroep komt de werknemer vandaan), noteren we het verschil in score in de matrix. De optelsom van de scores per indicator leiden vervolgens tot een totaalscore voor zowel de vaardigheden als kenmerken. Deze scores worden gebruikt door het model om te bepalen of een baanwisseling tussen beroepsgroepen mogelijk is.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="font-semibold text-l mb-2">Een baanwisseling is mogelijk als:</h3>
+        <ul className="list-disc pl-6 mt-2 space-y-2 text-gray-700 text-sm">
+          <li>De totaalscore op vaardigheden en kenmerken binnen een bepaalde range ligt. 
+            De hoogte van de range is vastgesteld per beroep op basis van de diversiteit aan vooropleidingen (diverse opleidingsachtergrond = opleidingsrichting die door minder dan 2.5% van de mensen uit de beroepsgroep gevolgd is) en % mensen in de beroepsgroep dat maximaal middelbaar onderwijs volgt. De beroepsgroepen zijn vervolgens met behulp van data van het Arbeidsmarkt Informatie Systeem (AIS) ingedeeld in 'moeilijk' (veel omscholing nodig), 'medium' (met enige omscholing) en 'makkelijk' (met weinig omscholing). Per categorie wordt een verschillende range gehanteerd. De gedachte hierbij is dat het moeilijker is om iemand om te scholen naar arts dan naar bijvoorbeeld buschauffeur.</li>
+          <li>Een baanwisseling een vooruitgang in salaris betreft of een maximale daling van 10% (gerekend met het bruto uurloon). De keuze kan worden gemaakt om een tijdelijke compensatie aan te bieden in geval het een reductie van salaris betreft.</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 className="font-semibold text-l mb-2">Het model heeft naast de parameter arbeidsproductiviteit ook andere parameters:</h3>
+        <ul className="list-disc pl-6 space-y-2 text-gray-700 text-sm">
+          <li>
+            Wel of geen overheidssturing op het gewenste portfolio van economische activiteiten.
+            <ul className="list-disc pl-6 mt-2 text-sm">
+              <li>Wel overheidssturing betekent dat op basis van de methodiek gepresenteerd in Figuur 20 van de DenkWerk-rapportage 'KIEZEN én DELEN' (Hoofdstuk 6) een inschatting is gemaakt per type beroep of deze niet-locatiegebonden is en een lage toegevoegde waarde heeft. Indien dit het geval is, is een percentage daarvan (over het algemeen &lt;25%) beschikbaar gesteld voor een baanwisseling.</li>
+              <li>Geen overheidssturing betekent dat het wordt overgelaten aan de marktkrachten en enkel de uitbreidingsvraag voor onze grootste ambities (gebaseerd op Figuur 11 in Hoofdstuk 3 van de DenkWerk-rapportage 'KIEZEN én DELEN') is ingevoerd in het model.</li>
+            </ul>
+          </li>
+          <li>De mogelijkheid om de wekelijkse gemiddelde arbeidsduur met 2 uur te verlegen van niemand, alle werknemers, de deeltijdwerkers of de zorgmedewerkers.</li>
+          <li>De mogelijkheid om beroepsgroepen prioriteit te geven (het model probeert de vacatures voor deze beroepsgroepen als eerste in te vullen).</li>
+          <li>De mogelijkheid om beroepsgroepen aan te geven waarvan de medewerkers niet beschikbaar zijn voor een baanwisseling (hier hebben we bijvoorbeeld juist mensen nodig)</li>
+        </ul>
+      </div>
+
+      <p className="text-gray-700 leading-relaxed mt-4 text-sm">
+        Zie Hoofdstuk 7 van het DenkWerk-rapport 'KIEZEN én DELEN' voor onze analyses (getoetste situaties) en inzichten met behulp van het arbeidsmarkt-transitiemodel.
+      </p>
             </div>
           </DialogContent>
         </Dialog>

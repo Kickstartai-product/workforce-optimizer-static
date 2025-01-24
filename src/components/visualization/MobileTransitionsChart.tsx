@@ -7,21 +7,31 @@ interface TransitionsChartProps {
 }
 
 const CustomTooltip = ({ link }: { link: any }) => (
-    <div className="bg-white border border-gray-200 rounded p-2 shadow-lg">
-      <span className="text-sm font-medium text-gray-900">
-        <strong>{link.value}</strong> transities
-      </span>
-    </div>
-  );
+  <div className="bg-white border border-gray-200 rounded p-2 shadow-lg">
+    <span className="text-sm font-medium text-gray-900">
+      <strong>{link.value}</strong> transities
+    </span>
+  </div>
+);
+
+const formatJobName = (job: string) => {
+  return job
+    .replace(/\n\-/g, "") // Remove newline-hyphen combinations
+    .replace(/\\\-\n/g, "") // Remove escaped-hyphen-newline combinations
+    .replace(/\n/g, " "); // Replace remaining newlines with spaces
+};
 
 export const MobileTransitionsChart = ({ data }: TransitionsChartProps) => {
   const getSankeyData = (topN = 10) => {
     const transitions = data.topTransitions.map(t => ({
-      source: t.sourceJob,
-      // Shorten job titles over 20 characters for mobile
-      target: t.targetJob.length > 20 
-        ? t.targetJob.substring(0, 20) + "..." + " "
-        : t.targetJob + " ",
+      source: formatJobName(t.sourceJob),
+      // Format and then shorten job titles over 20 characters for mobile
+      target: (() => {
+        const formattedJob = formatJobName(t.targetJob);
+        return formattedJob.length > 20 
+          ? formattedJob.substring(0, 20) + "..." + " "
+          : formattedJob + " ";
+      })(),
       value: t.amount
     }));
 
@@ -44,40 +54,39 @@ export const MobileTransitionsChart = ({ data }: TransitionsChartProps) => {
     };
   };
 
-
   return (
     <ResponsiveContainer width="100%" height="100%">
       <div style={{ width: '100%', height: '100%' }}>
         <ResponsiveSankey
-          data={getSankeyData(10)} // Reduced to 8 transitions for mobile
-          margin={{ top: 20, right: 0, bottom: 20, left: 0 }} // Reduced margins
+          data={getSankeyData(10)}
+          margin={{ top: 20, right: 0, bottom: 20, left: 0 }}
           align="center"
           layout="horizontal"
           colors={{ scheme: 'category10' }}
           nodeOpacity={0.9}
-          nodeThickness={15} // Reduced thickness
-          nodeInnerPadding={2} // Reduced padding
-          nodeSpacing={12} // Reduced spacing
+          nodeThickness={15}
+          nodeInnerPadding={2}
+          nodeSpacing={12}
           nodeBorderWidth={0}
           linkOpacity={0.4}
           linkHoverOpacity={0.7}
-          linkContract={2} // Reduced contract
+          linkContract={2}
           enableLinkGradient={true}
           labelPosition="inside"
           labelOrientation="horizontal"
-          labelPadding={6} // Reduced padding
+          labelPadding={6}
           labelTextColor={{ from: 'color', modifiers: [['darker', 1]] }}
           linkTooltip={CustomTooltip}
           theme={{
             labels: {
               text: {
-                fontSize: 8, // Smaller font size
+                fontSize: 8,
                 fontWeight: 'normal'
               }
             },
             tooltip: {
               container: {
-                fontSize: '10px' // Smaller tooltip text
+                fontSize: '10px'
               }
             }
           }}
