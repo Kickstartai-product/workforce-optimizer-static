@@ -275,13 +275,13 @@ const linesKey = `lines-${title}-${orientation}-${data.map(d => `${d.uniqueId}-$
                   return <Cell key={`${entry.uniqueId}-final`} fill="rgb(0,153,168)" opacity={1} />;
                 }
                 if (entry.isExcessWorkers) {
-                  return <Cell key={`${entry.uniqueId}-excess`} fill="rgb(0,153,168)" opacity={0.5} />;
+                  return <Cell key={`${entry.uniqueId}-excess`} fill="rgb(145,204,214)" opacity={1} />;
                 }
                 if (entry.isShortageReduction) {
-                  return <Cell key={`${entry.uniqueId}-reduction`} fill="rgb(0,153,168)" />;
+                  return <Cell key={`${entry.uniqueId}-reduction`} fill="rgb(145,204,214)" />;
                 }
                 if (entry.isShortage) {
-                  return <Cell key={`${entry.uniqueId}-shortage`} fill="rgb(0,153,168)" opacity={0.5} />;
+                  return <Cell key={`${entry.uniqueId}-shortage`} fill="rgb(145,204,214)" opacity={1} />;
                 }
                 return <Cell
                   key={entry.uniqueId}

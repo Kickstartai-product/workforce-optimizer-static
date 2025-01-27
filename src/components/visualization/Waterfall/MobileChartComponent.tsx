@@ -22,7 +22,26 @@ import {
     const label = parts[0];
     const footnoteNumber = parts[1];
   
-    const lines = [label];
+    // Adjusted for mobile - smaller max width
+    const wrapText = (text: string, maxWidth: number = 30) => {
+      const words = text.split(' ');
+      const lines: string[] = [];
+      let currentLine = words[0];
+  
+      for (let i = 1; i < words.length; i++) {
+        const word = words[i];
+        if (currentLine.length + word.length + 1 <= maxWidth) {
+          currentLine += ' ' + word;
+        } else {
+          lines.push(currentLine);
+          currentLine = word;
+        }
+      }
+      lines.push(currentLine);
+      return lines;
+    };
+  
+    const lines = wrapText(label);
     const lineHeight = 10; // Reduced line height for mobile
   
     return (
@@ -35,7 +54,7 @@ import {
             dy={14} // Slightly reduced dy
             textAnchor="end"
             fill="#6b7280"
-            fontSize={9} // Slightly larger font for better readability
+            fontSize={7} // Smaller font size
             transform="rotate(-45)"
           >
             {line}
@@ -164,7 +183,7 @@ import {
                 top: 30, // Reduced margins
                 right: showAxis ? 10 : 5,
                 left: showAxis ? 10 : 5,
-                bottom: 80 // Increased bottom margin for label spacing
+                bottom: 30
               }}
               barSize={30} // Smaller bars
             >
@@ -184,7 +203,7 @@ import {
                 dy={2}
                 angle={-45}
                 textAnchor="end"
-                height={120} // Increased height for better label spacing
+                height={80} // Reduced height
                 tick={<CustomXAxisTick />}
                 interval={0}
                 xAxisId="category"
@@ -241,18 +260,18 @@ import {
                   key={`${title}-labels`}
                 />
                 {data.map((entry, _) => {
-                  if (entry.isFinalProjection) {
-                    return <Cell key={`${entry.uniqueId}-final`} fill="rgb(0,153,168)" opacity={1} />;
-                  }
-                  if (entry.isExcessWorkers) {
-                    return <Cell key={`${entry.uniqueId}-excess`} fill="rgb(0,153,168)" opacity={0.5} />;
-                  }
-                  if (entry.isShortageReduction) {
-                    return <Cell key={`${entry.uniqueId}-reduction`} fill="rgb(0,153,168)" />;
-                  }
-                  if (entry.isShortage) {
-                    return <Cell key={`${entry.uniqueId}-shortage`} fill="rgb(0,153,168)" opacity={0.5} />;
-                  }
+                if (entry.isFinalProjection) {
+                  return <Cell key={`${entry.uniqueId}-final`} fill="rgb(0,153,168)" opacity={1} />;
+                }
+                if (entry.isExcessWorkers) {
+                  return <Cell key={`${entry.uniqueId}-excess`} fill="rgb(145,204,214)" opacity={1} />;
+                }
+                if (entry.isShortageReduction) {
+                  return <Cell key={`${entry.uniqueId}-reduction`} fill="rgb(145,204,214)" />;
+                }
+                if (entry.isShortage) {
+                  return <Cell key={`${entry.uniqueId}-shortage`} fill="rgb(145,204,214)" opacity={1} />;
+                }
                   return <Cell
                     key={entry.uniqueId}
                     fill={entry.value >= 0 ? "rgb(75,169,115)" : "rgb(231,76,60)"}

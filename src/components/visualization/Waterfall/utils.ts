@@ -99,7 +99,7 @@ export const getSupplyData = (selectedData: WorkforceMetrics): ChartData[] => {
 export const getDemandData = (selectedData: WorkforceMetrics): ChartData[] => {
   return [
     {
-      name: "geprojecteerde groei door productiviteit",
+      name: "Geprojecteerde groei door productiviteit",
       value: roundSmallValues(Math.round(selectedData.productivity)),
       displayValue: roundSmallValues(Math.round(selectedData.productivity)),
       xValue: 1
@@ -111,7 +111,7 @@ export const getDemandData = (selectedData: WorkforceMetrics): ChartData[] => {
       xValue: 2
     },
     {
-      name: "inkrimpingsvraag",
+      name: "Inkrimpingsvraag",
       value: roundSmallValues(Math.round(selectedData.reduction_demand)),
       displayValue: roundSmallValues(Math.round(selectedData.reduction_demand)),
       xValue: 3

@@ -353,13 +353,13 @@ export const MobileLayout = () => {
                   <p className="text-sm text-gray-600">
                     Meer weten?{' '}
                     <a
-                      href="https://google.com"
+                      href="https://denkwerk.online/rapporten/kiezen-en-delen-januari-2025/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[rgb(0,153,168)] hover:text-[rgb(0,123,138)] underline"
                     >
                       Vind hier het volledige rapport
-                    </a>
+                    </a>.
                   </p>
                 </div>
               </div>
