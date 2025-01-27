@@ -112,7 +112,7 @@ import {
             if (startEntry.value !== 0 || endEntry.value !== 0) {
               lines.push(
                 <ReferenceLine
-                  key={`connector-${title}-${startEntry.uniqueId}-${endEntry.uniqueId}`}
+                  key={`connector-${title}-${startEntry.uniqueId}-${endEntry.uniqueId}-${i}-${startY}`}
                   segment={[
                     { x: startEntry.xValue + barHalfWidth, y: startY },
                     { x: endEntry.xValue - barHalfWidth, y: startY }
