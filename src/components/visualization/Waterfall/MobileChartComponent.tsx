@@ -22,26 +22,7 @@ import {
     const label = parts[0];
     const footnoteNumber = parts[1];
   
-    // Adjusted for mobile - smaller max width
-    const wrapText = (text: string, maxWidth: number = 15) => {
-      const words = text.split(' ');
-      const lines: string[] = [];
-      let currentLine = words[0];
-  
-      for (let i = 1; i < words.length; i++) {
-        const word = words[i];
-        if (currentLine.length + word.length + 1 <= maxWidth) {
-          currentLine += ' ' + word;
-        } else {
-          lines.push(currentLine);
-          currentLine = word;
-        }
-      }
-      lines.push(currentLine);
-      return lines;
-    };
-  
-    const lines = wrapText(label);
+    const lines = [label];
     const lineHeight = 10; // Reduced line height for mobile
   
     return (
@@ -54,7 +35,7 @@ import {
             dy={14} // Slightly reduced dy
             textAnchor="end"
             fill="#6b7280"
-            fontSize={8} // Smaller font size
+            fontSize={9} // Slightly larger font for better readability
             transform="rotate(-45)"
           >
             {line}
@@ -183,7 +164,7 @@ import {
                 top: 30, // Reduced margins
                 right: showAxis ? 10 : 5,
                 left: showAxis ? 10 : 5,
-                bottom: 0
+                bottom: 80 // Increased bottom margin for label spacing
               }}
               barSize={30} // Smaller bars
             >
@@ -203,7 +184,7 @@ import {
                 dy={2}
                 angle={-45}
                 textAnchor="end"
-                height={80} // Reduced height
+                height={120} // Increased height for better label spacing
                 tick={<CustomXAxisTick />}
                 interval={0}
                 xAxisId="category"
