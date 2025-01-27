@@ -324,7 +324,8 @@ export const MobileLayout = () => {
                           options={[
                             { value: 'standard', label: 'een gebalanceerde mix van sectoren' },
                             { value: 'defense', label: 'defensie' },
-                            { value: 'infrastructure', label: 'infrastructuur en klimaat' }
+                            { value: 'infrastructure', label: 'bouw, infra en klimaat' },
+                            { value: 'healthcare', label: 'gezondheidszorg' }
                           ]}
                           onChange={(value) => handleSettingChange('jobPriority', value as ModelSettings['jobPriority'])}
                         />.
