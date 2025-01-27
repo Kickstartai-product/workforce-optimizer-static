@@ -133,7 +133,7 @@ import {
       return lines;
     };
   
-    const linesKey = `lines-${title}-${data.map(d => d.value).join('-')}`;
+    const linesKey = `lines-${title}-${orientation}-${data.map(d => `${d.uniqueId}-${d.value}`).join('-')}`;
 
     const calculateTicks = (domain: [number, number]) => {
       const [min, max] = domain;
