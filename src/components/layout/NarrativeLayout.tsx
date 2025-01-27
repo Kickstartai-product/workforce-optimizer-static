@@ -299,7 +299,7 @@ export const NarrativeLayout = () => {
                     </p>
                   </div>
 
-                  <div style={getAnimationStyle(750)}>
+                  <div style={getAnimationStyle(700)}>
                     <p className="leading-relaxed font-medium">
                       Er wordt in ieder geval niet van baan gewisseld door werknemers die werken in{' '}
                       <InlineSelect
@@ -317,7 +317,7 @@ export const NarrativeLayout = () => {
                     </p>
                   </div>
 
-                  <div style={getAnimationStyle(700)}>
+                  <div style={getAnimationStyle(750)}>
                     <p className="leading-relaxed font-medium">
                       Er wordt prioriteit gegeven aan het invullen van de vacatures voor{' '}
                       <InlineSelect
