@@ -296,7 +296,7 @@ export const MobileLayout = () => {
                         />.
                       </p>
                       <p className="text-xs text-gray-500 mt-1 ml-4 italic">
-                        De arbeidsvraag kan gedeeltelijk worden verminderd wanneer de werkweek van specifieke medewerkers met twee uur wordt verlengd.
+                        De vraag naar nieuwe medewerkers kan gedeeltelijk worden verminderd wanneer de werkweek van specifieke medewerkers met twee uur wordt verlengd.
                       </p>
                     </div>
                     <div style={getAnimationStyle(700)}>

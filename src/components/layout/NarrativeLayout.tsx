@@ -295,7 +295,7 @@ export const NarrativeLayout = () => {
                       />.
                     </p>
                     <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                      De arbeidsvraag kan gedeeltelijk worden verminderd wanneer de werkweek van specifieke medewerkers met twee uur wordt verlengd.
+                      De vraag naar nieuwe medewerkers kan gedeeltelijk worden verminderd wanneer de werkweek van specifieke medewerkers met twee uur wordt verlengd.
                     </p>
                   </div>
 
