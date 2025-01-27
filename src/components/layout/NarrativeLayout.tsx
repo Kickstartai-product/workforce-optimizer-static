@@ -51,8 +51,8 @@ const InlineSelect = ({
   <span className="inline-block" style={style}>
     <style>{pulseAnimation}</style>
     <Select value={String(value)} onValueChange={(v) => onChange(Number(v) || v)}>
-    <SelectTrigger
-  className={`
+      <SelectTrigger
+        className={`
     inline-flex w-auto min-w-0 h-6 px-1 py-0 
     text-base bg-transparent border-none rounded 
     whitespace-nowrap cursor-pointer font-medium
@@ -61,7 +61,7 @@ const InlineSelect = ({
     hover:bg-blue-50
     ${className}
   `}
->
+      >
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
@@ -135,76 +135,76 @@ export const NarrativeLayout = () => {
       </div>
 
       <div className="fixed top-8 right-8 z-50">
-      <Dialog>
-  <DialogTrigger asChild>
-    <div className="relative w-16 h-16 rounded-full bg-cyan-600 flex items-center justify-center shadow-lg hover:scale-105 transition-transform cursor-pointer">
-      <Info className="h-8 w-8 text-white" />
-    </div>
-  </DialogTrigger>
-  <DialogContent className="max-w-2xl bg-white">
-    <DialogHeader>
-      <DialogTitle>Toelichting model</DialogTitle>
-    </DialogHeader>
-    <div className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-      <p className="text-gray-700 leading-relaxed">
-        Om te analyseren of de dynamiek op de arbeidsmarkt zo groot gemaakt kan worden dat in de behoefte van de nieuwe economische structuren kan worden voorzien hebben wij een arbeidsmarkt-transitiemodel gebouwd.
-      </p>
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="relative w-16 h-16 rounded-full bg-cyan-600 flex items-center justify-center shadow-lg hover:scale-105 transition-transform cursor-pointer">
+              <Info className="h-8 w-8 text-white" />
+            </div>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl bg-white">
+            <DialogHeader>
+              <DialogTitle>Toelichting model</DialogTitle>
+            </DialogHeader>
+            <div className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+              <p className="text-gray-700 leading-relaxed">
+                Om te analyseren of de dynamiek op de arbeidsmarkt zo groot gemaakt kan worden dat in de behoefte van de nieuwe economische structuren kan worden voorzien hebben wij een arbeidsmarkt-transitiemodel gebouwd.
+              </p>
 
-      <div>
-        <h3 className="font-semibold text-lg mb-2">Het model werkt als volgt:</h3>
-        <p className="text-gray-700 leading-relaxed">
-          Een belangrijke parameter van het model is de ontwikkeling van de arbeidsproductiviteit (% per jaar). Deze parameter betreft de autonome arbeidsproductiviteitsgroei van sectoren en bepaalt in welke mate bestaande activiteiten met minder werknemers verricht kunnen worden. De werknemers die dan vrijkomen kunnen een wisseling maken naar een andere baan. Het model hanteert het uitgangspunt dat 20% van de jaarlijkse groei van de arbeidsproductiviteit resulteert in een vermindering van de arbeidsvraag, de overige 80% van de jaarlijkse groei vertaalt zich in een hogere output of hoger dienstverleningsniveau.
-        </p>
-        <p className="text-gray-700 leading-relaxed mt-2">
-          Het model zoekt voor de werknemers die beschikbaar zijn voor een baanwisseling naar de optimale uitkomst gegeven drie condities:
-        </p>
-        <ul className="list-disc pl-6 mt-2 space-y-1 text-gray-700">
-          <li>De arbeidsvraag voor onze maatschappelijke ambities moet zo veel als mogelijk worden ingevuld;</li>
-          <li>Het aantal baanwisselingen moet tot het minimum worden beperkt;</li>
-          <li>De baanwisselingen moet leiden tot een zo positief mogelijk effect op de arbeidsproductiviteit (structuureffecten).</li>
-        </ul>
-      </div>
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Het model werkt als volgt:</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Een belangrijke parameter van het model is de ontwikkeling van de arbeidsproductiviteit (% per jaar). Deze parameter betreft de autonome arbeidsproductiviteitsgroei van sectoren en bepaalt in welke mate bestaande activiteiten met minder werknemers verricht kunnen worden. De werknemers die dan vrijkomen kunnen een wisseling maken naar een andere baan. Het model hanteert het uitgangspunt dat 20% van de jaarlijkse groei van de arbeidsproductiviteit resulteert in een vermindering van de arbeidsvraag, de overige 80% van de jaarlijkse groei vertaalt zich in een hogere output of hoger dienstverleningsniveau.
+                </p>
+                <p className="text-gray-700 leading-relaxed mt-2">
+                  Het model zoekt voor de werknemers die beschikbaar zijn voor een baanwisseling naar de optimale uitkomst gegeven drie condities:
+                </p>
+                <ul className="list-disc pl-6 mt-2 space-y-1 text-gray-700">
+                  <li>De arbeidsvraag voor onze maatschappelijke ambities moet zo veel als mogelijk worden ingevuld;</li>
+                  <li>Het aantal baanwisselingen moet tot het minimum worden beperkt;</li>
+                  <li>De baanwisselingen moet leiden tot een zo positief mogelijk effect op de arbeidsproductiviteit (structuureffecten).</li>
+                </ul>
+              </div>
 
-      <div>
-        <p className="text-gray-700 leading-relaxed">
-          De O*Net 29.1 Database geeft aan de hand van een score op een 1-tot-5 puntsschaal informatie over de vaardigheden (bijvoorbeeld 'leesvaardigheid' en 'schrijfvaardigheid') en kenmerken (bijvoorbeeld 'kracht' en 'leeftijd') van een beroep in de Verenigde Staten. Met behulp van deze dataset is een koppeling gemaakt met de Nederlandse beroepsgroepen zoals gehanteerd door het CBS en ROA.
-        </p>
-        <p className="text-gray-700 leading-relaxed mt-4">
-          Voor alle indicatoren die we gebruiken om de vaardigheden en kenmerken te meten is een matrix opgesteld waarin de beroepsgroepen met elkaar worden vergeleken. Alleen wanneer de 'target group' (naar dit beroep gaat de werknemer toe) een hogere score heeft op een indicator dan de 'source group' (van dit beroep komt de werknemer vandaan), noteren we het verschil in score in de matrix. De optelsom van de scores per indicator leiden vervolgens tot een totaalscore voor zowel de vaardigheden als kenmerken. Deze scores worden gebruikt door het model om te bepalen of een baanwisseling tussen beroepsgroepen mogelijk is.
-        </p>
-      </div>
+              <div>
+                <p className="text-gray-700 leading-relaxed">
+                  De O*Net 29.1 Database geeft aan de hand van een score op een 1-tot-5 puntsschaal informatie over de vaardigheden (bijvoorbeeld 'leesvaardigheid' en 'schrijfvaardigheid') en kenmerken (bijvoorbeeld 'kracht' en 'leeftijd') van een beroep in de Verenigde Staten. Met behulp van deze dataset is een koppeling gemaakt met de Nederlandse beroepsgroepen zoals gehanteerd door het CBS en ROA.
+                </p>
+                <p className="text-gray-700 leading-relaxed mt-4">
+                  Voor alle indicatoren die we gebruiken om de vaardigheden en kenmerken te meten is een matrix opgesteld waarin de beroepsgroepen met elkaar worden vergeleken. Alleen wanneer de 'target group' (naar dit beroep gaat de werknemer toe) een hogere score heeft op een indicator dan de 'source group' (van dit beroep komt de werknemer vandaan), noteren we het verschil in score in de matrix. De optelsom van de scores per indicator leiden vervolgens tot een totaalscore voor zowel de vaardigheden als kenmerken. Deze scores worden gebruikt door het model om te bepalen of een baanwisseling tussen beroepsgroepen mogelijk is.
+                </p>
+              </div>
 
-      <div>
-        <h3 className="font-semibold text-lg mb-2">Een baanwisseling is mogelijk als:</h3>
-        <ul className="list-disc pl-6 mt-2 space-y-2 text-gray-700">
-          <li>De totaalscore op vaardigheden en kenmerken binnen een bepaalde range ligt. 
-            De hoogte van de range is vastgesteld per beroep op basis van de diversiteit aan vooropleidingen (diverse opleidingsachtergrond = opleidingsrichting die door minder dan 2.5% van de mensen uit de beroepsgroep gevolgd is) en % mensen in de beroepsgroep dat maximaal middelbaar onderwijs volgt. De beroepsgroepen zijn vervolgens met behulp van data van het Arbeidsmarkt Informatie Systeem (AIS) ingedeeld in 'moeilijk' (veel omscholing nodig), 'medium' (met enige omscholing) en 'makkelijk' (met weinig omscholing). Per categorie wordt een verschillende range gehanteerd. De gedachte hierbij is dat het moeilijker is om iemand om te scholen naar arts dan naar bijvoorbeeld buschauffeur.</li>
-          <li>Een baanwisseling een vooruitgang in salaris betreft of een maximale daling van 10% (gerekend met het bruto uurloon). De keuze kan worden gemaakt om een tijdelijke compensatie aan te bieden in geval het een reductie van salaris betreft.</li>
-        </ul>
-      </div>
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Een baanwisseling is mogelijk als:</h3>
+                <ul className="list-disc pl-6 mt-2 space-y-2 text-gray-700">
+                  <li>De totaalscore op vaardigheden en kenmerken binnen een bepaalde range ligt.
+                    De hoogte van de range is vastgesteld per beroep op basis van de diversiteit aan vooropleidingen (diverse opleidingsachtergrond = opleidingsrichting die door minder dan 2.5% van de mensen uit de beroepsgroep gevolgd is) en % mensen in de beroepsgroep dat maximaal middelbaar onderwijs volgt. De beroepsgroepen zijn vervolgens met behulp van data van het Arbeidsmarkt Informatie Systeem (AIS) ingedeeld in 'moeilijk' (veel omscholing nodig), 'medium' (met enige omscholing) en 'makkelijk' (met weinig omscholing). Per categorie wordt een verschillende range gehanteerd. De gedachte hierbij is dat het moeilijker is om iemand om te scholen naar arts dan naar bijvoorbeeld buschauffeur;</li>
+                  <li>En een baanwisseling een vooruitgang in salaris betreft of een maximale daling van 10% (gerekend met het bruto uurloon). De keuze kan worden gemaakt om een tijdelijke compensatie aan te bieden in geval het een reductie van salaris betreft.</li>
+                </ul>
+              </div>
 
-      <div>
-        <h3 className="font-semibold text-lg mb-2">Het model heeft naast de parameter arbeidsproductiviteit ook andere parameters:</h3>
-        <ul className="list-disc pl-6 space-y-2 text-gray-700">
-          <li>
-            Wel of geen overheidssturing op het gewenste portfolio van economische activiteiten.
-            <ul className="list-disc pl-6 mt-2">
-              <li>Wel overheidssturing betekent dat op basis van de methodiek gepresenteerd in Figuur 20 van de DenkWerk-rapportage 'KIEZEN én DELEN' (Hoofdstuk 6) een inschatting is gemaakt per type beroep of deze niet-locatiegebonden is en een lage toegevoegde waarde heeft. Indien dit het geval is, is een percentage daarvan (over het algemeen &lt;25%) beschikbaar gesteld voor een baanwisseling.</li>
-              <li>Geen overheidssturing betekent dat het wordt overgelaten aan de marktkrachten en enkel de uitbreidingsvraag voor onze grootste ambities (gebaseerd op Figuur 11 in Hoofdstuk 3 van de DenkWerk-rapportage 'KIEZEN én DELEN') is ingevoerd in het model.</li>
-            </ul>
-          </li>
-          <li>De mogelijkheid om de wekelijkse gemiddelde arbeidsduur met 2 uur te verlegen van niemand, alle werknemers, de deeltijdwerkers of de zorgmedewerkers.</li>
-          <li>De mogelijkheid om beroepsgroepen prioriteit te geven (het model probeert de vacatures voor deze beroepsgroepen als eerste in te vullen).</li>
-          <li>De mogelijkheid om beroepsgroepen aan te geven waarvan de medewerkers niet beschikbaar zijn voor een baanwisseling (hier hebben we bijvoorbeeld juist mensen nodig)</li>
-        </ul>
-      </div>
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Het model heeft naast de parameter arbeidsproductiviteit ook andere parameters:</h3>
+                <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                  <li>
+                    Wel of geen overheidssturing op het gewenste portfolio van economische activiteiten.
+                    <ul className="list-disc pl-6 mt-2">
+                      <li>Wel overheidssturing betekent dat op basis van de methodiek gepresenteerd in Figuur 20 van de DenkWerk-rapportage 'KIEZEN én DELEN' (Hoofdstuk 6) een inschatting is gemaakt per type beroep of deze niet-locatiegebonden is en een lage toegevoegde waarde heeft. Indien dit het geval is, is een percentage daarvan (over het algemeen &lt;25%) beschikbaar gesteld voor een baanwisseling.</li>
+                      <li>Geen overheidssturing betekent dat het wordt overgelaten aan de marktkrachten en enkel de uitbreidingsvraag voor onze grootste ambities (gebaseerd op Figuur 11 in Hoofdstuk 3 van de DenkWerk-rapportage 'KIEZEN én DELEN') is ingevoerd in het model.</li>
+                    </ul>
+                  </li>
+                  <li>De mogelijkheid om de wekelijkse gemiddelde arbeidsduur met 2 uur te verlegen van niemand, alle werknemers, de deeltijdwerkers of de zorgmedewerkers.</li>
+                  <li>De mogelijkheid om beroepsgroepen prioriteit te geven (het model probeert de vacatures voor deze beroepsgroepen als eerste in te vullen).</li>
+                  <li>De mogelijkheid om beroepsgroepen aan te geven waarvan de medewerkers niet beschikbaar zijn voor een baanwisseling (hier hebben we bijvoorbeeld juist mensen nodig).</li>
+                </ul>
+              </div>
 
-      <p className="text-gray-700 leading-relaxed mt-4">
-        Zie Hoofdstuk 7 van het DenkWerk-rapport 'KIEZEN én DELEN' voor onze analyses (getoetste situaties) en inzichten met behulp van het arbeidsmarkt-transitiemodel.
-      </p>
-    </div>
-  </DialogContent>
-</Dialog>
+              <p className="text-gray-700 leading-relaxed mt-4">
+                Zie Hoofdstuk 7 van het DenkWerk-rapport 'KIEZEN én DELEN' voor onze analyses (getoetste situaties) en inzichten met behulp van het arbeidsmarkt-transitiemodel.
+              </p>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="w-full">
@@ -215,7 +215,7 @@ export const NarrativeLayout = () => {
             alt="Netherlands by night"
             className="w-full h-full object-cover"
           />
-            {/* Photo credit */}
+          {/* Photo credit */}
           <div className="absolute bottom-2 left-2 text-white text-xs bg-black/50 px-2 py-1 rounded">
             Foto: ©ESA/NASA - André Kuipers
           </div>
@@ -224,7 +224,7 @@ export const NarrativeLayout = () => {
               Arbeidsmarkt-transitiemodel
             </h1>
             <p className="text-xl max-w-3xl" style={getAnimationStyle(200)}>
-              Dit model geeft inzicht in welke mate voorzien kan worden in de toekomstige vraag naar arbeid als gevolg van baanwisselingen. Met behulp van een aantal parameters die kunnen worden aangepast wordt de ontwikkeling van vraag en aanbod op de arbeidsmarkt getoond tussen Q1 2024 en Q1 2035.
+              Dit model geeft inzicht in welke mate voorzien kan worden in de toekomstige vraag naar arbeid voor onze ambities. Met behulp van een aantal parameters die kunnen worden aangepast wordt de ontwikkeling van vraag en aanbod op de arbeidsmarkt getoond tussen Q1 2024 en Q1 2035.
             </p>
           </div>
         </div>
@@ -235,7 +235,7 @@ export const NarrativeLayout = () => {
             <div className="absolute left-8 right-8 top-0 bottom-0 bg-white shadow-lg" />
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12">
               {/* Settings Section with border and label */}
-              <div 
+              <div
                 className="relative pt-8 border-t border-gray-200"
                 style={getAnimationStyle(300)}
               >
@@ -245,129 +245,129 @@ export const NarrativeLayout = () => {
                 </div>
 
                 <div className="space-y-8 mb-16">
-                <div style={getAnimationStyle(400)}>
-                  <p className="leading-relaxed font-medium">
-                    De jaarlijkse groei van de arbeidsproductiviteit tussen 2024 en 2035 is{' '}
-                    <InlineSelect
-                      value={settings.productivity}
-                      options={[
-                        { value: 0.5, label: '0,5%' },
-                        { value: 1.0, label: '1,0%' },
-                        { value: 1.5, label: '1,5%' }
-                      ]}
-                      onChange={(value) => handleSettingChange('productivity', value as ModelSettings['productivity'])}
-                    />.
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                    Dit betreft autonome groei, dus de groei van de arbeidsproductiviteit binnen bedrijfstakken. De mate van groei van de arbeidsproductiviteit beïnvloedt de toekomstige arbeidsvraag. Het uitgangspunt wordt gehanteerd dat 20% van de jaarlijkse groei resulteert in een verlaging van de arbeidsvraag en de overige 80% leidt tot een hogere output of hoger dienstverleningsniveau.
-                  </p>
+                  <div style={getAnimationStyle(400)}>
+                    <p className="leading-relaxed font-medium">
+                      De jaarlijkse groei van de arbeidsproductiviteit tussen 2024 en 2035 is{' '}
+                      <InlineSelect
+                        value={settings.productivity}
+                        options={[
+                          { value: 0.5, label: '0,5%' },
+                          { value: 1.0, label: '1,0%' },
+                          { value: 1.5, label: '1,5%' }
+                        ]}
+                        onChange={(value) => handleSettingChange('productivity', value as ModelSettings['productivity'])}
+                      />.
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                      Dit betreft autonome groei, dus de groei van de arbeidsproductiviteit binnen bedrijfstakken. De mate van groei van de arbeidsproductiviteit beïnvloedt de toekomstige arbeidsvraag. Het uitgangspunt wordt gehanteerd dat 20% van de jaarlijkse groei resulteert in een verlaging van het aantal benodigde medewerkers en de overige 80% leidt tot een hogere output of hoger dienstverleningsniveau.
+                    </p>
+                  </div>
+
+                  <div style={getAnimationStyle(500)}>
+                    <p className="leading-relaxed font-medium">
+                      De richting van de baanwisselingen wordt{' '}
+                      <InlineSelect
+                        value={settings.steering}
+                        options={[
+                          { value: 'with', label: 'actief gestuurd door de overheid' },
+                          { value: 'without', label: 'voornamelijk bepaald door de markt' }
+                        ]}
+                        onChange={(value) => handleSettingChange('steering', value as ModelSettings['steering'])}
+                      />.
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                      Actieve sturing betekent dat de overheid de arbeidsvraag voor bepaalde beroepsgroepen gericht vermindert. Wanneer dit niet het geval is, wordt de richting van de baanwisselingen overgelaten aan de marktkrachten.
+                    </p>
+                  </div>
+
+                  <div style={getAnimationStyle(600)}>
+                    <p className="leading-relaxed font-medium">
+                      De gemiddelde duur van de werkweek wordt met 2 uur verlengd bij{' '}
+                      <InlineSelect
+                        value={settings.workHours}
+                        options={[
+                          { value: 'noone', label: 'niemand' },
+                          { value: 'everyone', label: 'alle werknemers' },
+                          { value: 'part-time', label: 'deeltijdwerkers' },
+                          { value: 'healthcare', label: 'zorgmedewerkers' }
+                        ]}
+                        onChange={(value) => handleSettingChange('workHours', value as ModelSettings['workHours'])}
+                      />.
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                      De arbeidsvraag kan gedeeltelijk worden verminderd wanneer de werkweek van specifieke medewerkers met twee uur wordt verlengd.
+                    </p>
+                  </div>
+
+                  <div style={getAnimationStyle(750)}>
+                    <p className="leading-relaxed font-medium">
+                      Er wordt in ieder geval niet van baan gewisseld door werknemers die werken in{' '}
+                      <InlineSelect
+                        value={settings.nonSourceJobs}
+                        options={[
+                          { value: 'standard', label: 'een mix van verschillende sectoren' },
+                          { value: 'ambitious-and-education', label: 'ambitiesectoren en onderwijs' },
+                          { value: 'ambitious-only', label: 'alleen ambitiesectoren' }
+                        ]}
+                        onChange={(value) => handleSettingChange('nonSourceJobs', value as ModelSettings['nonSourceJobs'])}
+                      />.
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                      Ambitiesectoren: beroepen gerelateerd aan de zes grote ambities beschreven in de DenkWerk-rapportage (onder andere in de bouw- en infrasector, defensie en de zorg); Onderwijs: alle beroepen die gerelateerd zijn aan onderwijs (zoals docenten en onderwijsassistenten); Mix van verschillende sectoren: betreft een selectie van beroepen in onder andere de bouw- en infrasector, defensie, zorg, het onderwijs en veiligheid (politie, brandweer, ed.))
+                    </p>
+                  </div>
+
+                  <div style={getAnimationStyle(700)}>
+                    <p className="leading-relaxed font-medium">
+                      Er wordt prioriteit gegeven aan het invullen van de vacatures voor{' '}
+                      <InlineSelect
+                        value={settings.jobPriority}
+                        options={[
+                          { value: 'standard', label: 'een gebalanceerde mix van sectoren' },
+                          { value: 'defense', label: 'defensie' },
+                          { value: 'infrastructure', label: 'bouw, infra en klimaat' },
+                          { value: 'healthcare', label: 'gezondheidszorg' }
+                        ]}
+                        onChange={(value) => handleSettingChange('jobPriority', value as ModelSettings['jobPriority'])}
+                      />.
+                    </p>
+                    <p className="text-sm text-gray-500 mt-1 ml-6 italic">
+                      De prioritering van sectoren beïnvloedt waar werknemers die vrijkomen op de arbeidsmarkt naartoe worden gestimuleerd
+                    </p>
+                  </div>
+
                 </div>
 
-                <div style={getAnimationStyle(500)}>
-                  <p className="leading-relaxed font-medium">
-                    De richting van de baanwisselingen wordt{' '}
-                    <InlineSelect
-                      value={settings.steering}
-                      options={[
-                        { value: 'with', label: 'actief gestuurd door de overheid' },
-                        { value: 'without', label: 'voornamelijk bepaald door de markt' }
-                      ]}
-                      onChange={(value) => handleSettingChange('steering', value as ModelSettings['steering'])}
-                    />.
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                    Actieve sturing betekent dat de overheid de arbeidsvraag voor bepaalde beroepen gericht vermindert. Wanneer dit niet het geval is, wordt het overgelaten aan de marktkrachten.
-                  </p>
+                {/* Results Section with visual separator */}
+                <div
+                  className="relative pt-8 mt-8 border-t border-gray-200"
+                  style={getAnimationStyle(800)}
+                >
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white px-4">
+                    <h2 className="text-2xl font-semibold text-[rgb(0,153,168)]">Resultaten</h2>
+                  </div>
+
+                  <MainContent settings={settings} />
                 </div>
 
-                <div style={getAnimationStyle(600)}>
-                  <p className="leading-relaxed font-medium">
-                    De gemiddelde duur van de werkweek wordt met 2 uur verlengd bij{' '}
-                    <InlineSelect
-                      value={settings.workHours}
-                      options={[
-                        { value: 'noone', label: 'niemand' },
-                        { value: 'everyone', label: 'alle werknemers' },
-                        { value: 'part-time', label: 'deeltijdwerkers' },
-                        { value: 'healthcare', label: 'zorgmedewerkers' }
-                      ]}
-                      onChange={(value) => handleSettingChange('workHours', value as ModelSettings['workHours'])}
-                    />.
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                    De arbeidsvraag kan gedeeltelijk worden verminderd wanneer de werkweek van specifieke medewerkers met twee uur wordt verlengd.
+                <div className="text-center mt-12" style={getAnimationStyle(900)}>
+                  <p className="text-gray-600">
+                    Meer weten?{' '}
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[rgb(0,153,168)] hover:text-[rgb(0,123,138)] underline"
+                    >
+                      Vind hier het volledige rapport
+                    </a>
                   </p>
                 </div>
-
-                <div style={getAnimationStyle(700)}>
-                  <p className="leading-relaxed font-medium">
-                    Er wordt prioriteit gegeven aan het invullen van de vacatures voor{' '}
-                    <InlineSelect
-                      value={settings.jobPriority}
-                      options={[
-                        { value: 'standard', label: 'een gebalanceerde mix van sectoren' },
-                        { value: 'defense', label: 'defensie' },
-                        { value: 'infrastructure', label: 'bouw, infra en klimaat' },
-                        { value: 'healthcare', label: 'gezondheidszorg' }
-                      ]}
-                      onChange={(value) => handleSettingChange('jobPriority', value as ModelSettings['jobPriority'])}
-                    />.
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                    De prioritering van sectoren beïnvloedt werknemers die vrijkomen op de arbeidsmarkt naartoe worden gestimuleerd
-                  </p>
-                </div>
-
-                <div style={getAnimationStyle(750)}>
-                  <p className="leading-relaxed font-medium">
-                  Er wordt in ieder geval niet van baan gewisseld door werknemers die werken in{' '}
-                    <InlineSelect
-                      value={settings.nonSourceJobs}
-                      options={[
-                        { value: 'standard', label: 'een mix van verschillende sectoren' },
-                        { value: 'ambitious-and-education', label: 'ambitiesectoren en onderwijs' },
-                        { value: 'ambitious-only', label: 'alleen ambitiesectoren' }
-                      ]}
-                      onChange={(value) => handleSettingChange('nonSourceJobs', value as ModelSettings['nonSourceJobs'])}
-                    />.
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1 ml-6 italic">
-                  Ambitiesectoren: beroepen gerelateerd aan de zes grote ambities beschreven in de DenkWerk-rapportage (onder andere in de bouw- en infrasector, defensie en de zorg); Onderwijs: alle beroepen die gerelateerd zijn aan onderwijs (zoals docenten en onderwijsassistenten); Mix van verschillende sectoren betreft een selectie van beroepen in onder andere de bouw- en infrasector, defensie, zorg, het onderwijs en veiligheid (politie, brandweer, ed.))
-                  </p>
-                </div>
-
-              </div>
-
-              {/* Results Section with visual separator */}
-              <div
-                className="relative pt-8 mt-8 border-t border-gray-200"
-                style={getAnimationStyle(800)}
-              >
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-white px-4">
-                  <h2 className="text-2xl font-semibold text-[rgb(0,153,168)]">Resultaten</h2>
-                </div>
-
-                <MainContent settings={settings} />
-              </div>
-
-              <div className="text-center mt-12" style={getAnimationStyle(900)}>
-                <p className="text-gray-600">
-                  Meer weten?{' '}
-                  <a
-                    href="https://google.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[rgb(0,153,168)] hover:text-[rgb(0,123,138)] underline"
-                  >
-                    Vind hier het volledige rapport
-                  </a>
-                </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

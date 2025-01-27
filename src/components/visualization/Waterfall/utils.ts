@@ -162,7 +162,7 @@ export const getGapData = (selectedData: WorkforceMetrics): ChartData[] => {
       isExcessWorkers: true,
       base: Math.round(total_supply),
       xValue: 2,
-      footnote: "Een medewerker is overtollig als het niet lukt om een passende transitie te maken naar een nieuwe baan, terwijl de huidige baan niet meer  is benodigd vanwege productiviteitsstijging of sturing op afbouw van deze activiteit.",
+      footnote: "Een medewerker is overtollig als deze beschikbaar is voor een baanwisseling (huidige functie is overbodig). Een gedeelte van de overtollige medewerkers slaagt erin van baan te wisselen, maar een gedeelte ook niet (geen passende nieuwe vacature).",
       footnoteNumber: 1,
     },
     {

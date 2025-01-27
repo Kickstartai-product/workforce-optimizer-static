@@ -177,8 +177,8 @@ export const MobileLayout = () => {
         <h3 className="font-semibold text-l mb-2">Een baanwisseling is mogelijk als:</h3>
         <ul className="list-disc pl-6 mt-2 space-y-2 text-gray-700 text-sm">
           <li>De totaalscore op vaardigheden en kenmerken binnen een bepaalde range ligt. 
-            De hoogte van de range is vastgesteld per beroep op basis van de diversiteit aan vooropleidingen (diverse opleidingsachtergrond = opleidingsrichting die door minder dan 2.5% van de mensen uit de beroepsgroep gevolgd is) en % mensen in de beroepsgroep dat maximaal middelbaar onderwijs volgt. De beroepsgroepen zijn vervolgens met behulp van data van het Arbeidsmarkt Informatie Systeem (AIS) ingedeeld in 'moeilijk' (veel omscholing nodig), 'medium' (met enige omscholing) en 'makkelijk' (met weinig omscholing). Per categorie wordt een verschillende range gehanteerd. De gedachte hierbij is dat het moeilijker is om iemand om te scholen naar arts dan naar bijvoorbeeld buschauffeur.</li>
-          <li>Een baanwisseling een vooruitgang in salaris betreft of een maximale daling van 10% (gerekend met het bruto uurloon). De keuze kan worden gemaakt om een tijdelijke compensatie aan te bieden in geval het een reductie van salaris betreft.</li>
+            De hoogte van de range is vastgesteld per beroep op basis van de diversiteit aan vooropleidingen (diverse opleidingsachtergrond = opleidingsrichting die door minder dan 2.5% van de mensen uit de beroepsgroep gevolgd is) en % mensen in de beroepsgroep dat maximaal middelbaar onderwijs volgt. De beroepsgroepen zijn vervolgens met behulp van data van het Arbeidsmarkt Informatie Systeem (AIS) ingedeeld in 'moeilijk' (veel omscholing nodig), 'medium' (met enige omscholing) en 'makkelijk' (met weinig omscholing). Per categorie wordt een verschillende range gehanteerd. De gedachte hierbij is dat het moeilijker is om iemand om te scholen naar arts dan naar bijvoorbeeld buschauffeur;</li>
+          <li>En een baanwisseling een vooruitgang in salaris betreft of een maximale daling van 10% (gerekend met het bruto uurloon). De keuze kan worden gemaakt om een tijdelijke compensatie aan te bieden in geval het een reductie van salaris betreft.</li>
         </ul>
       </div>
 
@@ -194,7 +194,7 @@ export const MobileLayout = () => {
           </li>
           <li>De mogelijkheid om de wekelijkse gemiddelde arbeidsduur met 2 uur te verlegen van niemand, alle werknemers, de deeltijdwerkers of de zorgmedewerkers.</li>
           <li>De mogelijkheid om beroepsgroepen prioriteit te geven (het model probeert de vacatures voor deze beroepsgroepen als eerste in te vullen).</li>
-          <li>De mogelijkheid om beroepsgroepen aan te geven waarvan de medewerkers niet beschikbaar zijn voor een baanwisseling (hier hebben we bijvoorbeeld juist mensen nodig)</li>
+          <li>De mogelijkheid om beroepsgroepen aan te geven waarvan de medewerkers niet beschikbaar zijn voor een baanwisseling (hier hebben we bijvoorbeeld juist mensen nodig).</li>
         </ul>
       </div>
 
@@ -223,7 +223,7 @@ export const MobileLayout = () => {
               Arbeidsmarkt-transitiemodel
             </h1>
             <p className="text-base max-w-3xl" style={getAnimationStyle(200)}>
-            Dit model geeft inzicht in welke mate voorzien kan worden in de toekomstige vraag naar arbeid als gevolg van baanwisselingen. Met behulp van een aantal parameters die kunnen worden aangepast wordt de ontwikkeling van vraag en aanbod op de arbeidsmarkt getoond tussen Q1 2024 en Q1 2035.
+            Dit model geeft inzicht in welke mate voorzien kan worden in de toekomstige vraag naar arbeid voor onze ambities. Met behulp van een aantal parameters die kunnen worden aangepast wordt de ontwikkeling van vraag en aanbod op de arbeidsmarkt getoond tussen Q1 2024 en Q1 2035.
             </p>
           </div>
         </div>
@@ -261,7 +261,7 @@ export const MobileLayout = () => {
                           />.
                         </p>
                         <p className="text-xs text-gray-500 mt-1 ml-4 italic">
-                        Dit betreft autonome groei, dus de groei van de arbeidsproductiviteit binnen bedrijfstakken. De mate van groei van de arbeidsproductiviteit beïnvloedt de toekomstige arbeidsvraag. Het uitgangspunt wordt gehanteerd dat 20% van de jaarlijkse groei resulteert in een verlaging van de arbeidsvraag en de overige 80% leidt tot een hogere output of hoger dienstverleningsniveau.
+                        Dit betreft autonome groei, dus de groei van de arbeidsproductiviteit binnen bedrijfstakken. De mate van groei van de arbeidsproductiviteit beïnvloedt de toekomstige arbeidsvraag. Het uitgangspunt wordt gehanteerd dat 20% van de jaarlijkse groei resulteert in een verlaging van het aantal benodigde medewerkers en de overige 80% leidt tot een hogere output of hoger dienstverleningsniveau.
                         </p>
                       </div>
                       <div>
@@ -277,7 +277,7 @@ export const MobileLayout = () => {
                         />.
                         </p>
                         <p className="text-xs text-gray-500 mt-1 ml-4 italic">
-                    Actieve sturing betekent dat de overheid de arbeidsvraag voor bepaalde beroepen gericht vermindert. Wanneer dit niet het geval is, wordt het overgelaten aan de marktkrachten.
+                    Actieve sturing betekent dat de overheid de arbeidsvraag voor bepaalde beroepsgroepen gericht vermindert. Wanneer dit niet het geval is, wordt de richting van de baanwisselingen overgelaten aan de marktkrachten.
                         </p>
                       </div>
                       <div>
@@ -312,7 +312,7 @@ export const MobileLayout = () => {
                     />.
                         </p>
                         <p className="text-xs text-gray-500 mt-1 ml-4 italic">
-                        De prioritering van sectoren beïnvloedt werknemers die vrijkomen op de arbeidsmarkt naartoe worden gestimuleerd
+                        De prioritering van sectoren beïnvloedt waar werknemers die vrijkomen op de arbeidsmarkt naartoe worden gestimuleerd
                         </p>
                       </div>
                     </div>
